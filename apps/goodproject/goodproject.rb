@@ -225,8 +225,6 @@ login = gets.chomp
 print "Enter your password:";
 password = gets.chomp
 
-login = "vojtech.pasler@gooddata.com"
-password = "Vojta01.iff"
 
 session = GoodData.connect(login,password)
 
