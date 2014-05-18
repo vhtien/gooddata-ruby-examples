@@ -42,6 +42,8 @@ You are ready to run all stuff which is in.
     - [logging.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb) - Verbose logging output.
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
     - [invitation](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/invitation) - Invitation related examples.
+      - [send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb) - Invites user to project
+ 
     - [project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project) - Project related examples.
 
 ## Authors
