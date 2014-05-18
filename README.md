@@ -37,6 +37,7 @@ You are ready to run all stuff which is in.
 - [snippets](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets) - Simple code pieces demonstrating just one functionality at time
   - [01_core](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/01_core) - Core GoodData gem functionality
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
+
 ## Authors
 
 Original authors in alphabetical order.
