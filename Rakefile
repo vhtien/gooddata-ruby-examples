@@ -16,7 +16,7 @@ task :ci do
   end
 
   # Run Rubocop to make sure all code comply with ruby style guid
-  # Rake::Task['test:cop'].invoke if RUBY_VERSION.start_with?('2.2') == false
+  Rake::Task['test:cop'].invoke if RUBY_VERSION.start_with?('2.2') == false
 
   # Rake::Task['coveralls:push'].invoke
 
@@ -26,7 +26,7 @@ end
 
 desc 'Run Rubocop'
 task :cop do
-  exec 'rubocop apps/ snippets/'
+  exec 'rubocop snippets/'
 end
 
 RSpec::Core::RakeTask.new(:test)
