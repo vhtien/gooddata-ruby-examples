@@ -26,23 +26,23 @@ end
 
 desc 'Run Rubocop'
 task :cop do
-  exec 'rubocop snippets/'
+  exec 'rubocop Gemfile snippets/'
 end
 
 RSpec::Core::RakeTask.new(:test)
 
 namespace :test do
-  desc "Run unit tests"
+  desc 'Run unit tests'
   RSpec::Core::RakeTask.new(:unit) do |t|
     t.pattern = 'spec/unit/**/*.rb'
   end
 
-  desc "Run integration tests"
+  desc 'Run integration tests'
   RSpec::Core::RakeTask.new(:integration) do |t|
     t.pattern = 'spec/integration/**/*.rb'
   end
 
-  desc "Run coding style tests"
+  desc 'Run coding style tests'
   RSpec::Core::RakeTask.new(:cop) do |t|
     Rake::Task['cop'].invoke
   end
@@ -50,11 +50,11 @@ namespace :test do
   task :all => [:unit, :integration]
 end
 
-desc "Run all tests"
+desc 'Run all tests'
 task :test => 'test:all'
 
 task :usage do
-  puts "No rake task specified, use rake -T to list them"
+  puts 'No rake task specified, use rake -T to list them'
 end
 
 YARD::Rake::YardocTask.new
