@@ -7,13 +7,21 @@ require 'yard'
 
 desc 'Run continuous integration test'
 task :ci do
+  # Run unit tests
   Rake::Task['test:unit'].invoke
+
+  # Run integration test when not PR
   unless ENV['TRAVIS'] == 'true' && ENV['TRAVIS_SECURE_ENV_VARS'] == 'false'
     Rake::Task['test:integration'].invoke
   end
 
+  # Run Rubocop to make sure all code comply with ruby style guid
   # Rake::Task['test:cop'].invoke if RUBY_VERSION.start_with?('2.2') == false
+
   # Rake::Task['coveralls:push'].invoke
+
+  # Generate doc using 'yard'
+  Rake::Task['yard'].invoke
 end
 
 desc 'Run Rubocop'
