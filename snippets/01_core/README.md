@@ -89,12 +89,6 @@ ruby logging.rb
 
 ```
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby snippets/01_core/logging.rb
-WARN: Unresolved specs during Gem::Specification.reset:
-      faraday_middleware (>= 0.8.8)
-      hashie (< 2.1, >= 1.2.0)
-      minitest (~> 5.1)
-WARN: Clearing out unresolved specs.
-Please report a bug if this causes problems.
 Connecting as svarovsky+gem_tester@gooddata.com ...
 D, [2014-05-18T01:45:39.554043 #8035] DEBUG -- : GoodData#connect
 I, [2014-05-18T01:45:39.554182 #8035]  INFO -- : Connecting to GoodData...
