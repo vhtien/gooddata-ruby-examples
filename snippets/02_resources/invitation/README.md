@@ -9,7 +9,7 @@ Invites user to project.
 ### Running
 
 ```
-rake send_invitation.rb
+bundle exec ruby send_invitation.rb
 ```
 
 ### Output

@@ -9,7 +9,7 @@ Lists domain users.
 ### Running
 
 ```
-ruby send_invitation.rb
+bundle exec send_invitation.rb
 ```
 
 ### Output

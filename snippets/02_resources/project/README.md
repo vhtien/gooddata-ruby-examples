@@ -9,7 +9,7 @@ Lists projects.
 ### Running
 
 ```
-rake project_list.rb
+bundle exec ruby project_list.rb
 ```
 
 ### Output
