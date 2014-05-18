@@ -2,13 +2,17 @@
 *.rbc
 /.config
 /coverage/
+/doc
 /InstalledFiles
 /pkg/
 /spec/reports/
 /test/tmp/
 /test/version_tmp/
 /tmp/
+
+# Ignore rubymine project
 .idea
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history
