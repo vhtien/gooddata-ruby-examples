@@ -23,7 +23,7 @@ Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
 
-## [connect.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb)
+## [connect_env_vars.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb)
 
 Connect using username and password from environment variables
 
