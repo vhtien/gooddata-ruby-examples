@@ -4,9 +4,24 @@
 
 Connect using username and password
 
-## Description
+### Description
 
 Example how to connect to GoodData platform using username and password
+
+### Running
+
+```
+ruby connect.rb
+```
+
+### Output
+
+```
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby snippets/01_core/connect.rb
+Connecting as svarovsky+gem_tester@gooddata.com
+Disconnecting
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $
+```
 
 ## handling_errors.rb 
 
