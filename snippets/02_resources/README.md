@@ -10,7 +10,7 @@ Invitation related examples.
 
 - [invitation/send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb)
 
-## [Project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project]
+## [Project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project)
 
 Project related examples. 
 
