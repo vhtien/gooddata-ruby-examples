@@ -36,9 +36,9 @@ You are ready to run all stuff which is in.
 
 Original authors in alphabetical order.
 
-- @baskoj - Jan Basko
-- @korczis - Tomas Korcak
-- @vpasler - Vojtech Pasler
+- [baskoj](https://github.com/baskoj) - Jan Basko
+- [korczis](https://github.com/korczis) - Tomas Korcak
+- [vpasler](https://github.com/vpasler) - Vojtech Pasler
 
 ## License
 
