@@ -1,6 +1,6 @@
 # Core Examples
 
-## connect.rb 
+## [connect.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect.rb)
 
 Connect using username and password
 
@@ -23,7 +23,7 @@ Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
 
-## connect_env_vars.rb 
+## [connect.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb)
 
 Connect using username and password from environment variables
 
@@ -46,7 +46,7 @@ Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
 
-## handling_errors.rb 
+## [handling_errors.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb)
 
 Handle possible errors
 
