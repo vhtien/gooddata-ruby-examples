@@ -6,14 +6,14 @@ Examples with specific resource usage
 
 Invitation related examples.
 
-### List
+### Structure
 
-- [invitation/send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb)
+- [invitation/send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb) - Invites user to project
 
 ## [Project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project)
 
 Project related examples. 
 
-### List
+### Structure 
 
 - [project/list.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/project_list.rb)
