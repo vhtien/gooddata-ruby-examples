@@ -48,6 +48,7 @@ bundle update
   - [01_core](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/01_core) - Core GoodData gem functionality
     - [connect.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect.rb) - Connect using username and password
     - [connect_env_vars.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb) - Connect using username and password from environment variables
+    - [current_user.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/current_user.rb) - Access current user
     - [handling_errors.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb) - Handle possible errors
     - [logging.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb) - Verbose logging output.
     - [version.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/version.rb) - Show GoodData Ruby gem version.
