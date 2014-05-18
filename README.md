@@ -2,6 +2,10 @@
 
 Examples of GoodData Ruby SDK Usage
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/korczis/gooddata-ruby-examples.svg?branch=master)](https://travis-ci.org/korczis/gooddata-ruby-examples)
+
 ## Prerequisites
 
 - [ruby](https://www.ruby-lang.org/en/) - Modern programming Language
