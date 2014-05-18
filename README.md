@@ -35,7 +35,8 @@ You are ready to run all stuff which is in.
 - [apps](https://github.com/korczis/gooddata-ruby-examples/tree/master/apps) - Example Applications using gooddata ruby gem
   - [goodproject](https://github.com/korczis/gooddata-ruby-examples/tree/master/apps/goodproject) - Command Line Interface for GoodData Platform
 - [snippets](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets) - Simple code pieces demonstrating just one functionality at time
-
+  - [01_core](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/01_core) - Core GoodData gem functionality
+  - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
 ## Authors
 
 Original authors in alphabetical order.
@@ -46,4 +47,4 @@ Original authors in alphabetical order.
 
 ## License
 
-Ruby on Rails is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+Project gooddata-ruby-examples is released under the [MIT License](http://www.opensource.org/licenses/MIT).
