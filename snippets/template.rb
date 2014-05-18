@@ -1,5 +1,6 @@
-#! /usr/bin/env ruby
-require "gooddata"
+# encoding: utf-8
+
+require 'gooddata'
 
 ## add this to ~/.bash_profile with proper user, password, token, ...
 # export GD_GEM_USER="josef.novak@gooddata.com"
@@ -8,17 +9,14 @@ require "gooddata"
 
 username = ENV['GD_GEM_USER']
 password = ENV['D_GEM_PASSWORD']
-token = ENV['GD_PROJECT_TOKEN']
-
+# token = ENV['GD_PROJECT_TOKEN']
 
 # Connect to platform using credentials
-puts "connecting"
+puts "Connecting as #{username}"
 GoodData.connect username, password
-
 
 # TODO: add code here
 
-
-# And disconnect finally 
-puts "disconnecting"
+# And disconnect finally
+puts 'Disconnecting'
 GoodData.disconnect
