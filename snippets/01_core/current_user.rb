@@ -9,7 +9,8 @@ password = 'jindrisska'
 puts "Connecting as #{username}"
 GoodData.connect username, password
 
-# TODO: add code here
+user = GoodData.user
+pp user
 
 # And disconnect finally
 puts 'Disconnecting'
