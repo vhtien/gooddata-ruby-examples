@@ -11,7 +11,7 @@ Example how to connect to GoodData platform using username and password
 ### Running
 
 ```
-ruby connect.rb
+bundle exec ruby connect.rb
 ```
 
 ### Output
@@ -34,7 +34,7 @@ Example how to connect to GoodData platform using username and password loaded f
 ### Running
 
 ```
-ruby connect_env_vars.rb
+bundle exec ruby connect_env_vars.rb
 ```
 
 ### Output
@@ -44,6 +44,47 @@ tomaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby snippets/01_core/conne
 Connecting as svarovsky+gem_tester@gooddata.com
 Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
+```
+
+## [current_user.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/current_user.rb)
+
+Access current user
+
+### Description
+
+Example how to access current user.
+
+### Running
+
+```
+bundle exec ruby current_user.rb
+```
+
+### Output
+
+```
+Connecting as svarovsky+gem_tester@gooddata.com ...
+#<GoodData::AccountSettings:0x007fd051c8ace8
+ @json=
+  {"accountSetting"=>
+    {"country"=>nil,
+     "firstName"=>"Gem",
+     "ssoProvider"=>nil,
+     "timezone"=>nil,
+     "position"=>nil,
+     "authenticationModes"=>[],
+     "companyName"=>"GoodData",
+     "login"=>"svarovsky+gem_tester@gooddata.com",
+     "email"=>"svarovsky+gem_tester@gooddata.com",
+     "created"=>"2014-02-20 21:30:30",
+     "updated"=>"2014-05-18 10:05:08",
+     "lastName"=>"Testing user",
+     "phoneNumber"=>"12345",
+     "links"=>
+      {"self"=>"/gdc/account/profile/4aaa93a56d61f9f86f077be3f0b761a3",
+       "projects"=>
+        "/gdc/account/profile/4aaa93a56d61f9f86f077be3f0b761a3/projects"}}}>
+Disconnecting ...
 ```
 
 ## [handling_errors.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb)
@@ -57,7 +98,7 @@ Example how the possible errors can be catched and handled
 ### Running
 
 ```
-ruby handling_errors.rb
+bundle exec ruby handling_errors.rb
 ```
 
 ### Output
@@ -82,7 +123,7 @@ Example how to turn on verbose logging output
 ### Running
 
 ```
-ruby logging.rb
+bundle exec ruby logging.rb
 ```
 
 ### Output
@@ -120,7 +161,7 @@ Example how to show version of GoodData Ruby gem version used
 ### Running
 
 ```
-ruby version.rb
+bundle exec ruby version.rb
 ```
 
 ### Output

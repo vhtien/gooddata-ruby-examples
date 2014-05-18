@@ -6,7 +6,7 @@ username = 'svarovsky+gem_tester@gooddata.com'
 password = 'INVALID_PASSWORD'
 
 # Connect to platform using INVALID credentials
-puts "Connecting as #{username}"
+puts "Connecting as #{username} ..."
 GoodData.connect username, password
 
 # Do something which fails and handle error
@@ -23,5 +23,5 @@ GoodData.disconnect
 # TODO: add code here
 
 # And disconnect finally
-puts 'Disconnecting'
+puts 'Disconnecting ...'
 GoodData.disconnect
