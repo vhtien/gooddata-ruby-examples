@@ -36,6 +36,9 @@ You are ready to run all stuff which is in.
   - [goodproject](https://github.com/korczis/gooddata-ruby-examples/tree/master/apps/goodproject) - Command Line Interface for GoodData Platform
 - [snippets](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets) - Simple code pieces demonstrating just one functionality at time
   - [01_core](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/01_core) - Core GoodData gem functionality
+    - [connect.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect.rb) - Connect using username and password
+    - [connect_env_vars.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb) - Connect using username and password from environment variables
+    - [handling_errors](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb) - Handle possible errors
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
 
 ## Authors
