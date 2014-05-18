@@ -70,3 +70,50 @@ ERROR:
 Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
+
+https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb
+
+## [logging.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb)
+
+Verbose logging output.
+
+### Description
+
+Example how to turn on verbose logging output
+
+### Running
+
+```
+ruby logging.rb
+```
+
+### Output
+
+```
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby snippets/01_core/logging.rb
+WARN: Unresolved specs during Gem::Specification.reset:
+      faraday_middleware (>= 0.8.8)
+      hashie (< 2.1, >= 1.2.0)
+      minitest (~> 5.1)
+WARN: Clearing out unresolved specs.
+Please report a bug if this causes problems.
+Connecting as svarovsky+gem_tester@gooddata.com ...
+D, [2014-05-18T01:45:39.554043 #8035] DEBUG -- : GoodData#connect
+I, [2014-05-18T01:45:39.554182 #8035]  INFO -- : Connecting to GoodData...
+D, [2014-05-18T01:45:39.554226 #8035] DEBUG -- : Logging in...
+D, [2014-05-18T01:45:39.554379 #8035] DEBUG -- : POST https://secure.gooddata.com/gdc/account/login, payload: {"postUserLogin"=>{"login"=>"*********************************", "password"=>"**********", "remember"=>1}}
+D, [2014-05-18T01:45:40.174723 #8035] DEBUG -- : Response: {"userLogin"=>{"profile"=>"/gdc/account/profile/4aaa93a56d61f9f86f077be3f0b761a3", "state"=>"/gdc/account/login/4aaa93a56d61f9f86f077be3f0b761a3"}}
+D, [2014-05-18T01:45:40.174795 #8035] DEBUG -- : Getting authentication token...
+D, [2014-05-18T01:45:40.174822 #8035] DEBUG -- : GET https://secure.gooddata.com/gdc/account/token
+D, [2014-05-18T01:45:40.476549 #8035] DEBUG -- : Response: {}
+D, [2014-05-18T01:45:40.476671 #8035] DEBUG -- : GET https://secure.gooddata.com/gdc/account/profile/4aaa93a56d61f9f86f077be3f0b761a3
+
+....
+
+Disconnecting ...
+D, [2014-05-18T01:45:41.299421 #8035] DEBUG -- : GoodData#disconnect
+Merge branch 'master' of https://github.com/korczis/gooddata-ruby-examples
+D, [2014-05-18T01:45:41.299510 #8035] DEBUG -- : DELETE https://secure.gooddata.com/gdc/account/login/4aaa93a56d61f9f86f077be3f0b761a3
+D, [2014-05-18T01:45:41.652872 #8035] DEBUG -- : Response: 204 no content
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $
+```
