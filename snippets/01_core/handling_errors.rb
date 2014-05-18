@@ -14,7 +14,8 @@ begin
   # We are going to list projects, but we specified wrong credentials so this will fail.
   GoodData::Project.all
 rescue Exception => e
-  puts 'ERROR'
+  # This block is called when some Exception happens
+  puts 'ERROR:'
   pp e
 end
 
