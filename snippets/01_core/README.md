@@ -104,7 +104,6 @@ D, [2014-05-18T01:45:40.476671 #8035] DEBUG -- : GET https://secure.gooddata.com
 
 Disconnecting ...
 D, [2014-05-18T01:45:41.299421 #8035] DEBUG -- : GoodData#disconnect
-Merge branch 'master' of https://github.com/korczis/gooddata-ruby-examples
 D, [2014-05-18T01:45:41.299510 #8035] DEBUG -- : DELETE https://secure.gooddata.com/gdc/account/login/4aaa93a56d61f9f86f077be3f0b761a3
 D, [2014-05-18T01:45:41.652872 #8035] DEBUG -- : Response: 204 no content
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
