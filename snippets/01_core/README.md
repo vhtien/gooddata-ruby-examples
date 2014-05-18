@@ -71,8 +71,6 @@ Disconnecting
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
 
-https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb
-
 ## [logging.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb)
 
 Verbose logging output.
