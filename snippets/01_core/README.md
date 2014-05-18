@@ -126,7 +126,7 @@ ruby version.rb
 ### Output
 
 ```
-omaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby version.rb
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby version.rb
 GoodData.verion = '0.6.2'
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
