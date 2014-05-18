@@ -108,3 +108,25 @@ D, [2014-05-18T01:45:41.299510 #8035] DEBUG -- : DELETE https://secure.gooddata.
 D, [2014-05-18T01:45:41.652872 #8035] DEBUG -- : Response: 204 no content
 tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
+
+## [version.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/version.rb)
+
+Show GoodData Ruby gem version.
+
+### Description
+
+Example how to show version of GoodData Ruby gem version used
+
+### Running
+
+```
+ruby version.rb
+```
+
+### Output
+
+```
+omaskorcak@kx-mac gooddata-ruby-examples (master) $ ruby version.rb
+GoodData.verion = '0.6.2'
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $
+```
