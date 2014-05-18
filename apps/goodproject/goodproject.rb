@@ -1,11 +1,12 @@
 #Vojta's GoodProject Manager
 
-require 'gooddata';
+require 'gooddata'; #loading GoodData SDK
 
-$my_profile_id = nil
+$my_profile_id = nil #global variable for storing users profile id
 
-
+  #function that lists projects for current user
 def listprojects()
+  #loading array of all projects
 	projects = Array.new(GoodData::Project.all)
 
 	puts ""
@@ -14,15 +15,18 @@ def listprojects()
 	puts ""	
 	
 	counter = 0
-	projects.each do |pr|
+	#loop through projects and print their title and PID
+  projects.each do |pr|
 	 	counter += 1
 	 	puts "#{counter}. "+pr.title+" - "+pr.pid
 	end
 	puts ""
 	puts ""
 
+  #get the number of the project from the user
 	print "Choose project:"	
-	pnum = gets.chomp.to_i - 1
+
+  pnum = gets.chomp.to_i - 1
 
 	wrkproj = projects[pnum]
 	project_detail(wrkproj)
