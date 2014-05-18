@@ -40,6 +40,8 @@ You are ready to run all stuff which is in.
     - [connect_env_vars.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/connect_env_vars.rb) - Connect using username and password from environment variables
     - [handling_errors](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb) - Handle possible errors
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
+    - [invitation](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/invitation) - Invitation related examples.
+    - [project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project)
 
 ## Authors
 
