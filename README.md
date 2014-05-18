@@ -41,6 +41,10 @@ You are ready to run all stuff which is in.
     - [handling_errors.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/handling_errors.rb) - Handle possible errors
     - [logging.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/01_core/logging.rb) - Verbose logging output.
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
+    - [domain](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain) - 
+      Domain related examples.
+      - [domain_users.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_users.rb) - 
+      Lists domain users.
     - [invitation](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/invitation) - Invitation related examples.
       - [send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb) - Invites user to project
     - [project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project) - Project related examples.
