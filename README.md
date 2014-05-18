@@ -30,6 +30,16 @@ Done.
 
 You are ready to run all stuff which is in.
 
+## Updating
+
+If you want to update to latest version of gooddata-ruby-examples do following:
+
+```
+git pull
+
+bundle update
+```
+
 ## Structure
 
 - [apps](https://github.com/korczis/gooddata-ruby-examples/tree/master/apps) - Example Applications using gooddata ruby gem
