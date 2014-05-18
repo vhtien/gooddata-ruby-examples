@@ -45,4 +45,5 @@ Connecting as svarovsky+gem_tester@gooddata.com
 ERROR:
 401 Unauthorized: {"parameters":[],"component":"Account::Login::AuthShare","message":"Bad Login or Password!"}
 Disconnecting
+tomaskorcak@kx-mac gooddata-ruby-examples (master) $
 ```
