@@ -16,7 +16,7 @@ bundle exec ruby project_list.rb
 
 TBD
 
-## [send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/invitation/send_invitation.rb)
+## [send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/send_invitation.rb)
 
 ### Description
 
