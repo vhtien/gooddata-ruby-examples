@@ -15,5 +15,5 @@ Project related examples.
 
 ### Structure 
 
-- [project/list.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/project_list.rb)
+- [project/list.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/project_list.rb) - List projects available
 - [project/send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/send_invitation.rb) - Invites user to project
