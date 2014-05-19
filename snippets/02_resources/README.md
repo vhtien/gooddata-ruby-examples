@@ -2,7 +2,7 @@
 
 Examples with specific resource usage
 
-## Domain
+## [Project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/domain)
 
 ### Structure
 
