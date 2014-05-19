@@ -55,8 +55,10 @@ bundle update
   - [02_resources](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources) - Examples for each resource - metric, project, report, schedule, user, ...
     - [domain](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain) - 
       Domain related examples.
+      - [domain_add_user.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_add_user.rb) - 
+      Add user to existing domain.
       - [domain_users.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_users.rb) - 
-      Lists domain users.
+            Lists domain users.
     - [project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project) - Project related examples.
       - [project_list.rb](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/project/project_list.rb) - Project related examples.
       - [send_invitation.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/project/send_invitation.rb) - Invites user to project

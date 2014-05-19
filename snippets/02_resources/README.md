@@ -2,10 +2,12 @@
 
 Examples with specific resource usage
 
-## [Project](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/domain)
+## [Domain](https://github.com/korczis/gooddata-ruby-examples/tree/master/snippets/02_resources/domain)
 
 ### Structure
 
+- [domain/domain_add_user.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_add_user.rb) - 
+Add user to existing domain.
 - [domain/domain_users.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_users.rb) - 
 Lists domain users.
 

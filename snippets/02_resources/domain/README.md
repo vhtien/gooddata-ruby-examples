@@ -1,5 +1,27 @@
 # Domain
 
+## [domain_add_user.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_add_user.rb)
+
+### Description
+
+Add user to existing domain.
+
+### Running
+
+```
+bundle exec domain_add_user.rb
+```
+
+### Output
+
+```
+Connecting as svarovsky+gem_tester@gooddata.com ...
+#<GoodData::Profile:0x007faa925ae058
+ @dirty=false,
+ @json={"accountSetting"=>{"firstName"=>"First", "lastName"=>"Last"}}>
+Disconnecting ...
+```
+
 ## [domain_users.rb](https://github.com/korczis/gooddata-ruby-examples/blob/master/snippets/02_resources/domain/domain_users.rb)
 
 ### Description
@@ -9,7 +31,7 @@ Lists domain users.
 ### Running
 
 ```
-bundle exec send_invitation.rb
+bundle exec domain_users.rb
 ```
 
 ### Output
