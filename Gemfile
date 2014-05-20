@@ -10,8 +10,8 @@ group :development, :test do
   gem 'redcarpet' if RUBY_PLATFORM != 'java'
   gem 'rspec'
   gem 'rubocop'
-  gem 'ruby-debug-base19x'
-  gem 'ruby-debug-ide'
+  # gem 'ruby-debug-base19x'
+  # gem 'ruby-debug-ide'
   gem 'yard'
   gem 'yard-rspec'
 end
