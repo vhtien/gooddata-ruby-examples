@@ -16,11 +16,11 @@ domain = GoodData::Domain['gooddata-tomas-svarovsky']
 pass = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
 
 new_user = domain.add_user(
-  :login => 'tomas.korcak42@gooddata.com',
-  :password => pass,
-  :first_name => 'First',
-  :last_name => 'Last',
-  :email => 'test@gooddata.com'
+  login: 'tomas.korcak42@gooddata.com',
+  password: pass,
+  first_name: 'First',
+  last_name: 'Last',
+  email: 'test@gooddata.com'
 )
 
 pp new_user
