@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # 30 Days of Automation: GoodData Ruby SDK
 # Visit http://sdk.gooddata.com/gooddata-ruby/ for Tutorials, Examples, and Support.
 
