@@ -17,7 +17,6 @@ chapters.each do |chapter|
 end
 
 
-
 # generate book.asciidoc
 File.open('book.asciidoc', 'w') do |f|
   f.puts ":bookseries: cookbook"
@@ -30,7 +29,7 @@ File.open('book.asciidoc', 'w') do |f|
   end
 end
 
-system "asciidoctor book.asciidoc"
+system "asciidoctor book.asciidoc -b pdf"
 
 # File.delete('book.asciidoc')
 # Dir.glob('**/chapter.asciidoc').each {|f| File.delete(f)}
