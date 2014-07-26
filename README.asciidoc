@@ -2,10 +2,10 @@
 
 to run the tooling you need following  gems
 
-# asciidoctor
-# watchr
-# rake
-# activesupport
+- asciidoctor
+- watchr
+- rake
+- activesupport
 
 Let's add bundler.
 
