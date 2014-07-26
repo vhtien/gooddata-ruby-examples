@@ -10,22 +10,24 @@ You have to have a user who is an admin of an organization. If you do not have t
 ==== Solution
 
 [source,ruby]
-  # encoding: utf-8
+----
+# encoding: utf-8
 
-  require 'gooddata'
+require 'gooddata'
 
-  username = 'svarovsky+gem_tester@gooddata.com'
-  password = 'jindrisska'
+username = 'svarovsky+gem_tester@gooddata.com'
+password = 'jindrisska'
 
-  # Connect to platform using credentials
-  puts "Connecting as #{username} ..."
-  GoodData.connect username, password
+# Connect to platform using credentials
+puts "Connecting as #{username} ..."
+GoodData.connect username, password
 
-  domain = GoodData::Domain['gooddata-tomas-svarovsky']
-  users = domain.users
+domain = GoodData::Domain['gooddata-tomas-svarovsky']
+users = domain.users
 
-  pp users
+pp users
 
-  # And disconnect finally
-  puts 'Disconnecting ...'
-  GoodData.disconnect
+# And disconnect finally
+puts 'Disconnecting ...'
+GoodData.disconnect
+----
