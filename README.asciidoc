@@ -1,0 +1,21 @@
+=== Readme
+
+to run the tooling you need following  gems
+
+# asciidoctor
+# watchr
+# rake
+# activesupport
+
+Let's add bundler.
+
+If you are developing you can run
+
+  watchr script/build/rb
+
+This will watch all asciidoc files and rebuild the book after every change.
+
+Todo:
+
+- Add pdf
+- Add Gemfile
