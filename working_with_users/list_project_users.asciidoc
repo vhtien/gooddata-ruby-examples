@@ -1,0 +1,30 @@
+=== Listing organization users
+by Tomas Korcak
+
+==== Problem
+You would like to list users in project
+
+==== Prerequisites
+You have to have a user who is a project admin. If you do not have that please follow recipe XY.
+
+==== Solution
+
+[source,ruby]
+  # encoding: utf-8
+
+  require 'gooddata'
+
+  username = 'svarovsky+gem_tester@gooddata.com'
+  password = 'jindrisska'
+
+  # Connect to platform using credentials
+  puts "Connecting as #{username} ..."
+  GoodData.connect username, password
+
+  # TODO: add code here
+  projects = GoodData::Project.all
+  pp projects
+
+  # And disconnect finally
+  puts 'Disconnecting ...'
+  GoodData.disconnect

@@ -1,0 +1,7 @@
+:bookseries: cookbook
+= GoodData SDK Cookbook
+
+include::getting_started/chapter.asciidoc[]
+
+include::working_with_users/chapter.asciidoc[]
+

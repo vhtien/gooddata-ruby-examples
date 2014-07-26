@@ -1,0 +1,31 @@
+=== Invitate user to project
+by Tomas Korcak
+
+==== Problem
+You would like to add a user into project.
+
+==== Prerequisites
+You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+
+==== Solution
+
+[source,ruby]
+  # encoding: utf-8
+
+  require 'gooddata'
+
+  username = 'svarovsky+gem_tester@gooddata.com'
+  password = 'jindrisska'
+
+  # Connect to platform using credentials
+  puts "Connecting as #{username} ..."
+  GoodData.connect username, password
+
+  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+  users = domain.users
+
+  pp users
+
+  # And disconnect finally
+  puts 'Disconnecting ...'
+  GoodData.disconnect

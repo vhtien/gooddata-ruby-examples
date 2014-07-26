@@ -1,0 +1,5 @@
+== Getting Started
+
+include::create_a_program.asciidoc[]
+
+include::jack_in.asciidoc[]
