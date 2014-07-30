@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You want to use SDK on a project but writing a script seems  like a too much of a hassle.
+You want to use SDK on a project but writing a script seems like too much of a hassle.
 
 ==== Solution
 

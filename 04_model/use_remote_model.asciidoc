@@ -15,25 +15,22 @@ SDK allows you to get the model of a current project and behind scenes it transl
 ----
 require 'gooddata'
 
-GoodData.connect
-project = GoodData.use('project_id')
-blueprint = project.blueprint
+GoodData.with_connection do |c|
+  project = GoodData.use('project_id')
+  blueprint = project.blueprint
 
-# count the number of datasets (does not include date dimensions)
-blueprint.datasets.count # => 3
+  # count the number of datasets (does not include date dimensions)
+  blueprint.datasets.count # => 3
 
-# gives you list of attributes in the whole project
-blueprint.fields.filter {|x| x[:type].to_s == 'attribute'}
+  # gives you list of attributes in the whole project
+  blueprint.fields.filter {|x| x[:type].to_s == 'attribute'}
 
-# lists datasets that do have anchor (connection point)
-blueprint.datasets.select &:anchor?
+  # lists datasets that do have anchor (connection point)
+  blueprint.datasets.select &:anchor?
 
-# Find all the star centers/fact tables (datasets that nobody else connects to)
-blueprint.find_star_centers
-
-# And disconnect finally
-puts 'Disconnecting ...'
-GoodData.disconnect
+  # Find all the star centers/fact tables (datasets that nobody else connects to)
+  blueprint.find_star_centers
+end
 ----
 
 ==== Discussion

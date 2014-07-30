@@ -1,0 +1,3 @@
+== 06 Working With Projects
+
+include::renaming_project.asciidoc[]

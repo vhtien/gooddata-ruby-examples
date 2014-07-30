@@ -14,14 +14,10 @@ One of good ways to start is to see what is there. How many datasets, how much d
 
 require 'gooddata'
 
-GoodData.connect
-project = GoodData.use('project_id')
-
-project.info
-
-# And disconnect finally
-puts 'Disconnecting ...'
-GoodData.disconnect
+GoodData.with_connection do |c|
+  project = GoodData.use('project_id')
+  project.info
+end
 ----
 
 This might be the hypothetical output. For each dataset you have there the size. Below is a breakdown of how many different types of objects there are inside the dataset.

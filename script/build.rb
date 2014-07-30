@@ -29,7 +29,7 @@ File.open('book.asciidoc', 'w') do |f|
   end
 end
 
-system "asciidoctor book.asciidoc -b pdf"
+system "asciidoctor book.asciidoc"
 
 # File.delete('book.asciidoc')
 # Dir.glob('**/chapter.asciidoc').each {|f| File.delete(f)}

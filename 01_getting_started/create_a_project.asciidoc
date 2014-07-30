@@ -1,0 +1,19 @@
+=== Create a project
+by Tomas Svarovsky
+
+==== Problem
+You need to create a project programmatically.
+
+==== Solution
+
+[source,ruby]
+----
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  GoodData::Project.create(title: 'This is my new project', auth_token: 'TOKEN' )
+end
+
+----
+
+==== Discussion

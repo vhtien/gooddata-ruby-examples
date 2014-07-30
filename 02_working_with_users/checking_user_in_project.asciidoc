@@ -14,13 +14,10 @@ You have to have a user who is an admin of an organization. If you do not have t
 # encoding: utf-8
 
 require 'gooddata'
-GoodData.connect
 
-GoodData.with_project('project_pid) do |project|
-  project.member?('jane.doe@example.com')
-ends
-
-# And disconnect finally
-puts 'Disconnecting ...'
-GoodData.disconnect
+GoodData.with_connection do |c|
+  GoodData.with_project('project_pid) do |project|
+    project.member?('jane.doe@example.com')
+  end
+end
 ----

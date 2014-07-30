@@ -10,11 +10,12 @@ You want to be sure that reports return expected results. This is a basis for de
 ----
 require 'gooddata'
 
-GoodData.connect
-GoodData.with_project('project_pid') do |project|
-  report = project.report(32)
-  result = report.execute
-  fail "Report has unexpected result" unless result == [[1, 2, 3]]
+GoodData.with_connection do |c|
+  GoodData.with_project('project_pid') do |project|
+    report = project.report(32)
+    result = report.execute
+    fail "Report has unexpected result" unless result == [[1, 2, 3]]
+  end
 end
 ----
 
