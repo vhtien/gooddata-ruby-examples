@@ -16,10 +16,11 @@ You have to have a user who is an admin of an organization. If you do not have t
 require 'gooddata'
 
 GoodData.with_connection do |c|
-
-  domain = GoodData::Domain['domain-name']
-  users = domain.users
-
-  pp users
+  GoodData.with_project('project_pid') do |p|
+    p.invite('joe@example.com', 'admin', 'Hey Joe, look at this.')
+  end
 end
 ----
+
+==== Discussion
+Invitation can be sent by any administrator. It also means that the recipient will receive an email with instructions how to proceed. If you are interested in how to invite users without their knowledge (this is very useful for Powered By GoodData scenarios) see Recipe XX.
