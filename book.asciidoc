@@ -1,4 +1,5 @@
 :bookseries: cookbook
+:toc:
 = GoodData SDK Cookbook
 
 include::01_getting_started/chapter.asciidoc[]

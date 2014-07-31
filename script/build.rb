@@ -20,6 +20,7 @@ end
 # generate book.asciidoc
 File.open('book.asciidoc', 'w') do |f|
   f.puts ":bookseries: cookbook"
+  f.puts ":toc:"
   f.puts "= GoodData SDK Cookbook"
   f.puts ""
 
@@ -29,7 +30,7 @@ File.open('book.asciidoc', 'w') do |f|
   end
 end
 
-system "asciidoctor book.asciidoc"
+system "asciidoctor -d book  book.asciidoc"
 
 # File.delete('book.asciidoc')
 # Dir.glob('**/chapter.asciidoc').each {|f| File.delete(f)}
