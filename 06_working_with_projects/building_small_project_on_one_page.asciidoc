@@ -27,7 +27,6 @@ GoodData.with_connection do |c|
       d.add_fact('lines_changed')
       d.add_date('committed_on', :dataset => "committed_on")
       d.add_reference('dev_id', :dataset => 'devs')
-      d.add_reference('dev_id', :dataset => 'devs')
     end
   end
 
@@ -52,7 +51,7 @@ GoodData.with_connection do |c|
     metric = p.fact('fact.commits.lines_changed').create_metric
     metric.save
 
-    report = project.create_report(title: 'Awesome_report', what: [metric], :how ['attr.devs.email'])
+    report = p.create_report(title: 'Awesome_report', top: [metric], left: ['label.devs.dev_id.email'])
     report.save
 
     ['john1@example.com', 'john2@example.com'].each do |email|
