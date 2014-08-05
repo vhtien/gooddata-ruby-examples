@@ -1,4 +1,4 @@
-=== Create a project
+=== Create an empty project
 by Tomas Svarovsky
 
 ==== Problem

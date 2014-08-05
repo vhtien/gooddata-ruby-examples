@@ -15,7 +15,7 @@ What we will do is to create a simple project with 4 datasets. Load couple of li
 require 'gooddata'
 
 GoodData.with_connection do |c|
-  blueprint = GoodData::ProjectBlueprint.build("Acme project") do |p|
+  blueprint = GoodData::Model::ProjectBlueprint.build("Acme project") do |p|
     p.add_date_dimension('committed_on')
 
     p.add_dataset('devs') do |d|
@@ -27,11 +27,11 @@ GoodData.with_connection do |c|
       d.add_fact('lines_changed')
       d.add_date('committed_on', :dataset => "committed_on")
       d.add_reference('dev_id', :dataset => 'devs')
-      d.add_reference('repo_id', :dataset => 'repos')
+      d.add_reference('dev_id', :dataset => 'devs')
     end
   end
 
-  project = GoodData::Project.from_blueprint(blueprint, :auth_token => '')
+  project = GoodData::Project.create_from_blueprint(blueprint, :auth_token => '')
   GoodData::with_project(project) do |p|
     # Load data
     commits_data = [
