@@ -1,0 +1,5 @@
+== 06 Working With Projects
+
+include::building_small_project_on_one_page.asciidoc[]
+
+include::renaming_project.asciidoc[]

@@ -1,0 +1,24 @@
+=== Listing organization users
+by Tomas Korcak
+
+==== Problem
+You would like to list users in organization
+
+==== Prerequisites
+You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+# Connect to platform using credentials
+GoodData.with_connection do |c|
+  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+  users = domain.users
+  pp users
+end
+----

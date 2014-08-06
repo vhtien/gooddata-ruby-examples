@@ -1,0 +1,15 @@
+== 01 Getting Started
+
+include::01_jack_in.asciidoc[]
+
+include::02_create_a_program.asciidoc[]
+
+include::03_connecting_to_gooddata.asciidoc[]
+
+include::connecting_to_different_server.asciidoc[]
+
+include::create_a_project.asciidoc[]
+
+include::handling_credentials.asciidoc[]
+
+include::using_a_project.asciidoc[]

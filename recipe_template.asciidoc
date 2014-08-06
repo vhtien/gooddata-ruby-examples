@@ -1,0 +1,13 @@
+=== Recipe title
+by Author
+
+==== Problem
+
+==== Solution
+
+[source,ruby]
+----
+some code
+----
+
+==== Discussion

@@ -1,0 +1,16 @@
+:bookseries: cookbook
+:toc:
+= GoodData SDK Cookbook
+
+include::01_getting_started/chapter.asciidoc[]
+
+include::02_working_with_users/chapter.asciidoc[]
+
+include::03_automation_recipes/chapter.asciidoc[]
+
+include::04_model/chapter.asciidoc[]
+
+include::05_testing/chapter.asciidoc[]
+
+include::06_working_with_projects/chapter.asciidoc[]
+

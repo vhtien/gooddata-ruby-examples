@@ -1,0 +1,11 @@
+== 04 Model
+
+include::creating_a_model.asciidoc[]
+
+include::getting_info_about_unknown_project.asciidoc[]
+
+include::removing_date_facts.asciidoc[]
+
+include::updating_a_model.asciidoc[]
+
+include::use_remote_model.asciidoc[]

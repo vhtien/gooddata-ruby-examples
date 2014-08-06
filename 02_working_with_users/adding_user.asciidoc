@@ -1,0 +1,36 @@
+=== Adding user to organization
+by Tomas Korcak
+
+==== Problem
+You would like to add a user to organization programmatically
+
+==== Prerequisites
+You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+
+  # Get your domain ..
+  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+
+  # Generate random password
+  pass = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
+
+  new_user = domain.add_user(
+    :login => 'tomas.korcak42@gooddata.com',
+    :password => pass,
+    :first_name => 'First',
+    :last_name => 'Last',
+    :email => 'test@gooddata.com'
+  )
+
+  pp new_user
+end
+----
