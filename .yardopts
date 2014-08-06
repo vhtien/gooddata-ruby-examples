@@ -1,0 +1,16 @@
+--plugin rspec
+--template default
+--protected
+--no-private
+--verbose
+--markup markdown
+--markup-provider redcarpet
+--hide-void-return
+--exclude LICENSE
+--no-cache
+--output-dir doc/html
+apps/**/*.rb
+snippets/**/*.rb
+spec/**/*_spec.rb
+-
+README.md
