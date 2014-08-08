@@ -31,6 +31,8 @@ GoodData.with_connection do |c|
   end
 
   project = GoodData::Project.create_from_blueprint(blueprint, :auth_token => '')
+  puts "Created project #{project.pid}"
+
   GoodData::with_project(project) do |p|
     # Load data
     commits_data = [
