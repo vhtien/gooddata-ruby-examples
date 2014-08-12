@@ -1,0 +1,20 @@
+=== Creating a project from template
+by Tomas Svarovsky
+
+==== Problem
+You have a template created for you and you would like to spin a project from this template.
+
+==== Solution
+
+[source,ruby]
+----
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  project = GoodData::Project.create(title: 'New project',
+                                     template: 'https://secure.gooddata.com/projectTemplates/SuperSoda/1/',
+                                     auth_token: 'token')
+end
+----
+
+==== Discussion
