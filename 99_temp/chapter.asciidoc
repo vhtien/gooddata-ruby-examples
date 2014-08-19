@@ -1,0 +1,3 @@
+== Temporary - 30 days of automation
+
+include::day_1_listing_dashboards.asciidoc[]

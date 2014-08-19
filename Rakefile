@@ -7,6 +7,7 @@ require_relative './lib/erb_helper'
 
 desc 'Build book'
 task :build do
+  Rake::Task['erb'].invoke
   system 'asciidoctor -d book book.asciidoc'
 end
 
