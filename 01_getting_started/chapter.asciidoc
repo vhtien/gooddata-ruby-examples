@@ -8,8 +8,6 @@ include::03_connecting_to_gooddata.asciidoc[]
 
 include::connecting_to_different_server.asciidoc[]
 
-include::create_a_project.asciidoc[]
-
 include::handling_credentials.asciidoc[]
 
 include::using_a_project.asciidoc[]
