@@ -3,6 +3,8 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require_relative './lib/erb_helper'
+
 desc 'Build book'
 task :build do
   system 'asciidoctor -d book book.asciidoc'
@@ -11,6 +13,11 @@ end
 desc 'Run continuous integration'
 task :ci do
   Rake::Task['build'].invoke
+end
+
+task 'Run ERB preprocessing'
+task :erb do
+  ErbHelper.new.run
 end
 
 task :usage do
