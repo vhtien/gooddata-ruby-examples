@@ -7,11 +7,13 @@ to run the tooling you need following  gems
 - rake
 - activesupport
 
-Let's add bundler.
+Install required Gems using bundler
+
+  bundle
 
 If you are developing you can run
 
-  watchr script/build/rb
+  rake watch
 
 This will watch all asciidoc files and rebuild the book after every change.
 
