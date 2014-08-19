@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'pry'
 require 'rake'
 require 'active_support/all'
 
