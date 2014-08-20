@@ -20,4 +20,3 @@ GoodData.with_connection do |c|
   pp dashboards
 end
 ----
-

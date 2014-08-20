@@ -16,6 +16,11 @@ task :ci do
   Rake::Task['build'].invoke
 end
 
+desc 'Clean generated stuff'
+task :clean do
+  ErbHelper.new.clean
+end
+
 task 'Run ERB preprocessing'
 task :erb do
   ErbHelper.new.run
