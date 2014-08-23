@@ -465,6 +465,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_99_temp">99 Temp</a>
 <ul class="sectlevel2">
 <li><a href="#_listing_project_dashboards">Listing project dashboards</a></li>
+<li><a href="#_write_information_about_your_metrics_to_csv_file">Write information about your metrics to CSV file</a></li>
+<li><a href="#_schedule_process">Schedule process</a></li>
+<li><a href="#_creating_metrics_from_attribute">Creating metrics from attribute</a></li>
+<li><a href="#_creating_metrics_from_facts">Creating metrics from facts</a></li>
 </ul>
 </li>
 <li><a href="#_lib">Lib</a></li>
@@ -1534,6 +1538,172 @@ GoodData.with_connection do |c|
     # List all dashboards
     dashboards = project.dashboards
     pp dashboards
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_write_information_about_your_metrics_to_csv_file">Write information about your metrics to CSV file</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_25">Problem</h4>
+<div class="paragraph">
+<p>You would like to store information about all project metrics to CSV.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_8">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project with metric(s).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_25">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
+        metrics = project.metrics
+        metrics.each do |metric|
+            m = metric.pretty_expression
+            puts m
+            csv &lt;&lt; [m]
+        end
+    end
+
+    puts 'The CSV is ready!'
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_schedule_process">Schedule process</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_26">Problem</h4>
+<div class="paragraph">
+<p>You would like to schedule process for automatic execution.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_9">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project with process.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_26">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+PROCESS_ID = 'dc143d80-58a1-4acd-96b6-8d11fc4571de'
+EXECUTABLE = './graph/graph.grf'
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    date = '5 8 * * 7'
+
+    project.create_schedule(PROCESS_ID, date, EXECUTABLE).save
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_metrics_from_attribute">Creating metrics from attribute</h3>
+<div class="paragraph">
+<p>by Patrick McConlogue, Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_27">Problem</h4>
+<div class="paragraph">
+<p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_10">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project with model and data loaded.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_27">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    attribute = project.attributes('attr.devs.dev_id')
+    metric = attribute.create_metric(:title =&gt; "Count of [#{attribute.identifier}]")
+    metric.save
+    metric.execute
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_metrics_from_facts">Creating metrics from facts</h3>
+<div class="paragraph">
+<p>by Patrick McConlogue, Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_28">Problem</h4>
+<div class="paragraph">
+<p>You have several facts in a project. You would like to create some basic metric out of them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_11">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project with model and data loaded.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_28">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    fact = project.facts('fact.commits.lines_changed')
+    metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
+    metric.save
+    res = metric.execute
+
+    puts res
 end</code></pre>
 </div>
 </div>
