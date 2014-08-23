@@ -9,3 +9,5 @@ include::day_3_schedule_process.asciidoc[]
 include::day_5_metrics_from_attribute.asciidoc[]
 
 include::day_5_metrics_from_facts.asciidoc[]
+
+include::day_15_users_from_csv.asciidoc[]

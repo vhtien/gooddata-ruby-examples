@@ -469,6 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_schedule_process">Schedule process</a></li>
 <li><a href="#_creating_metrics_from_attribute">Creating metrics from attribute</a></li>
 <li><a href="#_creating_metrics_from_facts">Creating metrics from facts</a></li>
+<li><a href="#_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</a></li>
 </ul>
 </li>
 <li><a href="#_lib">Lib</a></li>
@@ -1687,6 +1688,47 @@ end</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_solution_28">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    fact = project.facts('fact.commits.lines_changed')
+    metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
+    metric.save
+    res = metric.execute
+
+    puts res
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</h3>
+<div class="paragraph">
+<p>by Patrick McConlogue, Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_29">Problem</h4>
+<div class="paragraph">
+<p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_12">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project and be admin of it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_29">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
