@@ -1,2 +1,2 @@
-watch( '(.*)\.asciidoc' )  {|match_data_object| system "ruby script/build.rb"}
+watch( '*/**/.erb' )  { |match_data_object| system "rake build" }
 

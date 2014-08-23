@@ -2,6 +2,8 @@
 
 include::adding_user.asciidoc[]
 
+include::ading_user_to_project.asciidoc[]
+
 include::checking_user_in_project.asciidoc[]
 
 include::list_organization_users.asciidoc[]

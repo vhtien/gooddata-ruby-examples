@@ -29,7 +29,4 @@ File.open('book.asciidoc', 'w') do |f|
   end
 end
 
-system "asciidoctor -d book  book.asciidoc"
-
-# File.delete('book.asciidoc')
-# Dir.glob('**/chapter.asciidoc').each {|f| File.delete(f)}
+system "rake build"

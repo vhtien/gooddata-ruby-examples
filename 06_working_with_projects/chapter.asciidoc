@@ -2,4 +2,12 @@
 
 include::building_small_project_on_one_page.asciidoc[]
 
+include::cloning_project.asciidoc[]
+
+include::create_a_project.asciidoc[]
+
+include::creating_project_from_blueprint.asciidoc[]
+
+include::creating_project_from_template.asciidoc[]
+
 include::renaming_project.asciidoc[]

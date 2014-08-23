@@ -16,3 +16,7 @@ include::06_working_with_projects/chapter.asciidoc[]
 
 include::99_temp/chapter.asciidoc[]
 
+include::lib/chapter.asciidoc[]
+
+include::src/chapter.asciidoc[]
+
