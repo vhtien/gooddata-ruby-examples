@@ -52,7 +52,7 @@ class ErbHelper
       res = erb.result b
       File.open(filename.gsub(/\.erb/, ''), 'wt') do |f|
         puts "Processing #{filename}"
-        f.write res
+        f.write res.chomp
       end
     end
   end
