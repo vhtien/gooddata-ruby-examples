@@ -10,4 +10,6 @@ include::day_05_metrics_from_attribute.asciidoc[]
 
 include::day_05_metrics_from_facts.asciidoc[]
 
-include::day_15_users_from_csv.asciidoc[]
+include::day_15_invite_users_from_csv.asciidoc[]
+
+include::day_17_sync_users_from_csv.asciidoc[]
