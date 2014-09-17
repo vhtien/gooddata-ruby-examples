@@ -61,15 +61,6 @@ GoodData.with_connection do |client|
     end
   end
 end
-
-
-
-
-
-
-
-
-
 ----
 
 ==== Discussion
