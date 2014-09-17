@@ -10,9 +10,9 @@ You know how to jack in and how to write a simple program. Now it is time to com
 ----
 require 'gooddata'
 
-GoodData.with_connection('user', 'password') do |c|
+GoodData.with_connection('user', 'password') do |client|
   # just so you believe us we are printing names of all the project under this account
-  GoodData::Project.all.each do |p|
+  client.projects.each do |p|
     puts p.title
   end
 end

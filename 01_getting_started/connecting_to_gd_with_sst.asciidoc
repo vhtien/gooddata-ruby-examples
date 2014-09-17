@@ -5,11 +5,26 @@ by Tomas Svarovsky
 You do not have credentials. You only have STT and would like to still make some requests.
 
 ==== Solution
-Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password.
+Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password. Take note that currently you do not have access to whole API. Things like interacting with DSS and Staging Storage still need username and pass. We are trying t resolve the issue.
+
+First you need to have SST token. There are several ways how to obtain it. Here is one using SDK
+[source,ruby]
+----
+client = GoodData.connect(login: 'user', password: 'password')
+client.connection.sst_token
+----
+
+Once you have the token, you can try to login and do something.
 
 [source,ruby]
 ----
-
+GoodData.with_connection(sst_token: 'sst_token') do |client|
+  client.projects.each do |p|
+    puts p.title
+  end
+end
 ----
 
 ==== Discussion
+
+Never share the token with other people. It is the same thing as you name and password. You can do almost everything with it.

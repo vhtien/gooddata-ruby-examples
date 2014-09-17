@@ -13,9 +13,9 @@ require 'gooddata'
 
 GoodData.with_connection(login: 'user',
                          password: 'password',
-                         server: 'https://some-other-server.com') do |c|
+                         server: 'https://some-other-server.com') do |client|
   # just so you believe us we are printing names of all the project under this account
-  GoodData::Project.all.each do |p|
+  client.projects.each do |p|
     puts p.title
   end
 end
