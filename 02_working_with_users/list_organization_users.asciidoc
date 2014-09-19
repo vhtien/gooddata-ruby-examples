@@ -16,8 +16,8 @@ You have to have a user who is an admin of an organization. If you do not have t
 require 'gooddata'
 
 # Connect to platform using credentials
-GoodData.with_connection do |c|
-  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+GoodData.with_connection do |client|
+  domain = client.domain('gooddata-tomas-svarovsky')
   users = domain.users
   pp users
 end

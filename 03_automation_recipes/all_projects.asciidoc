@@ -20,8 +20,8 @@ This is a lot to do. Let's try to break the tasks down to smaller pieces.
 [source,ruby]
 ----
 projects = [
-  GoodData::Project['project_pid_a'],
-  GoodData::Project['project_pid_b']
+  client.projects('project_pid_a'),
+  client.projects('project_pid_b')
 ]
 projects.each do |project|
   GoodData.with_project do |project|
@@ -32,7 +32,7 @@ end
 
 [source,ruby]
 ----
-reports_to_tag = GoodData::Report.all(full: true)
+reports_to_tag = project.reports
   .select { |reports| report.updated_at > 2.weeks.ago }
   .select { |report| report.revisions.count > 1 }
 ----
