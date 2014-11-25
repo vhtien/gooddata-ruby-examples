@@ -4,6 +4,9 @@ by Tomas Svarovsky
 ==== Problem
 You have a template created for you and you would like to spin a project from this template.
 
+==== Warning
+We highly recommend not to use templates unless you have a reason. We recommend combination of blueprints + master clones. They are much more flexible and predictable.
+
 ==== Solution
 
 [source,ruby]
