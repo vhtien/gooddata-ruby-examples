@@ -11,8 +11,6 @@ You have to have a user who is an admin of an organization. If you do not have t
 
 [source,ruby]
 ----
-# encoding: utf-8
-
 require 'gooddata'
 
 GoodData.with_connection do |client|
