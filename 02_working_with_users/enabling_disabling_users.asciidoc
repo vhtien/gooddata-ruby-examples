@@ -67,7 +67,7 @@ GoodData.with_connection do |c|
   users_to_disable = project.users.reject { |u| keepers.include?(u.login) }
 
   # disable all users
-  users_to_disable.pmap {|u| u.disable}
+  users_to_disable.pmap { |u| u.disable }
 end
 ----
 
