@@ -30,6 +30,10 @@ class ErbHelper
   end
 
   def render_ruby(filename)
+    render_source('ruby', filename)
+  end
+
+  def render_source(type, filename)
     b = binding
 
     content = render(filename) do
@@ -40,7 +44,7 @@ class ErbHelper
     erb.filename = filename
     res = erb.result b
 
-    "[source, ruby]\n----\n#{res}\n----"
+    "[source,#{type}]\n----\n#{res}\n----"
   end
 
   def process(files)

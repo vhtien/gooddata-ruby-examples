@@ -1,8 +1,8 @@
 == 02 Working With Users
 
-include::adding_user.asciidoc[]
+include::adding_user_to_organization.asciidoc[]
 
-include::ading_user_to_project.asciidoc[]
+include::adding_user_to_project.asciidoc[]
 
 include::checking_user_in_project.asciidoc[]
 

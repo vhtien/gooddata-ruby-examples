@@ -1,0 +1,17 @@
+=== Getting some information about unknown project
+by Tomas Svarovsky
+
+==== Problem
+You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?
+
+==== Solution
+One of good ways to start is to see what is there. How many datasets, how much data is there how many processes etc. This is failry time consuming. You have to find the primary attributes of each dataset create a count metric and a lot of other stuff. This can be automated and it is so useful we actually created a command that does just this.
+
+<%= render_ruby 'src/04_model/getting_info_about_unknown_project.rb' %>
+
+This might be the hypothetical output. For each dataset you have there the size. Below is a breakdown of how many different types of objects there are inside the dataset.
+
+<%= render_source 'text', 'src/04_model/output.txt' %>
+
+==== Discussion
+

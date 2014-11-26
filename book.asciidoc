@@ -1,3 +1,4 @@
+:source-highlighter: coderay
 :bookseries: cookbook
 :toc:
 = GoodData SDK Cookbook

@@ -408,6 +408,97 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
+<style>
+/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+/*pre.CodeRay {background-color:#f7f7f8;}*/
+.CodeRay .line-numbers{border-right:1px solid #d8d8d8;padding:0 0.5em 0 .25em}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.5em;color:rgba(0,0,0,.3)}
+.CodeRay .line-numbers strong{font-weight: normal}
+table.CodeRay{border-collapse:separate;border-spacing:0;margin-bottom:0;border:0;background:none}
+table.CodeRay td{vertical-align: top}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.line-numbers>pre{padding:0;color:rgba(0,0,0,.3)}
+table.CodeRay td.code{padding:0 0 0 .5em}
+table.CodeRay td.code>pre{padding:0}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#00}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}
+</style>
 </head>
 <body class="book">
 <div id="header">
@@ -430,7 +521,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_02_working_with_users">02 Working With Users</a>
 <ul class="sectlevel2">
 <li><a href="#_adding_user_to_organization">Adding user to organization</a></li>
-<li><a href="#_adding_user_to_organization_2">Adding user to organization</a></li>
+<li><a href="#_adding_user_to_project">Adding user to project</a></li>
+<li><a href="#_checking_user_in_project">Checking user in project</a></li>
 <li><a href="#_listing_organization_users">Listing organization users</a></li>
 <li><a href="#_listing_project_users">Listing project users</a></li>
 <li><a href="#_invitate_user_to_project">Invitate user to project</a></li>
@@ -443,8 +535,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_04_model">04 Model</a>
 <ul class="sectlevel2">
+<li><a href="#_creating_model">Creating model</a></li>
 <li><a href="#_getting_some_information_about_unknown_project">Getting some information about unknown project</a></li>
 <li><a href="#_removing_date_facts">Removing date facts</a></li>
+<li><a href="#_updating_model">Updating model</a></li>
 <li><a href="#_working_with_a_remote_model">Working with a remote model</a></li>
 </ul>
 </li>
@@ -548,14 +642,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_solution_3">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection('user', 'password') do |c|
-  # just so you believe us we are printing names of all the project under this account
-  GoodData::Project.all.each do |p|
-    puts p.title
-  end
-end</code></pre>
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+    <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
+    c.projects.each <span class="keyword">do</span> |p|
+        puts p.title
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -566,10 +660,10 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "username": "john@example.com",
-  "password": "pass",
-  "auth_token": "token"
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">username</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">john@example.com</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">pass</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">auth_token</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">token</span><span class="delimiter">&quot;</span></span>
 }</code></pre>
 </div>
 </div>
@@ -602,16 +696,16 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection(login: 'user',
-                         password: 'password',
-                         server: 'https://some-other-server.com') do |c|
-  # just so you believe us we are printing names of all the project under this account
-  GoodData::Project.all.each do |p|
+<span class="constant">GoodData</span>.with_connection(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>,
+                         <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>,
+                         <span class="key">server</span>: <span class="string"><span class="delimiter">'</span><span class="content">https://some-other-server.com</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
+  c.projects.all.each <span class="keyword">do</span> |p|
     puts p.title
-  end
-end</code></pre>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -638,7 +732,7 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"></code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
 </div>
 </div>
 </div>
@@ -665,7 +759,7 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">some code</code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
 </div>
 </div>
 </div>
@@ -677,7 +771,7 @@ end</code></pre>
 <div class="sect2">
 <h3 id="_handling_credentials_when_you_log_in_to_gooddata">Handling credentials when you log in to gooddata</h3>
 <div class="paragraph">
-<p>by</p>
+<p>by Anonymous Author</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_7">Problem</h4>
@@ -685,7 +779,11 @@ end</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_solution_7">Solution</h4>
-
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_discussion_7">Discussion</h4>
@@ -710,11 +808,13 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">GoodData.with_connection do |c|
-  GoodData.with_project('project_pid') do |project|
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     puts project.title
-  end
-end</code></pre>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -725,10 +825,12 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">GoodData.with_connection do |c|
-  project = GoodData.use('project_pid')
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
   puts project.title
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -763,39 +865,57 @@ end</code></pre>
 <h4 id="_solution_9">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
 
-  # Get your domain ..
-  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+  <span class="comment"># Get your domain ..</span>
+  domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">my-domain</span><span class="delimiter">'</span></span>]
 
-  # Generate random password
-  pass = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
+  <span class="comment"># Generate random password</span>
+  pass = (<span class="integer">0</span>...<span class="integer">10</span>).map { (<span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>..<span class="string"><span class="delimiter">'</span><span class="content">z</span><span class="delimiter">'</span></span>).to_a[rand(<span class="integer">26</span>)] }.join
 
   new_user = domain.add_user(
-    :login =&gt; 'tomas.korcak42@gooddata.com',
-    :password =&gt; pass,
-    :first_name =&gt; 'First',
-    :last_name =&gt; 'Last',
-    :email =&gt; 'test@gooddata.com'
+    <span class="symbol">:login</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">new.user@gooddata.com</span><span class="delimiter">'</span></span>,
+    <span class="symbol">:password</span> =&gt; pass,
+    <span class="symbol">:first_name</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">First</span><span class="delimiter">'</span></span>,
+    <span class="symbol">:last_name</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">Last</span><span class="delimiter">'</span></span>,
+    <span class="symbol">:email</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">test@gooddata.com</span><span class="delimiter">'</span></span>
   )
 
   pp new_user
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_user_to_organization_2">Adding user to organization</h3>
+<h3 id="_adding_user_to_project">Adding user to project</h3>
+<div class="paragraph">
+<p>by Anonymous Author</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_10">Problem</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_solution_10">Solution</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_discussion_9">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_checking_user_in_project">Checking user in project</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_10">Problem</h4>
+<h4 id="_problem_11">Problem</h4>
 <div class="paragraph">
 <p>You would like to see if a user is part of a project.</p>
 </div>
@@ -807,18 +927,18 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_10">Solution</h4>
+<h4 id="_solution_11">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  GoodData.with_project('project_pid) do |project|
-    project.member?('jane.doe@example.com')
-  end
-end</code></pre>
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
+    project.member?(<span class="string"><span class="delimiter">'</span><span class="content"> jane.doe @example.com </span><span class="delimiter">'</span></span>)
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -829,7 +949,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_11">Problem</h4>
+<h4 id="_problem_12">Problem</h4>
 <div class="paragraph">
 <p>You would like to list users in organization</p>
 </div>
@@ -841,19 +961,19 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_11">Solution</h4>
+<h4 id="_solution_12">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-# Connect to platform using credentials
-GoodData.with_connection do |c|
-  domain = GoodData::Domain['gooddata-tomas-svarovsky']
+<span class="comment"># Connect to platform using credentials</span>
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">gooddata-tomas-svarovsky</span><span class="delimiter">'</span></span>]
   users = domain.users
   pp users
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -864,7 +984,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_12">Problem</h4>
+<h4 id="_problem_13">Problem</h4>
 <div class="paragraph">
 <p>You would like to list users in project</p>
 </div>
@@ -876,17 +996,17 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_12">Solution</h4>
+<h4 id="_solution_13">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('dasdsadasd')
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
   pp project.users
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -897,7 +1017,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_13">Problem</h4>
+<h4 id="_problem_14">Problem</h4>
 <div class="paragraph">
 <p>You would like to add a user into project.</p>
 </div>
@@ -909,23 +1029,23 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_13">Solution</h4>
+<h4 id="_solution_14">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  GoodData.with_project('project_pid') do |p|
-    p.invite('joe@example.com', 'admin', 'Hey Joe, look at this.')
-  end
-end</code></pre>
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |p|
+    p.invite(<span class="string"><span class="delimiter">'</span><span class="content">joe@example.com</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">admin</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Hey Joe, look at this.</span><span class="delimiter">'</span></span>)
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_9">Discussion</h4>
+<h4 id="_discussion_10">Discussion</h4>
 <div class="paragraph">
 <p>Invitation can be sent by any administrator. It also means that the recipient will receive an email with instructions how to proceed. If you are interested in how to invite users without their knowledge (this is very useful for Powered By GoodData scenarios) see Recipe XX.</p>
 </div>
@@ -958,13 +1078,13 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_problem_14">Problem</h4>
+<h4 id="_problem_15">Problem</h4>
 <div class="paragraph">
 <p>You already knwo how to do many things but now you would like to do the same thing on many projects at once</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_14">Solution</h4>
+<h4 id="_solution_15">Solution</h4>
 <div class="paragraph">
 <p>The basis of the solution is pretty simple. We need to iterate over projects and perform the operation on each of those. So we do something real in the projects we will combine several other recipes so you can see how to combine recipes to solve more complex problems. So this is what we will do.</p>
 </div>
@@ -974,91 +1094,113 @@ end</code></pre>
 <div class="paragraph">
 <p>This is a lot to do. Let&#8217;s try to break the tasks down to smaller pieces.</p>
 </div>
+<div class="sect4">
+<h5 id="_work_with_many_projects">Work with many projects</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">projects = [
-  GoodData::Project['project_pid_a'],
-  GoodData::Project['project_pid_b']
+<pre class="CodeRay highlight"><code data-lang="ruby">projects = [
+  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>],
+  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>]
 ]
-projects.each do |project|
-  GoodData.with_project do |project|
-    # do your thing
-  end
-end</code></pre>
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  projects.each <span class="keyword">do</span> |project|
+    <span class="constant">GoodData</span>.with_project(project) <span class="keyword">do</span> |project|
+      <span class="comment"># do your thing</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_select_specific_reports">Select specific reports</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">reports_to_tag = GoodData::Report.all(full: true)
-  .select { |reports| report.updated_at &gt; 2.weeks.ago }
-  .select { |report| report.revisions.count &gt; 1 }</code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby">reports_to_tag = p.reports
+                   .select { |reports| report.updated_at &gt; <span class="integer">2</span>.weeks.ago }
+                   .select { |report| report.revisions.count &gt; <span class="integer">1</span> }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_remove_tag">Remove tag</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">GoodData::Report.find_by_tag('to_be_checked').each do |report|
-  report.remove_tag('to_be_checked')
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>, <span class="symbol">:project</span> =&gt; project).each <span class="keyword">do</span> |report|
+  report.remove_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
   report.save
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_add_tag">Add tag</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">reports_to_tag.each do |report|
-  report.add_tag('to_be_checked')
+<pre class="CodeRay highlight"><code data-lang="ruby">reports_to_tag.each <span class="keyword">do</span> |report|
+  report.add_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
   report.save
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_schedule">Schedule</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">SCHEDULE TBD</code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># SCHEDULE TBD</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_full_example_all_pieces_together">Full example - all pieces together</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 projects = [
-  GoodData::Project['project_pid_a'],
-  GoodData::Project['project_pid_b']
+  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>],
+  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>]
 ]
 
-results = projects.map do |project|
-  GoodData.with_project do |project|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  results = projects.map <span class="keyword">do</span> |project|
+    <span class="constant">GoodData</span>.with_project(project) <span class="keyword">do</span> |project|
 
-    reports_to_validate = GoodData::Report.all(full: true)
-      .select { |reports| report.updated_at &gt; 2.weeks.ago }
-      .select { |report| report.revisions.count &gt; 1 }
+      reports_to_validate = project.reports
+                              .select { |reports| report.updated_at &gt; <span class="integer">2</span>.weeks.ago }
+                              .select { |report| report.revisions.count &gt; <span class="integer">1</span> }
 
-    GoodData::Report.find_by_tag('to_be_checked').each do |report|
-      report.remove_tag('to_be_checked')
-      report.save
-    end
+      <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>, <span class="symbol">:project</span> =&gt; project).each <span class="keyword">do</span> |report|
+        report.remove_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
+        report.save
+      <span class="keyword">end</span>
 
-    reports_to_validate.each do |report|
-      report.add_tag('to_be_checked')
-      report.save
-    end
+      reports_to_validate.each <span class="keyword">do</span> |report|
+        report.add_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
+        report.save
+      <span class="keyword">end</span>
 
-    { project: project, :reports_to_validate reports_to_validate.count }
-  end
-end
+      {<span class="key">project</span>: project, <span class="key">reports_to_validate</span>: reports_to_validate.count}
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
 
-results.each do |result|
-  puts "#{result[:project].pid}: there are #{result[:reports_to_validate]} reports to check"
-end
+  results.each <span class="keyword">do</span> |result|
+    puts <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>result[<span class="symbol">:project</span>].pid<span class="inline-delimiter">}</span></span><span class="content">: there are </span><span class="inline"><span class="inline-delimiter">#{</span>result[<span class="symbol">:reports_to_validate</span>]<span class="inline-delimiter">}</span></span><span class="content"> reports to check</span><span class="delimiter">&quot;</span></span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
 
-# And disconnect finally
-puts 'Disconnecting ...'
-GoodData.disconnect</code></pre>
+<span class="comment"># And disconnect finally</span>
+puts <span class="string"><span class="delimiter">'</span><span class="content">Disconnecting ...</span><span class="delimiter">'</span></span>
+<span class="constant">GoodData</span>.disconnect</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_10">Discussion</h4>
+<h4 id="_discussion_11">Discussion</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1077,31 +1219,49 @@ GoodData.disconnect</code></pre>
 <h2 id="_04_model">04 Model</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_creating_model">Creating model</h3>
+<div class="paragraph">
+<p>by Anonymous Author</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_16">Problem</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_solution_16">Solution</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_discussion_12">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
 <h3 id="_getting_some_information_about_unknown_project">Getting some information about unknown project</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_15">Problem</h4>
+<h4 id="_problem_17">Problem</h4>
 <div class="paragraph">
 <p>You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_15">Solution</h4>
+<h4 id="_solution_17">Solution</h4>
 <div class="paragraph">
 <p>One of good ways to start is to see what is there. How many datasets, how much data is there how many processes etc. This is failry time consuming. You have to find the primary attributes of each dataset create a count metric and a lot of other stuff. This can be automated and it is so useful we actually created a command that does just this.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
   project.info
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1109,7 +1269,7 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">CLONE GOODSALES
+<pre class="CodeRay highlight"><code data-lang="text">CLONE GOODSALES
 ===============
 
 Datasets - 28
@@ -1142,7 +1302,7 @@ Size - 487117.0 rows
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_11">Discussion</h4>
+<h4 id="_discussion_13">Discussion</h4>
 
 </div>
 </div>
@@ -1152,32 +1312,32 @@ Size - 487117.0 rows
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_16">Problem</h4>
+<h4 id="_problem_18">Problem</h4>
 <div class="paragraph">
 <p>Not too recently Date fact was the only way how to compute with dates and get answers like "Give me number of days an order was opened". For some time now you can do the same computations with attributes. This can simplify your ETL and model a bit so why not to give it a try. Unfortunately people are often scared of how much work that might be.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_16">Solution</h4>
+<h4 id="_solution_18">Solution</h4>
 <div class="paragraph">
 <p>Before we start tackling that let&#8217;s first try to look around and see how much work is ahead of us. Removing Date facts can be only partially automated so it is good to have an idea if you can do this in a day or hire an army of interns for 2 weeks.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
 
-  project = GoodData.use('project_id')
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
   blueprint = project.blueprint
 
-  # NEED TO BE CHECKED PROBABLY DOES NOT WORK OUT OF THE BOX
+  <span class="comment"># NEED TO BE CHECKED PROBABLY DOES NOT WORK OUT OF THE BOX</span>
   blueprint.date_facts.count
-  blueprint.date_facts.each {|df| puts df[:name]}
-end</code></pre>
+  blueprint.date_facts.each { |df| puts df[<span class="symbol">:name</span>] }
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1185,21 +1345,43 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
 
-  # Used BY.
+  <span class="comment"># Used BY.</span>
 
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_12">Discussion</h4>
+<h4 id="_discussion_14">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_updating_model">Updating model</h3>
+<div class="paragraph">
+<p>by Anonymous Author</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_19">Problem</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_solution_19">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_15">Discussion</h4>
 
 </div>
 </div>
@@ -1219,41 +1401,43 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_problem_17">Problem</h4>
+<h4 id="_problem_20">Problem</h4>
 <div class="paragraph">
 <p>Often you are working with a project that was not created using SDK so you do not have a textual representation of the logical model. You would still like to work with it in the same manner as it was a local blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_17">Solution</h4>
+<h4 id="_solution_20">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to get the model of a current project and behind scenes it translates it into a blueprint. Let&#8217;s have a look at a simplified example how to work with it</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
   blueprint = project.blueprint
 
-  # count the number of datasets (does not include date dimensions)
-  blueprint.datasets.count # =&gt; 3
+  <span class="comment"># count the number of datasets (does not include date dimensions)</span>
+  blueprint.datasets.count <span class="comment"># =&gt; 3</span>
 
-  # gives you list of attributes in the whole project
-  blueprint.fields.filter {|x| x[:type].to_s == 'attribute'}
+  <span class="comment"># gives you list of attributes in the whole project</span>
+  blueprint.fields.filter { |x| x[<span class="symbol">:type</span>].to_s == <span class="string"><span class="delimiter">'</span><span class="content">attribute</span><span class="delimiter">'</span></span> }
 
-  # lists datasets that do have anchor (connection point)
-  blueprint.datasets.select &amp;:anchor?
+  <span class="comment"># lists datasets that do have anchor (connection point)</span>
+  blueprint.datasets.select &amp;<span class="symbol">:anchor?</span>
 
-  # Find all the star centers/fact tables (datasets that nobody else connects to)
+  <span class="comment"># Find all the star centers/fact tables (datasets that nobody else connects to)</span>
   blueprint.find_star_centers
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_13">Discussion</h4>
+<h4 id="_discussion_16">Discussion</h4>
 
 </div>
 </div>
@@ -1268,29 +1452,31 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_18">Problem</h4>
+<h4 id="_problem_21">Problem</h4>
 <div class="paragraph">
 <p>You want to be sure that reports return expected results. This is a basis for delving later into test driven BI projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_18">Solution</h4>
+<h4 id="_solution_21">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  GoodData.with_project('project_pid') do |project|
-    report = project.report(32)
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
+    report = project.report(<span class="integer">32</span>)
     result = report.execute
-    fail "Report has unexpected result" unless result == [[1, 2, 3]]
-  end
-end</code></pre>
+    fail <span class="string"><span class="delimiter">&quot;</span><span class="content">Report has unexpected result</span><span class="delimiter">&quot;</span></span> <span class="keyword">unless</span> result == [[<span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span>]]
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_14">Discussion</h4>
+<h4 id="_discussion_17">Discussion</h4>
 
 </div>
 </div>
@@ -1305,7 +1491,7 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_19">Problem</h4>
+<h4 id="_problem_22">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -1321,66 +1507,68 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_19">Solution</h4>
+<h4 id="_solution_22">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  blueprint = GoodData::Model::ProjectBlueprint.build("Acme project") do |p|
-    p.add_date_dimension('committed_on')
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-    p.add_dataset('devs') do |d|
-      d.add_anchor('dev_id')
-      d.add_label('email', :reference =&gt; 'dev_id')
-    end
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">'</span><span class="content">Acme project</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |p|
+    p.add_date_dimension(<span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>)
 
-    p.add_dataset('commits') do |d|
-      d.add_fact('lines_changed')
-      d.add_date('committed_on', :dataset =&gt; "committed_on")
-      d.add_reference('dev_id', :dataset =&gt; 'devs')
-    end
-  end
+    p.add_dataset(<span class="string"><span class="delimiter">'</span><span class="content">devs</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |d|
+      d.add_anchor(<span class="string"><span class="delimiter">'</span><span class="content">dev_id</span><span class="delimiter">'</span></span>)
+      d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">email</span><span class="delimiter">'</span></span>, <span class="symbol">:reference</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">dev_id</span><span class="delimiter">'</span></span>)
+    <span class="keyword">end</span>
 
-  project = GoodData::Project.create_from_blueprint(blueprint, :auth_token =&gt; '')
-  puts "Created project #{project.pid}"
+    p.add_dataset(<span class="string"><span class="delimiter">'</span><span class="content">commits</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |d|
+      d.add_fact(<span class="string"><span class="delimiter">'</span><span class="content">lines_changed</span><span class="delimiter">'</span></span>)
+      d.add_date(<span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>, <span class="symbol">:dataset</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>)
+      d.add_reference(<span class="string"><span class="delimiter">'</span><span class="content">dev_id</span><span class="delimiter">'</span></span>, <span class="symbol">:dataset</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">devs</span><span class="delimiter">'</span></span>)
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
 
-  GoodData::with_project(project) do |p|
-    # Load data
+  project = <span class="constant">GoodData</span>::<span class="constant">Project</span>.create_from_blueprint(blueprint, <span class="symbol">:auth_token</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="delimiter">'</span></span>)
+  puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Created project </span><span class="inline"><span class="inline-delimiter">#{</span>project.pid<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+
+  <span class="constant">GoodData</span>::with_project(project) <span class="keyword">do</span> |p|
+    <span class="comment"># Load data</span>
     commits_data = [
-      ["lines_changed","committed_on","dev_id","repo_id"],
-      [1,"01/01/2014",1,1],
-      [3,"01/02/2014",2,2],
-      [5,"05/02/2014",3,1]]
-    GoodData::Model.upload_data(commits_data, blueprint, 'commits')
+      <span class="string"><span class="delimiter">%w(</span><span class="content">lines_changed committed_on dev_id repo_id</span><span class="delimiter">)</span></span>,
+      [<span class="integer">1</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/01/2014</span><span class="delimiter">'</span></span>, <span class="integer">1</span>, <span class="integer">1</span>],
+      [<span class="integer">3</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">2</span>, <span class="integer">2</span>],
+      [<span class="integer">5</span>, <span class="string"><span class="delimiter">'</span><span class="content">05/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">3</span>, <span class="integer">1</span>]]
+    <span class="constant">GoodData</span>::<span class="constant">Model</span>.upload_data(commits_data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">commits</span><span class="delimiter">'</span></span>)
 
     devs_data = [
-      ["dev_id", "email"],
-      [1, "tomas@gooddata.com"],
-      [2, "petr@gooddata.com"],
-      [3, "jirka@gooddata.com"]]
-    GoodData::Model.upload_data(devs_data, blueprint, 'devs')
+      [<span class="string"><span class="delimiter">&quot;</span><span class="content">dev_id</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">email</span><span class="delimiter">&quot;</span></span>],
+      [<span class="integer">1</span>, <span class="string"><span class="delimiter">'</span><span class="content">tomas@gooddata.com</span><span class="delimiter">'</span></span>],
+      [<span class="integer">2</span>, <span class="string"><span class="delimiter">'</span><span class="content">petr@gooddata.com</span><span class="delimiter">'</span></span>],
+      [<span class="integer">3</span>, <span class="string"><span class="delimiter">'</span><span class="content">jirka@gooddata.com</span><span class="delimiter">'</span></span>]]
+    <span class="constant">GoodData</span>::<span class="constant">Model</span>.upload_data(devs_data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">devs</span><span class="delimiter">'</span></span>)
 
-    # create a metric
-    metric = p.fact('fact.commits.lines_changed').create_metric
+    <span class="comment"># create a metric</span>
+    metric = p.fact(<span class="string"><span class="delimiter">'</span><span class="content">fact.commits.lines_changed</span><span class="delimiter">'</span></span>).create_metric
     metric.save
 
-    report = p.create_report(title: 'Awesome_report', top: [metric], left: ['label.devs.dev_id.email'])
+    report = p.create_report(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Awesome_report</span><span class="delimiter">'</span></span>, <span class="key">top</span>: [metric], <span class="key">left</span>: [<span class="string"><span class="delimiter">'</span><span class="content">label.devs.dev_id.email</span><span class="delimiter">'</span></span>])
     report.save
 
-    ['john1@example.com', 'john2@example.com'].each do |email|
-      p.invite(email, 'admin', "Guys checkout this report #{report.browser_uri}")
-    end
-  end
-end</code></pre>
+    [<span class="string"><span class="delimiter">'</span><span class="content">john1@example.com</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">john2@example.com</span><span class="delimiter">'</span></span>].each <span class="keyword">do</span> |email|
+      p.invite(email, <span class="string"><span class="delimiter">'</span><span class="content">admin</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Guys checkout this report </span><span class="inline"><span class="inline-delimiter">#{</span>report.browser_uri<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_15">Discussion</h4>
+<h4 id="_discussion_18">Discussion</h4>
 
 </div>
 </div>
@@ -1390,29 +1578,31 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_20">Problem</h4>
+<h4 id="_problem_23">Problem</h4>
 <div class="paragraph">
 <p>You would like to create an exact copy of a project</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_20">Solution</h4>
+<h4 id="_solution_23">Solution</h4>
 <div class="paragraph">
 <p>You can use cloning capabilities.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
-  cloned_project = project.clone(title: 'New title', auth_token: 'token')
-end</code></pre>
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
+  cloned_project = project.clone(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">New title</span><span class="delimiter">'</span></span>, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_16">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project.</p>
 </div>
@@ -1424,25 +1614,27 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_21">Problem</h4>
+<h4 id="_problem_24">Problem</h4>
 <div class="paragraph">
 <p>You need to create a project programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_21">Solution</h4>
+<h4 id="_solution_24">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  GoodData::Project.create(title: 'This is my new project', auth_token: 'TOKEN' )
-end</code></pre>
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>::<span class="constant">Project</span>.create(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">This is my new project</span><span class="delimiter">'</span></span>, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">TOKEN</span><span class="delimiter">'</span></span>)
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_17">Discussion</h4>
+<h4 id="_discussion_20">Discussion</h4>
 
 </div>
 </div>
@@ -1452,27 +1644,29 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_22">Problem</h4>
+<h4 id="_problem_25">Problem</h4>
 <div class="paragraph">
 <p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_22">Solution</h4>
+<h4 id="_solution_25">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-GoodData.with_connection do |c|
-  project = GoodData::Project.create(title: 'New project',
-                                     template: 'https://secure.gooddata.com/projectTemplates/SuperSoda/1/',
-                                     auth_token: 'token')
-end</code></pre>
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>::<span class="constant">Project</span>.create(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">New project</span><span class="delimiter">'</span></span>,
+                                     <span class="key">template</span>: <span class="string"><span class="delimiter">'</span><span class="content">https://secure.gooddata.com/projectTemplates/SuperSoda/1/</span><span class="delimiter">'</span></span>,
+                                     <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 
 </div>
 </div>
@@ -1482,22 +1676,22 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_23">Problem</h4>
+<h4 id="_problem_26">Problem</h4>
 <div class="paragraph">
 <p>You need to rename the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_23">Solution</h4>
+<h4 id="_solution_26">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
-  project.title = "New and much better title"
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
+  project.title = <span class="string"><span class="delimiter">&quot;</span><span class="content">New and much better title</span><span class="delimiter">&quot;</span></span>
   project.save
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1513,7 +1707,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_24">Problem</h4>
+<h4 id="_problem_27">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -1525,22 +1719,26 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_24">Solution</h4>
+<h4 id="_solution_27">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    # List all dashboards
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    <span class="comment"># List all dashboards</span>
     dashboards = project.dashboards
     pp dashboards
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1551,7 +1749,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_25">Problem</h4>
+<h4 id="_problem_28">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
@@ -1563,29 +1761,33 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_25">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    <span class="constant">CSV</span>.open(project.pid + <span class="string"><span class="delimiter">&quot;</span><span class="content">_metrics.csv</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">wb</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |csv|
         metrics = project.metrics
-        metrics.each do |metric|
+        metrics.each <span class="keyword">do</span> |metric|
             m = metric.pretty_expression
             puts m
             csv &lt;&lt; [m]
-        end
-    end
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
 
-    puts 'The CSV is ready!'
-end</code></pre>
+    puts <span class="string"><span class="delimiter">'</span><span class="content">The CSV is ready!</span><span class="delimiter">'</span></span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1596,7 +1798,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_26">Problem</h4>
+<h4 id="_problem_29">Problem</h4>
 <div class="paragraph">
 <p>You would like to schedule process for automatic execution.</p>
 </div>
@@ -1608,25 +1810,29 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_26">Solution</h4>
+<h4 id="_solution_29">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-PROCESS_ID = 'dc143d80-58a1-4acd-96b6-8d11fc4571de'
-EXECUTABLE = './graph/graph.grf'
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="constant">PROCESS_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">dc143d80-58a1-4acd-96b6-8d11fc4571de</span><span class="delimiter">'</span></span>
+<span class="constant">EXECUTABLE</span> = <span class="string"><span class="delimiter">'</span><span class="content">./graph/graph.grf</span><span class="delimiter">'</span></span>
 
-    date = '5 8 * * 7'
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
 
-    project.create_schedule(PROCESS_ID, date, EXECUTABLE).save
-end</code></pre>
+    date = <span class="string"><span class="delimiter">'</span><span class="content">5 8 * * 7</span><span class="delimiter">'</span></span>
+
+    project.create_schedule(<span class="constant">PROCESS_ID</span>, date, <span class="constant">EXECUTABLE</span>).save
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1637,7 +1843,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_27">Problem</h4>
+<h4 id="_problem_30">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -1649,23 +1855,27 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    attribute = project.attributes('attr.devs.dev_id')
-    metric = attribute.create_metric(:title =&gt; "Count of [#{attribute.identifier}]")
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    attribute = project.attributes(<span class="string"><span class="delimiter">'</span><span class="content">attr.devs.dev_id</span><span class="delimiter">'</span></span>)
+    metric = attribute.create_metric(<span class="symbol">:title</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Count of [</span><span class="inline"><span class="inline-delimiter">#{</span>attribute.identifier<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>)
     metric.save
     metric.execute
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1676,7 +1886,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_28">Problem</h4>
+<h4 id="_problem_31">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -1688,25 +1898,29 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_28">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    fact = project.facts('fact.commits.lines_changed')
-    metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    fact = project.facts(<span class="string"><span class="delimiter">'</span><span class="content">fact.commits.lines_changed</span><span class="delimiter">'</span></span>)
+    metric = fact.create_metric(<span class="symbol">:title</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Sum of [</span><span class="inline"><span class="inline-delimiter">#{</span>fact.identifier<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>)
     metric.save
     res = metric.execute
 
     puts res
-end</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1717,7 +1931,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_29">Problem</h4>
+<h4 id="_problem_32">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
 </div>
@@ -1729,26 +1943,30 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_32">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
-    puts "Loading #{path}"
-    CSV.foreach(path) do |user|
-        email = user[0]
-        role = user[1]
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    path = <span class="constant">File</span>.join(<span class="constant">File</span>.dirname(<span class="predefined-constant">__FILE__</span>), <span class="string"><span class="delimiter">'</span><span class="content">..</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">..</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">data</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">users.csv</span><span class="delimiter">'</span></span>)
+    puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Loading </span><span class="inline"><span class="inline-delimiter">#{</span>path<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+    <span class="constant">CSV</span>.foreach(path) <span class="keyword">do</span> |user|
+        email = user[<span class="integer">0</span>]
+        role = user[<span class="integer">1</span>]
         project.invite(email, role)
-    end
-end</code></pre>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1759,7 +1977,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_33">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to sync/update them in bulk.</p>
 </div>
@@ -1771,28 +1989,32 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-require 'gooddata'
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+<span class="comment"># Project ID</span>
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">we1vvh4il93r0927r809i3agif50d7iz</span><span class="delimiter">'</span></span>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+<span class="comment"># Connect to GoodData platform</span>
+c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-    path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
-    puts "Loading #{path}"
-    CSV.foreach(path) do |row|
-        email = row[0]
-        role_name = row[1]
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+    project = c.project(<span class="constant">PROJECT_ID</span>)
+
+    path = <span class="constant">File</span>.join(<span class="constant">File</span>.dirname(<span class="predefined-constant">__FILE__</span>), <span class="string"><span class="delimiter">'</span><span class="content">..</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">..</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">data</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">users.csv</span><span class="delimiter">'</span></span>)
+    puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Loading </span><span class="inline"><span class="inline-delimiter">#{</span>path<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+    <span class="constant">CSV</span>.foreach(path) <span class="keyword">do</span> |row|
+        email = row[<span class="integer">0</span>]
+        role_name = row[<span class="integer">1</span>]
         user = project.users.find { |user| user.email == email }
         role = project.roles.find { |role| role.title == role_name }
         project.set_user_roles(user, role)
-    end
-end</code></pre>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -1814,7 +2036,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-19 18:19:11 PDT
+Last updated 2014-11-26 15:03:28 CET
 </div>
 </div>
 </body>

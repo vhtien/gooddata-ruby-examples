@@ -1,0 +1,15 @@
+=== Working with a remote model
+by Tomas Svarovsky
+
+==== Notes
+- comes out with remote blueprints
+
+==== Problem
+Often you are working with a project that was not created using SDK so you do not have a textual representation of the logical model. You would still like to work with it in the same manner as it was a local blueprint.
+
+==== Solution
+SDK allows you to get the model of a current project and behind scenes it translates it into a blueprint. Let's have a look at a simplified example how to work with it
+
+<%= render_ruby 'src/04_model/use_remote_model.rb' %>
+
+==== Discussion
