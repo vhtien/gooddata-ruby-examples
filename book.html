@@ -512,7 +512,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_creating_a_program_that_you_can_run_in_a_non_interactive_fashion">Creating a program that you can run in a non-interactive fashion</a></li>
 <li><a href="#_connecting_to_gooddata">Connecting to gooddata</a></li>
 <li><a href="#_connecting_to_different_server">Connecting to different server</a></li>
-<li><a href="#_connecting_to_gooddata_with_super_secure_token_stt">Connecting to GoodData with Super Secure Token (STT)</a></li>
+<li><a href="#_connecting_to_gooddata_with_super_secure_token_sst">Connecting to GoodData with Super Secure Token (SST)</a></li>
 <li><a href="#_connecting_to_gooddata_with_temporary_token_tt">Connecting to GoodData with Temporary Token (TT)</a></li>
 <li><a href="#_handling_credentials_when_you_log_in_to_gooddata">Handling credentials when you log in to gooddata</a></li>
 <li><a href="#_using_a_project">Using a project</a></li>
@@ -521,7 +521,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_02_working_with_users">02 Working With Users</a>
 <ul class="sectlevel2">
 <li><a href="#_adding_user_to_organization">Adding user to organization</a></li>
-<li><a href="#_adding_user_to_project">Adding user to project</a></li>
+<li><a href="#_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</a></li>
 <li><a href="#_checking_user_in_project">Checking user in project</a></li>
 <li><a href="#_listing_organization_users">Listing organization users</a></li>
 <li><a href="#_listing_project_users">Listing project users</a></li>
@@ -552,6 +552,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_creating_a_small_project_in_one_page_of_code">Creating a small project in one page of code</a></li>
 <li><a href="#_cloning_project">Cloning project</a></li>
 <li><a href="#_create_an_empty_project">Create an empty project</a></li>
+<li><a href="#_creating_a_project_from_blueprint">Creating a project from blueprint</a></li>
 <li><a href="#_creating_a_project_from_template">Creating a project from template</a></li>
 <li><a href="#_renaming_a_project">Renaming a project</a></li>
 </ul>
@@ -590,10 +591,10 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect3">
 <h4 id="_solution">Solution</h4>
 <div class="paragraph">
-<p>Use jack-in functionality which sets up an interactive environment for you and logs you in into a specific project.</p>
+<p>Use jack_in functionality which sets up an interactive environment for you and logs you in into a specific project.</p>
 </div>
 <div class="paragraph">
-<p>gooddata -p project_pid -U <a href="mailto:john.doe@example.com">john.doe@example.com</a> -P secret project jack-in</p>
+<p>gooddata -p project_pid -U <a href="mailto:john.doe@example.com">john.doe@example.com</a> -P secret project jack_in</p>
 </div>
 </div>
 <div class="sect3">
@@ -642,11 +643,13 @@ table.CodeRay td.code>pre{padding:0}
 <h4 id="_solution_3">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
     <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
-    c.projects.each <span class="keyword">do</span> |p|
+    client.projects.each <span class="keyword">do</span> |p|
         puts p.title
     <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
@@ -696,7 +699,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 <span class="constant">GoodData</span>.with_connection(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>,
                          <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>,
@@ -715,30 +721,48 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_connecting_to_gooddata_with_super_secure_token_stt">Connecting to GoodData with Super Secure Token (STT)</h3>
+<h3 id="_connecting_to_gooddata_with_super_secure_token_sst">Connecting to GoodData with Super Secure Token (SST)</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_5">Problem</h4>
 <div class="paragraph">
-<p>You do not have credentials. You only have STT and would like to still make some requests.</p>
+<p>You do not have credentials. You only have SST and would like to still make some requests.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_5">Solution</h4>
 <div class="paragraph">
-<p>Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password.</p>
+<p>Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password. Take note that currently you do not have access to whole API. Things like interacting with DSS and Staging Storage still need username and pass. We are trying t resolve the issue.</p>
+</div>
+<div class="paragraph">
+<p>First you need to have SST token. There are several ways how to obtain it. Here is one using SDK</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+client = <span class="constant">GoodData</span>.connect(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
+client.connection.sst_token
+
+<span class="comment"># Once you have the token, you can try to login and do something.</span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="key">sst_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">sst_token</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
+  client.projects.each <span class="keyword">do</span> |p|
+    puts p.title
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_discussion_5">Discussion</h4>
-
+<div class="paragraph">
+<p>Never share the token with other people. It is the same thing as you name and password. You can do almost everything with it.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -771,17 +795,67 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="_handling_credentials_when_you_log_in_to_gooddata">Handling credentials when you log in to gooddata</h3>
 <div class="paragraph">
-<p>by Anonymous Author</p>
+<p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_7">Problem</h4>
-
+<div class="paragraph">
+<p>You would like to write scripts that are sharable. Currently you either have to rely on ~/.gooddata file or put there the credentials by hand. This is error prone and you have to be careful so you do not share your passwords</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_solution_7">Solution</h4>
+<div class="paragraph">
+<p>There is fairly easy solution that you can use. If you recall correctly there is a way how you can log in into platform.</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="constant">GoodData</span>.connect(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This takes several types of parameters one of which is a hash of values. You can leverage that and read the hash from a file. There a many variants we are going to show 2 most popular ones, YAML and JSON.</p>
+</div>
+<div class="sect4">
+<h5 id="_json">JSON</h5>
+<div class="paragraph">
+<p>Create a file that looks like this.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">login</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">john@gooddata.com</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">my_secret</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">params = <span class="constant">JSON</span>.parse(<span class="constant">File</span>.read(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/file))
+client = GoodData.connect(params)
+puts client.projects.count</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_yaml">YAML</h5>
+<div class="paragraph">
+<p>Create a file that looks like this.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">login</span>: <span class="string"><span class="content">john@gooddata.com</span></span>
+<span class="key">password</span>: <span class="string"><span class="content">my_secret</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">yaml</span><span class="delimiter">'</span></span>
+
+params = <span class="constant">YAML</span>.load(<span class="constant">File</span>.read(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/file))
+client = GoodData.connect(params)
+puts client.projects.count</span></span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -808,9 +882,11 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     puts project.title
   <span class="keyword">end</span>
@@ -825,9 +901,11 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
 
-<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
   puts project.title
 <span class="keyword">end</span></code></pre>
@@ -869,7 +947,7 @@ table.CodeRay td.code>pre{padding:0}
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
 
   <span class="comment"># Get your domain ..</span>
   domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">my-domain</span><span class="delimiter">'</span></span>]
@@ -892,21 +970,43 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_user_to_project">Adding user to project</h3>
+<h3 id="_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</h3>
 <div class="paragraph">
-<p>by Anonymous Author</p>
+<p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_10">Problem</h4>
-
+<div class="paragraph">
+<p>You have users added in organization (domain). You would like to add them into the project.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_2">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+Works only with 0.6.12 and higher</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_solution_10">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+
+  <span class="comment"># Get your domain ..</span>
+  domain = client.domain(<span class="string"><span class="delimiter">'</span><span class="content">custom_domain</span><span class="delimiter">'</span></span>)
+
+  <span class="comment"># Let's get all users except of ourselves</span>
+  users_to_add = domain.users.reject { |u| u.login != client.user.login }
+
+  <span class="comment"># Let's add all as viewer</span>
+  users_to_add.each { |u| u.add_user(u, <span class="string"><span class="delimiter">'</span><span class="content">Viewer</span><span class="delimiter">'</span></span>) }
+
+<span class="keyword">end</span></code></pre>
 </div>
-<div class="sect3">
-<h4 id="_discussion_9">Discussion</h4>
-
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -921,7 +1021,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_2">Prerequisites</h4>
+<h4 id="_prerequisites_3">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
 </div>
@@ -934,7 +1034,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     project.member?(<span class="string"><span class="delimiter">'</span><span class="content"> jane.doe @example.com </span><span class="delimiter">'</span></span>)
   <span class="keyword">end</span>
@@ -955,7 +1055,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_3">Prerequisites</h4>
+<h4 id="_prerequisites_4">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
 </div>
@@ -969,7 +1069,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 <span class="comment"># Connect to platform using credentials</span>
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">gooddata-tomas-svarovsky</span><span class="delimiter">'</span></span>]
   users = domain.users
   pp users
@@ -990,7 +1090,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_4">Prerequisites</h4>
+<h4 id="_prerequisites_5">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is a project admin. If you do not have that please follow recipe XY.</p>
 </div>
@@ -1003,7 +1103,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
   pp project.users
 <span class="keyword">end</span></code></pre>
@@ -1023,7 +1123,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_5">Prerequisites</h4>
+<h4 id="_prerequisites_6">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
 </div>
@@ -1036,16 +1136,16 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
-  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |p|
-    p.invite(<span class="string"><span class="delimiter">'</span><span class="content">joe@example.com</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">admin</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Hey Joe, look at this.</span><span class="delimiter">'</span></span>)
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
+    project.invite(<span class="string"><span class="delimiter">'</span><span class="content">joe@example.com</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">admin</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Hey Joe, look at this.</span><span class="delimiter">'</span></span>)
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_10">Discussion</h4>
+<h4 id="_discussion_9">Discussion</h4>
 <div class="paragraph">
 <p>Invitation can be sent by any administrator. It also means that the recipient will receive an email with instructions how to proceed. If you are interested in how to invite users without their knowledge (this is very useful for Powered By GoodData scenarios) see Recipe XX.</p>
 </div>
@@ -1200,7 +1300,7 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_11">Discussion</h4>
+<h4 id="_discussion_10">Discussion</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1232,7 +1332,7 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 
 </div>
 <div class="sect3">
-<h4 id="_discussion_12">Discussion</h4>
+<h4 id="_discussion_11">Discussion</h4>
 
 </div>
 </div>
@@ -1258,7 +1358,7 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
   project.info
 <span class="keyword">end</span></code></pre>
@@ -1302,7 +1402,7 @@ Size - 487117.0 rows
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_13">Discussion</h4>
+<h4 id="_discussion_12">Discussion</h4>
 
 </div>
 </div>
@@ -1328,7 +1428,7 @@ Size - 487117.0 rows
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
 
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
@@ -1349,7 +1449,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
 
   <span class="comment"># Used BY.</span>
@@ -1359,7 +1459,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_14">Discussion</h4>
+<h4 id="_discussion_13">Discussion</h4>
 
 </div>
 </div>
@@ -1381,7 +1481,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_15">Discussion</h4>
+<h4 id="_discussion_14">Discussion</h4>
 
 </div>
 </div>
@@ -1417,7 +1517,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
   blueprint = project.blueprint
 
@@ -1437,7 +1537,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_16">Discussion</h4>
+<h4 id="_discussion_15">Discussion</h4>
 
 </div>
 </div>
@@ -1465,7 +1565,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     report = project.report(<span class="integer">32</span>)
     result = report.execute
@@ -1476,7 +1576,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_17">Discussion</h4>
+<h4 id="_discussion_16">Discussion</h4>
 
 </div>
 </div>
@@ -1497,7 +1597,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_6">Prerequisites</h4>
+<h4 id="_prerequisites_7">Prerequisites</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1568,7 +1668,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_17">Discussion</h4>
 
 </div>
 </div>
@@ -1602,7 +1702,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_19">Discussion</h4>
+<h4 id="_discussion_18">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project.</p>
 </div>
@@ -1634,8 +1734,96 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_project_from_blueprint">Creating a project from blueprint</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_25">Problem</h4>
+<div class="paragraph">
+<p>You would like to spin up a project from a blueprint.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_25">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+
+  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBuilder</span>.create(<span class="string"><span class="delimiter">&quot;</span><span class="content">my_bp</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |p|
+    p.add_date_dimension(<span class="string"><span class="delimiter">&quot;</span><span class="content">created_on</span><span class="delimiter">&quot;</span></span>)
+    p.add_dataset(<span class="string"><span class="delimiter">&quot;</span><span class="content">stuff</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |d|
+      d.add_date(<span class="string"><span class="delimiter">&quot;</span><span class="content">created_on</span><span class="delimiter">&quot;</span></span>)
+      d.add_fact(<span class="string"><span class="delimiter">&quot;</span><span class="content">some_number</span><span class="delimiter">&quot;</span></span>)
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+  c.create_project_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="constant">TOKEN</span>)
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_20">Discussion</h4>
+<div class="paragraph">
+<p>Let&#8217;s have a look at couple of other variations.</p>
+</div>
+<div class="paragraph">
+<p>We saw how to spin up a project with a blueprint defined inline. The blueprint was defined with a Ruby DSL. While this is our preferred way of doing things when we work inline there are couple of other things you might consider.</p>
+</div>
+<div class="paragraph">
+<p>You might want to store the blueprint definition in a file. There is an obvious benefit and drawback to doing that in Ruby. The benefit is that it is programmable so you can do more magic if you need to. The biggest drawback is that is tying you to Ruby and this cannot be used by other tooling easily. We also provide another variant of the blueprint and that is its JSON serialization. While not programmable it is much more open to other languages so it is our preferred way to use it when we save to file.</p>
+</div>
+<div class="paragraph">
+<p>This is a blueprint in JSON that is the same as the one in previous example. Store it to a file and let&#8217;s spin up a project using this one.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">my_bp</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">datasets</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">stuff</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span>: [
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">date</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">created_on</span><span class="delimiter">&quot;</span></span>
+        },
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">fact</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">some_number</span><span class="delimiter">&quot;</span></span>
+        }
+      ]
+    }
+  ],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">date_dimensions</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">created_on</span><span class="delimiter">&quot;</span></span>
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The script is basically the same. The only change is the way we obtain the blueprint.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.from_json(<span class="string"><span class="delimiter">'</span><span class="content">your_file.json</span><span class="delimiter">'</span></span>)
+  c.create_project_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="constant">TOKEN</span>)
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1644,13 +1832,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_25">Problem</h4>
+<h4 id="_problem_26">Problem</h4>
 <div class="paragraph">
 <p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_25">Solution</h4>
+<h4 id="_solution_26">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1676,13 +1864,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_26">Problem</h4>
+<h4 id="_problem_27">Problem</h4>
 <div class="paragraph">
 <p>You need to rename the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_26">Solution</h4>
+<h4 id="_solution_27">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1707,19 +1895,19 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_27">Problem</h4>
+<h4 id="_problem_28">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_7">Prerequisites</h4>
+<h4 id="_prerequisites_8">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with dashboard(s).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1749,19 +1937,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_28">Problem</h4>
+<h4 id="_problem_29">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_8">Prerequisites</h4>
+<h4 id="_prerequisites_9">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with metric(s).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_28">Solution</h4>
+<h4 id="_solution_29">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1798,19 +1986,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_29">Problem</h4>
+<h4 id="_problem_30">Problem</h4>
 <div class="paragraph">
 <p>You would like to schedule process for automatic execution.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_9">Prerequisites</h4>
+<h4 id="_prerequisites_10">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with process.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1843,19 +2031,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_31">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_10">Prerequisites</h4>
+<h4 id="_prerequisites_11">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with model and data loaded.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1886,19 +2074,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_31">Problem</h4>
+<h4 id="_problem_32">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_11">Prerequisites</h4>
+<h4 id="_prerequisites_12">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with model and data loaded.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_31">Solution</h4>
+<h4 id="_solution_32">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1931,19 +2119,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_32">Problem</h4>
+<h4 id="_problem_33">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_12">Prerequisites</h4>
+<h4 id="_prerequisites_13">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project and be admin of it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1977,19 +2165,19 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_33">Problem</h4>
+<h4 id="_problem_34">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to sync/update them in bulk.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_13">Prerequisites</h4>
+<h4 id="_prerequisites_14">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project and be admin of it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>

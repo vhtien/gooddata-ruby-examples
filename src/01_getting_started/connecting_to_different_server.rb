@@ -1,3 +1,6 @@
+# encoding: UTF-8
+require 'gooddata'
+
 require 'gooddata'
 
 GoodData.with_connection(login: 'user',

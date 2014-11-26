@@ -2,7 +2,7 @@
 
 require 'gooddata'
 
-GoodData.with_connection('user', 'password') do |c|
+GoodData.with_connection('user', 'password') do |client|
   GoodData.with_project('project_pid') do |project|
     report = project.report(32)
     result = report.execute

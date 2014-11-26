@@ -2,7 +2,7 @@
 
 require 'gooddata'
 
-GoodData.with_connection do |c|
+GoodData.with_connection do |client|
   project = GoodData.use('project_id')
   blueprint = project.blueprint
 
