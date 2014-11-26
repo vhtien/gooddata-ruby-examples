@@ -12,7 +12,7 @@ You created a new version of a project. You made some changes to the reports but
 
 require 'gooddata'
 
-GoodData.with_connection do |c|
+GoodData.with_connection do |client|
   original_project = c.projects('project_id_1')
   new_project = c.projects('project_id_2')
 

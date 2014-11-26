@@ -9,9 +9,10 @@ You would like to disable all schedules on all processes on all the projects you
 [source,ruby]
 ----
 require 'gooddata'
+require 'pmap'
 
+client = GoodData.connect
 GoodData.with_connection do |client|
-  client = GoodData.connect
   schedules = client.projects.pselect(&:am_i_admin?).pmapcat(&:schedules)
   schedules.pmap do |schedule|
     schedule.disable

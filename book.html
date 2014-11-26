@@ -531,6 +531,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_03_automation_recipes">03 Automation Recipes</a>
 <ul class="sectlevel2">
 <li><a href="#_perform_an_operation_on_multiple_projects">Perform an operation on multiple projects</a></li>
+<li><a href="#_speeding_things_up">Speeding things up</a></li>
 </ul>
 </li>
 <li><a href="#_04_model">04 Model</a>
@@ -555,6 +556,18 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_creating_a_project_from_blueprint">Creating a project from blueprint</a></li>
 <li><a href="#_creating_a_project_from_template">Creating a project from template</a></li>
 <li><a href="#_renaming_a_project">Renaming a project</a></li>
+</ul>
+</li>
+<li><a href="#_07_deployment_recipes">07 Deployment recipes</a>
+<ul class="sectlevel2">
+<li><a href="#_disabling_schedules_in_all_your_projects">Disabling schedules in all your projects</a></li>
+</ul>
+</li>
+<li><a href="#_08_working_with_reports">08 Working with reports</a>
+<ul class="sectlevel2">
+<li><a href="#_you_would_like_to_compare_reports_across_proejcts">You would like to compare reports across proejcts</a></li>
+<li><a href="#_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</a></li>
+<li><a href="#_you_need_to_reset_a_colormapping_in_a_report">You need to reset a colormapping in a report</a></li>
 </ul>
 </li>
 <li><a href="#_99_temp">99 Temp</a>
@@ -1313,6 +1326,51 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_speeding_things_up">Speeding things up</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_16">Problem</h4>
+<div class="paragraph">
+<p>You created the script. It works but it is slow. Let&#8217;s have at one trick how to possibly make it faster.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_16">Solution</h4>
+<div class="paragraph">
+<p>Often times if you look at the API the structure is orthogonal to your usecase. For example you might need to invite user to many projects but the API has only an endpoint to invite a user to single project. If you do something like.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">projects.map <span class="keyword">do</span> |project|
+  project.invite_user(<span class="string"><span class="delimiter">'</span><span class="content">john@example.com</span><span class="delimiter">'</span></span>)
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>it will work but it will create as many requests as there are projects. The requests will happen sequentially and this takes time. Just by some back of the napkin computation you can estimate. Let&#8217;s say we have 1000 projects and invitation request takes 500ms (half a second). This means it will take 500 seconds that is almost 10 mins.</p>
+</div>
+<div class="paragraph">
+<p>The nice thing is that the requests for inviting the user to each project are totally independent. I do not need to one invitation to finish before I can start inviting him into another. This limitation is completely technical not in the problem domain. If we had some programming technique how to run multiple things at the same time it would be great. It turns out that we have such a thing without introducing any more complexity.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">projects.pmap <span class="keyword">do</span> |project|
+  project.invite_user(<span class="string"><span class="delimiter">'</span><span class="content">john@example.com</span><span class="delimiter">'</span></span>)
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we just changed one letter. We are using pmap which stands for parallel map. It behaves exactly the same as map with one difference. Block for each item of the array runs in a separate thread. You do not need to think about it it just happens faster. We have currently 20 thread reserved so it will run 20 times faster. that is under 0.5 mins.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_11">Discussion</h4>
+
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1324,15 +1382,15 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 <p>by Anonymous Author</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_16">Problem</h4>
+<h4 id="_problem_17">Problem</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_solution_16">Solution</h4>
+<h4 id="_solution_17">Solution</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_discussion_11">Discussion</h4>
+<h4 id="_discussion_12">Discussion</h4>
 
 </div>
 </div>
@@ -1342,13 +1400,13 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_17">Problem</h4>
+<h4 id="_problem_18">Problem</h4>
 <div class="paragraph">
 <p>You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_17">Solution</h4>
+<h4 id="_solution_18">Solution</h4>
 <div class="paragraph">
 <p>One of good ways to start is to see what is there. How many datasets, how much data is there how many processes etc. This is failry time consuming. You have to find the primary attributes of each dataset create a count metric and a lot of other stuff. This can be automated and it is so useful we actually created a command that does just this.</p>
 </div>
@@ -1402,7 +1460,7 @@ Size - 487117.0 rows
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_12">Discussion</h4>
+<h4 id="_discussion_13">Discussion</h4>
 
 </div>
 </div>
@@ -1412,13 +1470,13 @@ Size - 487117.0 rows
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_18">Problem</h4>
+<h4 id="_problem_19">Problem</h4>
 <div class="paragraph">
 <p>Not too recently Date fact was the only way how to compute with dates and get answers like "Give me number of days an order was opened". For some time now you can do the same computations with attributes. This can simplify your ETL and model a bit so why not to give it a try. Unfortunately people are often scared of how much work that might be.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_18">Solution</h4>
+<h4 id="_solution_19">Solution</h4>
 <div class="paragraph">
 <p>Before we start tackling that let&#8217;s first try to look around and see how much work is ahead of us. Removing Date facts can be only partially automated so it is good to have an idea if you can do this in a day or hire an army of interns for 2 weeks.</p>
 </div>
@@ -1459,7 +1517,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_13">Discussion</h4>
+<h4 id="_discussion_14">Discussion</h4>
 
 </div>
 </div>
@@ -1469,11 +1527,11 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Anonymous Author</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_19">Problem</h4>
+<h4 id="_problem_20">Problem</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_solution_19">Solution</h4>
+<h4 id="_solution_20">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
@@ -1481,7 +1539,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_14">Discussion</h4>
+<h4 id="_discussion_15">Discussion</h4>
 
 </div>
 </div>
@@ -1501,13 +1559,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_problem_20">Problem</h4>
+<h4 id="_problem_21">Problem</h4>
 <div class="paragraph">
 <p>Often you are working with a project that was not created using SDK so you do not have a textual representation of the logical model. You would still like to work with it in the same manner as it was a local blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_20">Solution</h4>
+<h4 id="_solution_21">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to get the model of a current project and behind scenes it translates it into a blueprint. Let&#8217;s have a look at a simplified example how to work with it</p>
 </div>
@@ -1537,7 +1595,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_15">Discussion</h4>
+<h4 id="_discussion_16">Discussion</h4>
 
 </div>
 </div>
@@ -1552,13 +1610,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_21">Problem</h4>
+<h4 id="_problem_22">Problem</h4>
 <div class="paragraph">
 <p>You want to be sure that reports return expected results. This is a basis for delving later into test driven BI projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_21">Solution</h4>
+<h4 id="_solution_22">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1576,7 +1634,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_16">Discussion</h4>
+<h4 id="_discussion_17">Discussion</h4>
 
 </div>
 </div>
@@ -1591,7 +1649,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_22">Problem</h4>
+<h4 id="_problem_23">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -1607,7 +1665,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_22">Solution</h4>
+<h4 id="_solution_23">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -1668,7 +1726,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_17">Discussion</h4>
+<h4 id="_discussion_18">Discussion</h4>
 
 </div>
 </div>
@@ -1678,13 +1736,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_23">Problem</h4>
+<h4 id="_problem_24">Problem</h4>
 <div class="paragraph">
 <p>You would like to create an exact copy of a project</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_23">Solution</h4>
+<h4 id="_solution_24">Solution</h4>
 <div class="paragraph">
 <p>You can use cloning capabilities.</p>
 </div>
@@ -1702,7 +1760,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project.</p>
 </div>
@@ -1714,13 +1772,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_24">Problem</h4>
+<h4 id="_problem_25">Problem</h4>
 <div class="paragraph">
 <p>You need to create a project programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_24">Solution</h4>
+<h4 id="_solution_25">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1734,7 +1792,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_19">Discussion</h4>
+<h4 id="_discussion_20">Discussion</h4>
 
 </div>
 </div>
@@ -1744,13 +1802,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_25">Problem</h4>
+<h4 id="_problem_26">Problem</h4>
 <div class="paragraph">
 <p>You would like to spin up a project from a blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_25">Solution</h4>
+<h4 id="_solution_26">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1771,7 +1829,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 <div class="paragraph">
 <p>Let&#8217;s have a look at couple of other variations.</p>
 </div>
@@ -1832,13 +1890,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_26">Problem</h4>
+<h4 id="_problem_27">Problem</h4>
 <div class="paragraph">
 <p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_26">Solution</h4>
+<h4 id="_solution_27">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1854,7 +1912,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_21">Discussion</h4>
+<h4 id="_discussion_22">Discussion</h4>
 
 </div>
 </div>
@@ -1864,13 +1922,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_27">Problem</h4>
+<h4 id="_problem_28">Problem</h4>
 <div class="paragraph">
 <p>You need to rename the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1887,6 +1945,184 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect1">
+<h2 id="_07_deployment_recipes">07 Deployment recipes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_disabling_schedules_in_all_your_projects">Disabling schedules in all your projects</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_29">Problem</h4>
+<div class="paragraph">
+<p>You would like to disable all schedules on all processes on all the projects you have access to and have sufficient privileges to do so</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_29">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+require <span class="string"><span class="delimiter">'</span><span class="content">pmap</span><span class="delimiter">'</span></span>
+
+client = <span class="constant">GoodData</span>.connect
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+  schedules = client.projects.pselect(&amp;<span class="symbol">:am_i_admin?</span>).pmapcat(&amp;<span class="symbol">:schedules</span>)
+  schedules.pmap <span class="keyword">do</span> |schedule|
+    schedule.disable
+    schedule.save
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_23">Discussion</h4>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_08_working_with_reports">08 Working with reports</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_you_would_like_to_compare_reports_across_proejcts">You would like to compare reports across proejcts</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_30">Problem</h4>
+<div class="paragraph">
+<p>You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_30">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+  original_project = c.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_id_1</span><span class="delimiter">'</span></span>)
+  new_project = c.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_id_2</span><span class="delimiter">'</span></span>)
+
+  orig_report = <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_first_by_title(<span class="string"><span class="delimiter">'</span><span class="content">Sum of Revenue</span><span class="delimiter">'</span></span>, <span class="key">client</span>: c, <span class="key">project</span>: original_project)
+  new_report = <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_first_by_title(<span class="string"><span class="delimiter">'</span><span class="content">Sum of Revenue</span><span class="delimiter">'</span></span>, <span class="key">client</span>: c, <span class="key">project</span>: new_project)
+
+  orig_result = orig_report.execute
+  new_result = new_report.execute
+
+  puts orig_result == new_result
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_24">Discussion</h4>
+<div class="paragraph">
+<p>If there is more reports this can obviously take a lot of time so it would be nice if you could do computation or reports in parallel and not sequentially. Imagine we have a list of reports that should be checked tagged by tag <code>to_check</code>. Let&#8217;s rewrite previous code snippet to be parallel friendly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  original_project = c.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_id_1</span><span class="delimiter">'</span></span>)
+  new_project = c.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_id_2</span><span class="delimiter">'</span></span>)
+
+  <span class="comment"># We assume that reports have unique name inside a project</span>
+  orig_reports = <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_check</span><span class="delimiter">'</span></span>, <span class="key">client</span>: c, <span class="key">project</span>: original_project).sort_by(&amp;<span class="symbol">:title</span>)
+  new_reports = <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_check</span><span class="delimiter">'</span></span>, <span class="key">client</span>: c, <span class="key">project</span>: new_project).sort_by(&amp;<span class="symbol">:title</span>)
+
+  results = orig_reports.zip(new_reports).pmap <span class="keyword">do</span> |reports|
+    <span class="comment"># compute both reports and add the report at the end for being able to print a report later</span>
+    reports.map(&amp;<span class="symbol">:execute</span>) + [reports.last]
+  <span class="keyword">end</span>
+
+  results.map <span class="keyword">do</span> |res|
+    orig_result, new_result, new_report = res
+    puts <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>new_report.title<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">#{</span>orig_result == new_result<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_31">Problem</h4>
+<div class="paragraph">
+<p>You have a report saved and you would like to get the numbers programatically.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_31">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
+  puts project.reports(<span class="integer">1234</span>).execute
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_25">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_you_need_to_reset_a_colormapping_in_a_report">You need to reset a colormapping in a report</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_32">Problem</h4>
+<div class="paragraph">
+<p>You have a report somebody set up a colormapping. You would like to remove it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_32">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+  project = client.project(pid)
+
+  ids = [report_id_1, report_id_2, report_id_3]
+  ids.each <span class="keyword">do</span> |id|
+    r = project.reports(id)
+    d = r.latest_report_definition
+    d.reset_color_mapping!
+    d.save
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_26">Discussion</h4>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_99_temp">99 Temp</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -1895,7 +2131,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_28">Problem</h4>
+<h4 id="_problem_33">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -1907,7 +2143,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_28">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1937,7 +2173,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_29">Problem</h4>
+<h4 id="_problem_34">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
@@ -1949,7 +2185,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -1986,7 +2222,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_35">Problem</h4>
 <div class="paragraph">
 <p>You would like to schedule process for automatic execution.</p>
 </div>
@@ -1998,7 +2234,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_35">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2031,7 +2267,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_31">Problem</h4>
+<h4 id="_problem_36">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -2043,7 +2279,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_31">Solution</h4>
+<h4 id="_solution_36">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2074,7 +2310,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_32">Problem</h4>
+<h4 id="_problem_37">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -2086,7 +2322,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_37">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2119,7 +2355,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_33">Problem</h4>
+<h4 id="_problem_38">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
 </div>
@@ -2131,7 +2367,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_38">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2165,7 +2401,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_34">Problem</h4>
+<h4 id="_problem_39">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to sync/update them in bulk.</p>
 </div>
@@ -2177,7 +2413,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_34">Solution</h4>
+<h4 id="_solution_39">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2224,7 +2460,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-11-26 15:03:28 CET
+Last updated 2014-11-26 16:55:34 CET
 </div>
 </div>
 </body>

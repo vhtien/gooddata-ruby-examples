@@ -1,0 +1,3 @@
+== 07 Deployment recipes
+
+include::disabling_schedules.asciidoc[]
