@@ -9,7 +9,7 @@ You can use cloning capabilities.
 
 [source,ruby]
 ----
-# encoding: UTF-8
+# encoding: utf-8
 
 require 'gooddata'
 

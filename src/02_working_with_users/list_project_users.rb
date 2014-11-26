@@ -3,6 +3,6 @@
 require 'gooddata'
 
 GoodData.with_connection('user', 'password') do |client|
-  project = GoodData.use('project_pid')
+  project = client.projects('project_pid')
   pp project.users
 end

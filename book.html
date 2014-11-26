@@ -656,7 +656,7 @@ table.CodeRay td.code>pre{padding:0}
 <h4 id="_solution_3">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -712,17 +712,17 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 <span class="constant">GoodData</span>.with_connection(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>,
                          <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>,
-                         <span class="key">server</span>: <span class="string"><span class="delimiter">'</span><span class="content">https://some-other-server.com</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+                         <span class="key">server</span>: <span class="string"><span class="delimiter">'</span><span class="content">https://some-other-server.com</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
-  c.projects.all.each <span class="keyword">do</span> |p|
-    puts p.title
+  client.projects.each <span class="keyword">do</span> |project|
+    puts project.title
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -747,14 +747,12 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_solution_5">Solution</h4>
 <div class="paragraph">
-<p>Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password. Take note that currently you do not have access to whole API. Things like interacting with DSS and Staging Storage still need username and pass. We are trying t resolve the issue.</p>
-</div>
-<div class="paragraph">
-<p>First you need to have SST token. There are several ways how to obtain it. Here is one using SDK</p>
+<p>Super Secure Token is a token that allows to access you our APIs in a nonrestricted matter without necessarily knowing username and password. Take note that currently you do not have access to whole API. Things like interacting with DSS and Staging Storage still need username and pass. We are trying t resolve the issue.
+First you need to have SST token. There are several ways how to obtain it. Here is one using SDK</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -813,7 +811,7 @@ client.connection.sst_token
 <div class="sect3">
 <h4 id="_problem_7">Problem</h4>
 <div class="paragraph">
-<p>You would like to write scripts that are sharable. Currently you either have to rely on ~/.gooddata file or put there the credentials by hand. This is error prone and you have to be careful so you do not share your passwords</p>
+<p>You would like to write scripts that are sharable. Currently you either have to rely on ~/.gooddata file or put there the credentials by hand. This is error prone and you have to be careful so you do not share your passwords.</p>
 </div>
 </div>
 <div class="sect3">
@@ -874,7 +872,12 @@ puts client.projects.count</span></span></code></pre>
 </div>
 <div class="sect3">
 <h4 id="_discussion_7">Discussion</h4>
-
+<div class="paragraph">
+<p>You see that you can easily share these scripts with other people since you have externalized all sensitive information. If the user will put the config file on a expected place everything will just work. There are other formats and ways you can leverage but the idea is always the same.</p>
+</div>
+<div class="paragraph">
+<p>This is actually something we do behind the scenes if you do not specify any params into connect or with_connection. We look at ~/.gooddata for a JSON file and use what we find there. This is extremely useful when you are showing things interactively so you do not have to disclose your credentials. You can either go and create the file by hand or you can use a convenience method we have created for you. Just call gooddata auth store and you will be asked couple of questions and the file will be created for you.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -895,7 +898,7 @@ puts client.projects.count</span></span></code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -914,7 +917,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -963,7 +966,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
 
   <span class="comment"># Get your domain ..</span>
-  domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">my-domain</span><span class="delimiter">'</span></span>]
+  domain = client.domain(<span class="string"><span class="delimiter">'</span><span class="content">my-domain</span><span class="delimiter">'</span></span>)
 
   <span class="comment"># Generate random password</span>
   pass = (<span class="integer">0</span>...<span class="integer">10</span>).map { (<span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>..<span class="string"><span class="delimiter">'</span><span class="content">z</span><span class="delimiter">'</span></span>).to_a[rand(<span class="integer">26</span>)] }.join
@@ -1083,7 +1086,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="comment"># Connect to platform using credentials</span>
 <span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
-  domain = <span class="constant">GoodData</span>::<span class="constant">Domain</span>[<span class="string"><span class="delimiter">'</span><span class="content">gooddata-tomas-svarovsky</span><span class="delimiter">'</span></span>]
+  domain = client.domain(<span class="string"><span class="delimiter">'</span><span class="content">gooddata-tomas-svarovsky</span><span class="delimiter">'</span></span>)
   users = domain.users
   pp users
 <span class="keyword">end</span></code></pre>
@@ -1117,7 +1120,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 <span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
-  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
+  project = client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
   pp project.users
 <span class="keyword">end</span></code></pre>
 </div>
@@ -1193,7 +1196,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_problem_15">Problem</h4>
 <div class="paragraph">
-<p>You already knwo how to do many things but now you would like to do the same thing on many projects at once</p>
+<p>You already know how to do many things but now you would like to do the same thing on many projects at once</p>
 </div>
 </div>
 <div class="sect3">
@@ -1273,12 +1276,14 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
+client = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
+
 projects = [
-  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>],
-  <span class="constant">GoodData</span>::<span class="constant">Project</span>[<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>]
+  client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>),
+  client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>)
 ]
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   results = projects.map <span class="keyword">do</span> |project|
     <span class="constant">GoodData</span>.with_project(project) <span class="keyword">do</span> |project|
 
@@ -1571,7 +1576,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -1619,7 +1624,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <h4 id="_solution_22">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -1671,11 +1676,11 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">'</span><span class="content">Acme project</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |p|
     p.add_date_dimension(<span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>)
 
@@ -1691,7 +1696,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     <span class="keyword">end</span>
   <span class="keyword">end</span>
 
-  project = <span class="constant">GoodData</span>::<span class="constant">Project</span>.create_from_blueprint(blueprint, <span class="symbol">:auth_token</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="delimiter">'</span></span>)
+  project = <span class="constant">GoodData</span>::<span class="constant">Project</span>.create_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="delimiter">'</span></span>)
   puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Created project </span><span class="inline"><span class="inline-delimiter">#{</span>project.pid<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
 
   <span class="constant">GoodData</span>::with_project(project) <span class="keyword">do</span> |p|
@@ -1711,13 +1716,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     <span class="constant">GoodData</span>::<span class="constant">Model</span>.upload_data(devs_data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">devs</span><span class="delimiter">'</span></span>)
 
     <span class="comment"># create a metric</span>
-    metric = p.fact(<span class="string"><span class="delimiter">'</span><span class="content">fact.commits.lines_changed</span><span class="delimiter">'</span></span>).create_metric
+    metric = p.facts(<span class="string"><span class="delimiter">'</span><span class="content">fact.commits.lines_changed</span><span class="delimiter">'</span></span>).create_metric
     metric.save
 
     report = p.create_report(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Awesome_report</span><span class="delimiter">'</span></span>, <span class="key">top</span>: [metric], <span class="key">left</span>: [<span class="string"><span class="delimiter">'</span><span class="content">label.devs.dev_id.email</span><span class="delimiter">'</span></span>])
     report.save
 
-    [<span class="string"><span class="delimiter">'</span><span class="content">john1@example.com</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">john2@example.com</span><span class="delimiter">'</span></span>].each <span class="keyword">do</span> |email|
+    [<span class="string"><span class="delimiter">'</span><span class="content">john@example.com</span><span class="delimiter">'</span></span>].each <span class="keyword">do</span> |email|
       p.invite(email, <span class="string"><span class="delimiter">'</span><span class="content">admin</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Guys checkout this report </span><span class="inline"><span class="inline-delimiter">#{</span>report.browser_uri<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
     <span class="keyword">end</span>
   <span class="keyword">end</span>
@@ -1748,7 +1753,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -1781,7 +1786,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <h4 id="_solution_25">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -1899,7 +1904,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <h4 id="_solution_27">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
@@ -2156,8 +2161,8 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <span class="comment"># Connect to GoodData platform</span>
 c = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
 
-<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
-    project = c.project(<span class="constant">PROJECT_ID</span>)
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+    project = client.project(<span class="constant">PROJECT_ID</span>)
 
     <span class="comment"># List all dashboards</span>
     dashboards = project.dashboards

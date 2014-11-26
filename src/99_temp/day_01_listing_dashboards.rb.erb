@@ -1,7 +1,7 @@
 <%= render 'src/_general/header.rb' %>
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+GoodData.with_connection do |client|
+    project = client.project(PROJECT_ID)
 
     # List all dashboards
     dashboards = project.dashboards

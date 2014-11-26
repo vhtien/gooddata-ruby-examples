@@ -12,7 +12,7 @@ SDK allows you to get the model of a current project and behind scenes it transl
 
 [source,ruby]
 ----
-# encoding: UTF-8
+# encoding: utf-8
 
 require 'gooddata'
 

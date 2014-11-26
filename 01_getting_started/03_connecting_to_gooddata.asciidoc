@@ -8,7 +8,7 @@ You know how to jack in and how to write a simple program. Now it is time to com
 
 [source,ruby]
 ----
-# encoding: UTF-8
+# encoding: utf-8
 
 require 'gooddata'
 

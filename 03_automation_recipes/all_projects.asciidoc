@@ -7,7 +7,7 @@ by Tomas Svarovsky
 - link other recipes
 
 ==== Problem
-You already knwo how to do many things but now you would like to do the same thing on many projects at once
+You already know how to do many things but now you would like to do the same thing on many projects at once
 
 ==== Solution
 
@@ -78,12 +78,14 @@ end
 
 require 'gooddata'
 
+client = GoodData.connect('user', 'password')
+
 projects = [
-  GoodData::Project['project_pid_a'],
-  GoodData::Project['project_pid_b']
+  client.projects('project_pid_a'),
+  client.projects('project_pid_b')
 ]
 
-GoodData.with_connection('user', 'password') do |c|
+GoodData.with_connection('user', 'password') do |client|
   results = projects.map do |project|
     GoodData.with_project(project) do |project|
 

@@ -1,4 +1,4 @@
-# encoding: utf-8
+# encoding: UTF-8
 
 require 'gooddata'
 
@@ -8,8 +8,8 @@ PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
 # Connect to GoodData platform
 c = GoodData.connect('user', 'password')
 
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
+GoodData.with_connection do |client|
+    project = client.project(PROJECT_ID)
 
     # List all dashboards
     dashboards = project.dashboards

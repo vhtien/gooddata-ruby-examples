@@ -2,12 +2,14 @@
 
 require 'gooddata'
 
+client = GoodData.connect('user', 'password')
+
 projects = [
-  GoodData::Project['project_pid_a'],
-  GoodData::Project['project_pid_b']
+  client.projects('project_pid_a'),
+  client.projects('project_pid_b')
 ]
 
-GoodData.with_connection('user', 'password') do |c|
+GoodData.with_connection('user', 'password') do |client|
   results = projects.map do |project|
     GoodData.with_project(project) do |project|
 
