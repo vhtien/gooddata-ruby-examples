@@ -662,8 +662,8 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
     <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
-    client.projects.each <span class="keyword">do</span> |p|
-        puts p.title
+    client.projects.each <span class="keyword">do</span> |project|
+        puts project.title
     <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
