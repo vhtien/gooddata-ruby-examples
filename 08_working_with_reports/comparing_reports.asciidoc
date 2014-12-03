@@ -1,4 +1,4 @@
-=== You would like to compare reports across proejcts
+=== You would like to compare reports across projects
 by Tomas Svarovsky
 
 ==== Problem
