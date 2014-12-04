@@ -536,7 +536,9 @@ table.CodeRay td.code>pre{padding:0}
 </li>
 <li><a href="#_04_model">04 Model</a>
 <ul class="sectlevel2">
+<li><a href="#_computing_number_of_lines_in_a_dataset">Computing number of lines in a dataset</a></li>
 <li><a href="#_creating_model">Creating model</a></li>
+<li><a href="#_finding_out_date_dimensions">Finding out date dimensions</a></li>
 <li><a href="#_getting_some_information_about_unknown_project">Getting some information about unknown project</a></li>
 <li><a href="#_removing_date_facts">Removing date facts</a></li>
 <li><a href="#_updating_model">Updating model</a></li>
@@ -565,7 +567,7 @@ table.CodeRay td.code>pre{padding:0}
 </li>
 <li><a href="#_08_working_with_reports">08 Working with reports</a>
 <ul class="sectlevel2">
-<li><a href="#_you_would_like_to_compare_reports_across_proejcts">You would like to compare reports across proejcts</a></li>
+<li><a href="#_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</a></li>
 <li><a href="#_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</a></li>
 <li><a href="#_you_need_to_reset_a_colormapping_in_a_report">You need to reset a colormapping in a report</a></li>
 </ul>
@@ -1382,20 +1384,85 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 <h2 id="_04_model">04 Model</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_computing_number_of_lines_in_a_dataset">Computing number of lines in a dataset</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_17">Problem</h4>
+<div class="paragraph">
+<p>Very often there is a need to know how many lines there are in a dataset.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_17">Solution</h4>
+<div class="paragraph">
+<p>This is not so easy to do on UI. You basically have to find the main attribute on a dataset and then create a report. It is much easier to use SDK for a shortcut.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
+  blueprint = project.blueprint
+  count = blueprint.datasets.first.count(project)
+  puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Number of lines in a dataset is </span><span class="inline"><span class="inline-delimiter">#{</span>count<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_12">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
 <h3 id="_creating_model">Creating model</h3>
 <div class="paragraph">
 <p>by Anonymous Author</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_17">Problem</h4>
+<h4 id="_problem_18">Problem</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_solution_17">Solution</h4>
+<h4 id="_solution_18">Solution</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_discussion_12">Discussion</h4>
+<h4 id="_discussion_13">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_finding_out_date_dimensions">Finding out date dimensions</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_19">Problem</h4>
+<div class="paragraph">
+<p>You would like to know how many date dimensions you have in a project.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_19">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
+  blueprint = project.blueprint
+  dds = blueprint.date_dimensions
+  puts <span class="string"><span class="delimiter">&quot;</span><span class="content">You have </span><span class="inline"><span class="inline-delimiter">#{</span>dds.count<span class="inline-delimiter">}</span></span><span class="content"> date dimensions in your project</span><span class="delimiter">&quot;</span></span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_14">Discussion</h4>
 
 </div>
 </div>
@@ -1405,13 +1472,13 @@ puts <span class="string"><span class="delimiter">'</span><span class="content">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_18">Problem</h4>
+<h4 id="_problem_20">Problem</h4>
 <div class="paragraph">
 <p>You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_18">Solution</h4>
+<h4 id="_solution_20">Solution</h4>
 <div class="paragraph">
 <p>One of good ways to start is to see what is there. How many datasets, how much data is there how many processes etc. This is failry time consuming. You have to find the primary attributes of each dataset create a count metric and a lot of other stuff. This can be automated and it is so useful we actually created a command that does just this.</p>
 </div>
@@ -1465,7 +1532,7 @@ Size - 487117.0 rows
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_13">Discussion</h4>
+<h4 id="_discussion_15">Discussion</h4>
 
 </div>
 </div>
@@ -1475,13 +1542,13 @@ Size - 487117.0 rows
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_19">Problem</h4>
+<h4 id="_problem_21">Problem</h4>
 <div class="paragraph">
 <p>Not too recently Date fact was the only way how to compute with dates and get answers like "Give me number of days an order was opened". For some time now you can do the same computations with attributes. This can simplify your ETL and model a bit so why not to give it a try. Unfortunately people are often scared of how much work that might be.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_19">Solution</h4>
+<h4 id="_solution_21">Solution</h4>
 <div class="paragraph">
 <p>Before we start tackling that let&#8217;s first try to look around and see how much work is ahead of us. Removing Date facts can be only partially automated so it is good to have an idea if you can do this in a day or hire an army of interns for 2 weeks.</p>
 </div>
@@ -1522,7 +1589,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_14">Discussion</h4>
+<h4 id="_discussion_16">Discussion</h4>
 
 </div>
 </div>
@@ -1532,11 +1599,11 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Anonymous Author</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_20">Problem</h4>
+<h4 id="_problem_22">Problem</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_solution_20">Solution</h4>
+<h4 id="_solution_22">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># THIS IS NOT IMPLEMENTED YET</span></code></pre>
@@ -1544,7 +1611,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_15">Discussion</h4>
+<h4 id="_discussion_17">Discussion</h4>
 
 </div>
 </div>
@@ -1564,13 +1631,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_problem_21">Problem</h4>
+<h4 id="_problem_23">Problem</h4>
 <div class="paragraph">
 <p>Often you are working with a project that was not created using SDK so you do not have a textual representation of the logical model. You would still like to work with it in the same manner as it was a local blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_21">Solution</h4>
+<h4 id="_solution_23">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to get the model of a current project and behind scenes it translates it into a blueprint. Let&#8217;s have a look at a simplified example how to work with it</p>
 </div>
@@ -1600,7 +1667,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_16">Discussion</h4>
+<h4 id="_discussion_18">Discussion</h4>
 
 </div>
 </div>
@@ -1615,13 +1682,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_22">Problem</h4>
+<h4 id="_problem_24">Problem</h4>
 <div class="paragraph">
 <p>You want to be sure that reports return expected results. This is a basis for delving later into test driven BI projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_22">Solution</h4>
+<h4 id="_solution_24">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -1639,7 +1706,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_17">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 
 </div>
 </div>
@@ -1654,7 +1721,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_23">Problem</h4>
+<h4 id="_problem_25">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -1670,7 +1737,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_23">Solution</h4>
+<h4 id="_solution_25">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -1731,7 +1798,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_20">Discussion</h4>
 
 </div>
 </div>
@@ -1741,13 +1808,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_24">Problem</h4>
+<h4 id="_problem_26">Problem</h4>
 <div class="paragraph">
 <p>You would like to create an exact copy of a project</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_24">Solution</h4>
+<h4 id="_solution_26">Solution</h4>
 <div class="paragraph">
 <p>You can use cloning capabilities.</p>
 </div>
@@ -1765,7 +1832,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_19">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project.</p>
 </div>
@@ -1777,13 +1844,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_25">Problem</h4>
+<h4 id="_problem_27">Problem</h4>
 <div class="paragraph">
 <p>You need to create a project programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_25">Solution</h4>
+<h4 id="_solution_27">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -1797,7 +1864,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_22">Discussion</h4>
 
 </div>
 </div>
@@ -1807,13 +1874,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_26">Problem</h4>
+<h4 id="_problem_28">Problem</h4>
 <div class="paragraph">
 <p>You would like to spin up a project from a blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_26">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1834,7 +1901,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_21">Discussion</h4>
+<h4 id="_discussion_23">Discussion</h4>
 <div class="paragraph">
 <p>Let&#8217;s have a look at couple of other variations.</p>
 </div>
@@ -1895,13 +1962,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_27">Problem</h4>
+<h4 id="_problem_29">Problem</h4>
 <div class="paragraph">
 <p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_29">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -1917,7 +1984,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_22">Discussion</h4>
+<h4 id="_discussion_24">Discussion</h4>
 
 </div>
 </div>
@@ -1927,13 +1994,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_28">Problem</h4>
+<h4 id="_problem_30">Problem</h4>
 <div class="paragraph">
 <p>You need to rename the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_28">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1958,13 +2025,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_29">Problem</h4>
+<h4 id="_problem_31">Problem</h4>
 <div class="paragraph">
 <p>You would like to disable all schedules on all processes on all the projects you have access to and have sufficient privileges to do so</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -1982,7 +2049,7 @@ client = <span class="constant">GoodData</span>.connect
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_23">Discussion</h4>
+<h4 id="_discussion_25">Discussion</h4>
 
 </div>
 </div>
@@ -1992,18 +2059,18 @@ client = <span class="constant">GoodData</span>.connect
 <h2 id="_08_working_with_reports">08 Working with reports</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_you_would_like_to_compare_reports_across_proejcts">You would like to compare reports across proejcts</h3>
+<h3 id="_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_32">Problem</h4>
 <div class="paragraph">
 <p>You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_32">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2026,7 +2093,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_24">Discussion</h4>
+<h4 id="_discussion_26">Discussion</h4>
 <div class="paragraph">
 <p>If there is more reports this can obviously take a lot of time so it would be nice if you could do computation or reports in parallel and not sequentially. Imagine we have a list of reports that should be checked tagged by tag <code>to_check</code>. Let&#8217;s rewrite previous code snippet to be parallel friendly.</p>
 </div>
@@ -2064,13 +2131,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_31">Problem</h4>
+<h4 id="_problem_33">Problem</h4>
 <div class="paragraph">
 <p>You have a report saved and you would like to get the numbers programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_31">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2085,7 +2152,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_25">Discussion</h4>
+<h4 id="_discussion_27">Discussion</h4>
 
 </div>
 </div>
@@ -2095,13 +2162,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_32">Problem</h4>
+<h4 id="_problem_34">Problem</h4>
 <div class="paragraph">
 <p>You have a report somebody set up a colormapping. You would like to remove it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2121,7 +2188,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_26">Discussion</h4>
+<h4 id="_discussion_28">Discussion</h4>
 
 </div>
 </div>
@@ -2136,7 +2203,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_33">Problem</h4>
+<h4 id="_problem_35">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -2148,7 +2215,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_35">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2178,7 +2245,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_34">Problem</h4>
+<h4 id="_problem_36">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
@@ -2190,7 +2257,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_34">Solution</h4>
+<h4 id="_solution_36">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2227,7 +2294,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_35">Problem</h4>
+<h4 id="_problem_37">Problem</h4>
 <div class="paragraph">
 <p>You would like to schedule process for automatic execution.</p>
 </div>
@@ -2239,7 +2306,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_35">Solution</h4>
+<h4 id="_solution_37">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2272,7 +2339,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_36">Problem</h4>
+<h4 id="_problem_38">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -2284,7 +2351,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_36">Solution</h4>
+<h4 id="_solution_38">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2315,7 +2382,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_37">Problem</h4>
+<h4 id="_problem_39">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -2327,7 +2394,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_37">Solution</h4>
+<h4 id="_solution_39">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2360,7 +2427,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_38">Problem</h4>
+<h4 id="_problem_40">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
 </div>
@@ -2372,7 +2439,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_38">Solution</h4>
+<h4 id="_solution_40">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2406,7 +2473,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 <p>by Patrick McConlogue, Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_39">Problem</h4>
+<h4 id="_problem_41">Problem</h4>
 <div class="paragraph">
 <p>You have CSV containing users, their roles and passwords and you want to sync/update them in bulk.</p>
 </div>
@@ -2418,7 +2485,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_39">Solution</h4>
+<h4 id="_solution_41">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -2465,7 +2532,7 @@ c = <span class="constant">GoodData</span>.connect(<span class="string"><span cl
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-11-26 16:55:34 CET
+Last updated 2014-12-04 18:33:43 CET
 </div>
 </div>
 </body>
