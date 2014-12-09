@@ -1,0 +1,54 @@
+=== Working with a remote model
+by Tomas Svarovsky
+
+==== Problem
+You would like to deploy a CludConnect graph or another process to GoodData platform.
+
+==== Solution
+SDK allows you to deploy a process. Just point it to a file or a zipped archive and that will be deployed.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  project = GoodData.use('project_id')
+  project.deploy_process('./path/to_cloud_connect_process.grf',
+                         name: 'Test ETL Process')
+end
+----
+
+By default the process is deployed as a CloudConnect process. You can deploy as other types by providing specific type.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  project = GoodData.use('project_id')
+  project.deploy_process('./path/to_cloud_connect_process.rb',
+                         type: 'RUBY',
+                         name: 'Test ETL Process')
+end
+---- 
+ 
+==== Discussion
+
+There are couple of different things you can deploy. In previous example you saw how to deploy a file. If you on the other hand point to a directory. It will be zipped and deployed as a whole.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  project = GoodData.use('project_id')
+  project.deploy_process('./path/to_cloud_connect_directory',
+                         name: 'Test ETL Process')
+end
+----
