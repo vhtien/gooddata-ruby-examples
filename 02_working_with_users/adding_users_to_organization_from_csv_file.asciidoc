@@ -1,0 +1,35 @@
+=== Adding user to organization from CSV file
+by Tomas Svarovsky
+
+==== Problem
+You would like to add a users to organization programmatically. What you have is a CSV file holding the information about the users.
+
+==== Prerequisites
+You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+
+We assume that you have a file with details handy. The file can look for example like this
+
+    login,first_name,last_name,password
+    john@example.com,John,Doe,12345
+
+The headers we used are defaults. If you have different ones you will have to do some mangling. Minimal information that you have to provide for the user creation to be successful is login.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+
+  domain = client.domain('gooddata-tomas-svarovsky')
+  users = []
+  CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
+    users << row.to_hash.symbolize_keys
+  end
+
+  domain.create_users(users)
+end
+----
