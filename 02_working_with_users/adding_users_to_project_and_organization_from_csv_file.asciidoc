@@ -17,11 +17,11 @@ The headers we used are defaults. If you have different ones you will have to do
 ==== Solution
 SDK has a method import_users that takes care of all the details and does exactly what is described above. Adds users to domain and then project.
 
-Notes
-- Process of adding users is not additive but declarative. What you provide on the input is what SDK will strive to have in the project at the end. This has some constraints on data preparation but it is much more resilient approach
-- Connected to previous point sometimes you have users that you do not want to be touched by this process. ETL developers, admins etc that do not come from data. You can provide list of whitelist expression as either string or regular expressions.
-- Be careful so you do not lock yourself (etl administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data
-- Note that above data will not work. Currently there is a constraint that each user has to have unique login across all users in GoodData. It is likely that there already is a `john@example.com` somewhere so change the test data accordingly
+===== Notes
+* Process of adding users is not additive but declarative. What you provide on the input is what SDK will strive to have in the project at the end. This has some constraints on data preparation but it is much more resilient approach
+* Connected to previous point sometimes you have users that you do not want to be touched by this process. ETL developers, admins etc that do not come from data. You can provide list of whitelist expression as either string or regular expressions.
+* Be careful so you do not lock yourself (etl administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data
+* Note that above data will not work. Currently there is a constraint that each user has to have unique login across all users in GoodData. It is likely that there already is a `john@example.com` somewhere so change the test data accordingly
 
 [source,ruby]
 ----
