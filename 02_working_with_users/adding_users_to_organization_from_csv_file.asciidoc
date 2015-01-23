@@ -10,7 +10,7 @@ You have to have a user who is an admin of an organization. If you do not have t
 We assume that you have a file with details handy. The file can look for example like this
 
     login,first_name,last_name,password
-    john@example.com,John,Doe,12345
+    john@example.com,John,Doe,12345678
 
 The headers we used are defaults. If you have different ones you will have to do some mangling. Minimal information that you have to provide for the user creation to be successful is login.
 
