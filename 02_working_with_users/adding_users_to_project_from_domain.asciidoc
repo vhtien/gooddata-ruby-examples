@@ -31,7 +31,6 @@ GoodData.with_connection('user', 'password') do |client|
   domain = client.domain('domain-name')
   users = []
   CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
-    data = row.to_hash
     users << row.to_hash.symbolize_keys.slice(:login, :role)
   end
 
@@ -67,7 +66,6 @@ GoodData.with_connection('user', 'password') do |client|
   domain = client.domain('domain-name')
   users = []
   CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
-    data = row.to_hash
     users << row.to_hash.symbolize_keys.slice(:login, :role)
   end
 
