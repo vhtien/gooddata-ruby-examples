@@ -1,4 +1,4 @@
-=== Adding user to organization from domain
+=== Adding users to project from domain
 by Tomas Svarovsky
 
 ==== Problem
