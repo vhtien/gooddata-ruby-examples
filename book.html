@@ -507,6 +507,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_creating_metrics_from_facts">Creating metrics from facts</a></li>
 <li><a href="#_write_information_about_your_metrics_to_csv_file">Write information about your metrics to CSV file</a></li>
 <li><a href="#_find_a_metric_that_uses_another_object">Find a metric that uses another object</a></li>
+<li><a href="#_changing_number_formatting_of_a_metric">Changing number formatting of a metric</a></li>
 </ul>
 </li>
 <li><a href="#_10_working_with_dashboards">10 Working With Dashboards</a>
@@ -3387,6 +3388,35 @@ end</code></pre>
 
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changing_number_formatting_of_a_metric">Changing number formatting of a metric</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_58">Problem</h4>
+<div class="paragraph">
+<p>You have a project and you would like to update formatting of all metrics programatically. They are currently formatted for dollars but you would like to change this to Euros.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_58">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.connect
+project = client.projects(PROJECT_ID)
+project.metrics.pmap do |metric|
+  metric.content['format'] = metric.content['format'].gsub('$', '€')
+  metric.save
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3398,7 +3428,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_58">Problem</h4>
+<h4 id="_problem_59">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -3410,7 +3440,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_58">Solution</h4>
+<h4 id="_solution_59">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3439,7 +3469,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 13:00:53 PST
+Last updated 2015-01-28 13:16:15 PST
 </div>
 </div>
 </body>
