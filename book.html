@@ -2774,7 +2774,7 @@ require 'gooddata'
 
 client = GoodData.connect
 project = client.projects('project_id')
-process = project.processes.first
+process = project.processes('process_id')
 process.deploy('path_to_your_process')</code></pre>
 </div>
 </div>
@@ -3304,7 +3304,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 14:57:16 PST
+Last updated 2015-01-28 14:59:08 PST
 </div>
 </div>
 </body>
