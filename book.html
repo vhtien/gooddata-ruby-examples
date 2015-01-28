@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
 <title>GoodData SDK Cookbook</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
 /* Remove the comments around the @import statement below when using this as a custom stylesheet */
-/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400";*/
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400";*/
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
@@ -274,8 +274,8 @@ dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
 ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
 ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
-ul.checklist li>p:first-child>.fa-check-square-o:first-child,ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
-ul.checklist li>p:first-child>input[type="checkbox"]:first-child{position:relative;top:1px}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
 ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
 ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
 ul.inline>li>*{display:block}
@@ -380,7 +380,7 @@ p{margin-bottom:1.25rem}
 *{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
 a{color:inherit!important;text-decoration:underline!important}
 a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
-a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after,a[href^="mailto:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
 abbr[title]:after{content:" (" attr(title) ")"}
 pre,blockquote,tr,img{page-break-inside:avoid}
 thead{display:table-header-group}
@@ -544,7 +544,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_discussion">Discussion</h4>
 <div class="paragraph">
-<p>You should be in an interactive session where you can evaluate your ideas and verify that everything works in an fast fashion before you put your program in a file that is much more useful for a batch oriented execution</p>
+<p>You should be in an interactive session where you can evaluate your ideas and verify that everything works in a fast fashion before you put your program in a file that is much more useful for a batch oriented execution</p>
 </div>
 </div>
 </div>
@@ -646,6 +646,7 @@ end</code></pre>
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
 require 'gooddata'
 
+<<<<<<< HEAD
 require 'gooddata'
 
 GoodData.with_connection(login: 'user',
@@ -653,6 +654,13 @@ GoodData.with_connection(login: 'user',
                          server: 'https://some-other-server.com') do |client|
   # just so you believe us we are printing names of all the project under this account
   client.projects.each do |project|
+=======
+<span class="constant">GoodData</span>.with_connection(<span class="key">login</span>: <span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>,
+                         <span class="key">password</span>: <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>,
+                         <span class="key">server</span>: <span class="string"><span class="delimiter">'</span><span class="content">https://some-other-server.com</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
+  <span class="comment"># just so you believe us we are printing names of all the project under this account</span>
+  client.projects.each <span class="keyword">do</span> |project|
+>>>>>>> origin/master
     puts project.title
   end
 end</code></pre>
@@ -2482,6 +2490,7 @@ end</code></pre>
 
 require 'gooddata'
 
+<<<<<<< HEAD
 GoodData.with_connection('user', 'password') do |c|
   project = GoodData.use('project_pid')
   cloned_project = project.clone(title: 'New title',
@@ -2489,6 +2498,15 @@ GoodData.with_connection('user', 'password') do |c|
                                  users: false,
                                  data: true)
 end</code></pre>
+=======
+<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |c|
+  project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>)
+  cloned_project = project.clone(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">New title</span><span class="delimiter">'</span></span>,
+                                 <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>,
+                                 <span class="key">users</span>: <span class="predefined-constant">false</span>,
+                                 <span class="key">data</span>: <span class="predefined-constant">true</span>)
+<span class="keyword">end</span></code></pre>
+>>>>>>> origin/master
 </div>
 </div>
 </div>
@@ -2525,6 +2543,7 @@ end</code></pre>
 <p>All these 3 calls are async by default so SDK makes sure that things happen at the right time and makes cloning synchronous.</p>
 </div>
 <div class="paragraph">
+<<<<<<< HEAD
 <p>Sometimes more granular things are need for example when you need to clone a project to different organization. This means that clone would not work since you cannot have one user in 2 organizations. We decided to expose the methods to allow you doing the three steps above so anyone can mix and match.</p>
 </div>
 <div class="listingblock">
@@ -2545,6 +2564,9 @@ to_project = client_to.create_project(:title =&gt; "project_title", :auth_token 
 export_token = from_project.export_clone(authorized_users: [user_to_login], data: true, users: false)
 to_project.import_clone(export_token)</code></pre>
 </div>
+=======
+<p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project. In the example above we explicitly specified the params so you can see how it works.</p>
+>>>>>>> origin/master
 </div>
 </div>
 <div class="sect3">
@@ -3443,7 +3465,11 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
+<<<<<<< HEAD
 Last updated 2015-01-28 12:54:53 PST
+=======
+Last updated 2015-01-28 16:04:19 CET
+>>>>>>> origin/master
 </div>
 </div>
 </body>

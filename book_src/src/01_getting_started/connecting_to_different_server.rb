@@ -1,8 +1,6 @@
 # encoding: utf-8
 require 'gooddata'
 
-require 'gooddata'
-
 GoodData.with_connection(login: 'user',
                          password: 'password',
                          server: 'https://some-other-server.com') do |client|
