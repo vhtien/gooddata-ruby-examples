@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
-require 'rake/notes/rake_task'
-require 'rspec/core/rake_task'
+# require 'rake/notes/rake_task'
+# require 'rspec/core/rake_task'
 
 desc 'Run continuous integration test'
 task :ci do
