@@ -487,8 +487,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</a></li>
 </ul>
 </li>
-<li><a href="#_encoding_utf_8">encoding: utf-8</a>
-<ul class="sectlevel1">
 <li><a href="#_08_working_with_reports">08 Working With Reports</a>
 <ul class="sectlevel2">
 <li><a href="#_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</a></li>
@@ -516,8 +514,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_11_working_with_data_filters">11 Working With Data Filters</a>
 <ul class="sectlevel2">
 <li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -2772,28 +2768,16 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">[source,ruby]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h1 id="_encoding_utf_8" class="sect0">encoding: utf-8</h1>
-<div class="openblock partintro">
-<div class="content">
-<div class="paragraph">
-<p>require 'gooddata'</p>
-</div>
-<div class="paragraph">
-<p>client = GoodData.connect
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.connect
 project = client.projects('project_id')
 process = project.processes.first
-process.deploy('path_to_your_process')</p>
+process.deploy('path_to_your_process')</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre></pre>
+</div>
 </div>
 </div>
 </div>
@@ -3320,7 +3304,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 14:42:31 PST
+Last updated 2015-01-28 14:51:24 PST
 </div>
 </div>
 </body>
