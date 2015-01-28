@@ -1,0 +1,14 @@
+=== Updating model
+by Anonymous Author
+
+==== Problem
+
+==== Solution
+
+[source,ruby]
+----
+# THIS IS NOT IMPLEMENTED YET
+
+----
+
+==== Discussion
