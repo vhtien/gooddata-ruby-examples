@@ -484,8 +484,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_executing_a_schedule">Executing a schedule</a></li>
 <li><a href="#_executing_a_deployed_process">Executing a deployed process</a></li>
 <li><a href="#_deploying_a_process_programmatically">Deploying a process programmatically</a></li>
+<li><a href="#_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</a></li>
 </ul>
 </li>
+<li><a href="#_encoding_utf_8">encoding: utf-8</a>
+<ul class="sectlevel1">
 <li><a href="#_08_working_with_reports">08 Working With Reports</a>
 <ul class="sectlevel2">
 <li><a href="#_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</a></li>
@@ -508,6 +511,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_10_working_with_dashboards">10 Working With Dashboards</a>
 <ul class="sectlevel2">
 <li><a href="#_listing_project_dashboards">Listing project dashboards</a></li>
+</ul>
+</li>
+<li><a href="#_11_working_with_data_filters">11 Working With Data Filters</a>
+<ul class="sectlevel2">
+<li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2744,6 +2754,48 @@ end</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_44">Problem</h4>
+<div class="paragraph">
+<p>You would like to redeploy a CloudConnect or Ruby process to GoodData platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_44">Solution</h4>
+<div class="paragraph">
+<p>SDK allows you a nice shorthand for redeploying a process all you have to do is to get a handle on the process. Here we are just using the first, but you can use any traditional ways to get a process. Take note that the same deployment rules as in <code>project.deploy_process</code> apply. You can deploy a directory file or a compressed package.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">[source,ruby]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_encoding_utf_8" class="sect0">encoding: utf-8</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>require 'gooddata'</p>
+</div>
+<div class="paragraph">
+<p>client = GoodData.connect
+project = client.projects('project_id')
+process = project.processes.first
+process.deploy('path_to_your_process')</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2755,13 +2807,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_44">Problem</h4>
+<h4 id="_problem_45">Problem</h4>
 <div class="paragraph">
 <p>You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_44">Solution</h4>
+<h4 id="_solution_45">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2822,13 +2874,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_45">Problem</h4>
+<h4 id="_problem_46">Problem</h4>
 <div class="paragraph">
 <p>You have a report saved and you would like to get the numbers programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_45">Solution</h4>
+<h4 id="_solution_46">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2856,7 +2908,7 @@ end</code></pre>
 <div class="sect2">
 <h3 id="_warning_still_in_development">Warning - still in development</h3>
 <div class="sect3">
-<h4 id="_problem_46">Problem</h4>
+<h4 id="_problem_47">Problem</h4>
 <div class="paragraph">
 <p>You would like to exchange a date dimension in the project for a different one</p>
 </div>
@@ -2872,7 +2924,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_46">Solution</h4>
+<h4 id="_solution_47">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2913,13 +2965,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_47">Problem</h4>
+<h4 id="_problem_48">Problem</h4>
 <div class="paragraph">
 <p>As stated in another recipe, creating a report that counts lines in a dataset is a tedious and difficult task in UI. Why not automate it?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_47">Solution</h4>
+<h4 id="_solution_48">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2954,13 +3006,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_48">Problem</h4>
+<h4 id="_problem_49">Problem</h4>
 <div class="paragraph">
 <p>You have a report somebody set up a colormapping. You would like to remove it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_48">Solution</h4>
+<h4 id="_solution_49">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2995,7 +3047,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_49">Problem</h4>
+<h4 id="_problem_50">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3007,7 +3059,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_49">Solution</h4>
+<h4 id="_solution_50">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3038,7 +3090,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_50">Problem</h4>
+<h4 id="_problem_51">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3050,7 +3102,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_50">Solution</h4>
+<h4 id="_solution_51">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3083,7 +3135,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_51">Problem</h4>
+<h4 id="_problem_52">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
@@ -3095,7 +3147,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_51">Solution</h4>
+<h4 id="_solution_52">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3132,13 +3184,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_52">Problem</h4>
+<h4 id="_problem_53">Problem</h4>
 <div class="paragraph">
 <p>You want to find an object that uses a certain known object. Imagine that you would like to find all metrics using a particular attribute.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_52">Solution</h4>
+<h4 id="_solution_53">Solution</h4>
 
 </div>
 <div class="sect3">
@@ -3152,13 +3204,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_53">Problem</h4>
+<h4 id="_problem_54">Problem</h4>
 <div class="paragraph">
 <p>You have a project and you would like to update formatting of all metrics programatically. They are currently formatted for dollars but you would like to change this to Euros.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_53">Solution</h4>
+<h4 id="_solution_54">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -3186,7 +3238,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_54">Problem</h4>
+<h4 id="_problem_55">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -3198,7 +3250,48 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_54">Solution</h4>
+<h4 id="_solution_55">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+# Project ID
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+# Connect to GoodData platform
+c = GoodData.connect('user', 'password')
+
+GoodData.with_connection do |client|
+    project = client.project(PROJECT_ID)
+
+    # List all dashboards
+    dashboards = project.dashboards
+    pp dashboards
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_11_working_with_data_filters">11 Working With Data Filters</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_56">Problem</h4>
+<div class="paragraph">
+<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_56">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3227,7 +3320,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 13:41:13 PST
+Last updated 2015-01-28 14:42:31 PST
 </div>
 </div>
 </body>

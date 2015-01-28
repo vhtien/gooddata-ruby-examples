@@ -1,0 +1,29 @@
+=== Setting up a simple Data filter
+
+by Tomas Svarovsky
+
+==== Problem
+You would like to constrain users visibility of data to a group of users using Data filters.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: UTF-8
+
+require 'gooddata'
+
+# Project ID
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+# Connect to GoodData platform
+c = GoodData.connect('user', 'password')
+
+GoodData.with_connection do |client|
+    project = client.project(PROJECT_ID)
+
+    # List all dashboards
+    dashboards = project.dashboards
+    pp dashboards
+end
+----
