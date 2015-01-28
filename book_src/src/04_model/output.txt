@@ -1,0 +1,29 @@
+CLONE GOODSALES
+===============
+
+Datasets - 28
+
+stage_history
+=============
+Size - 29103.0 rows
+1 attributes, 4 facts, 8 references
+
+opp_snapshot
+============
+Size - 2130074.0 rows
+1 attributes, 9 facts, 21 references
+
+.
+.
+.
+.
+
+Opp_changes
+===========
+Size - 472.0 rows
+2 attributes, 6 facts, 10 references
+
+Opportunity Benchmark
+=====================
+Size - 487117.0 rows
+3 attributes, 2 facts, 2 references

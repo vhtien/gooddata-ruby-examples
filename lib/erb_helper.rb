@@ -7,7 +7,7 @@ class ErbHelper
   BASE_DIR = File.join(File.dirname(__FILE__), '..')
 
   FILES = [
-    './src/_general/*.rb.erb',
+    # './src/_general/*.rb.erb',
     './**/*.rb.erb',
     './**/*.asciidoc.erb',
   ]
