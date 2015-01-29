@@ -513,6 +513,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_11_working_with_data_filters">11 Working With Data Filters</a>
 <ul class="sectlevel2">
+<li><a href="#_quickly_setting_simple_data_filter">Quickly setting simple Data filter</a></li>
 <li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
 </ul>
 </li>
@@ -3264,39 +3265,96 @@ end</code></pre>
 <h2 id="_11_working_with_data_filters">11 Working With Data Filters</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<h3 id="_quickly_setting_simple_data_filter">Quickly setting simple Data filter</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_56">Problem</h4>
 <div class="paragraph">
-<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+<p>You would like to set a User filter for one or two users. It can be a one off.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_56">Solution</h4>
+<div class="paragraph">
+<p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
+</div>
+<div class="paragraph">
+<p>In this case we will be setting a simple filter in a general shape of</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>WHERE city IN (san francisco, prague, amsterdam)</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We need to know the values we wold like to set. In our case that is (san francisco, prague, amsterdam)</p>
+</li>
+<li>
+<p>We need to know what label these values are related to. In our case city</p>
+</li>
+<li>
+<p>We also need to know which user you would like to assign this filter. In this case use yourself or any other user that you like.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Although we present this as an executable script this is something that is best done interactively so do not fear to jack in to a project and follow along.</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
 
 require 'gooddata'
 
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+client = GoodData.conect('login', 'password')
+project = client.projects('project_id')
 
-# Connect to GoodData platform
-c = GoodData.connect('user', 'password')
+# First let's grab an attribute
+attribute = project.attribtes('attr.region.city')
 
-GoodData.with_connection do |client|
-    project = client.project(PROJECT_ID)
+# to set up a value we need a specific label
+# if the attribute has only one label, you can easily grab it by calling #primary_label
+label = attribute.primary_label
 
-    # List all dashboards
-    dashboards = project.dashboards
-    pp dashboards
-end</code></pre>
+# if a label has multiple labels, you can select the correct one like this
+# label = attribute.label_by_name('City name')
+
+# Let's construct filters we are going to set up
+# We will do it for two hypothetical users
+
+filters = [
+  ['john.doe@example.com', label.uri, 'San Francisco', 'Amsterdam']
+  ['jane.doe@example.com', label.uri, 'San Francisco', 'Prague']
+]
+
+# Obvious question might be how do you know that the values are correct
+# you can find out like this
+# label.value?('Amsterdam')
+
+# Let's now update the project
+project.add_data_permissions(filters)</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_57">Problem</h4>
+<div class="paragraph">
+<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_57">Solution</h4>
+
 </div>
 </div>
 </div>
@@ -3304,7 +3362,7 @@ end</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 14:59:08 PST
+Last updated 2015-01-28 16:07:55 PST
 </div>
 </div>
 </body>
