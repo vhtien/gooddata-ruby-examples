@@ -61,5 +61,6 @@ project.add_data_permissions(filters)
 
 ===== Preconditions
 Several things has to be true for this code to work correctly
-* all the users are present in the project
-* all the values are present in the data loaded in the project
+
+* All the users are present in the project
+* All the values are present in the data loaded in the project
