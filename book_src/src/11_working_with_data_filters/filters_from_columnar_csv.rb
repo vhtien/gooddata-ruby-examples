@@ -1,5 +1,3 @@
-[source,ruby]
-----
 # encoding: utf-8
 
 require 'gooddata'
@@ -23,4 +21,3 @@ filters = GoodData::UserFilterBuilder::get_filters('data.csv', {
 })
 
 project.add_data_permissions(filters)
-----

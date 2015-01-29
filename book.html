@@ -516,16 +516,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_quickly_setting_simple_data_filter">Quickly setting simple Data filter</a></li>
 <li><a href="#_list_the_filters">List the filters</a></li>
 <li><a href="#_quickly_setting_simple_data_filter_2">Quickly setting simple Data filter</a></li>
-</ul>
-</li>
-<li><a href="#_encoding_utf_8">encoding: utf-8</a></li>
-<li><a href="#_first_let_s_grab_an_attribute">First let&#8217;s grab an attribute</a></li>
-<li><a href="#_to_set_up_a_value_we_need_a_specific_label">to set up a value we need a specific label</a></li>
-<li><a href="#_if_the_attribute_has_only_one_label_you_can_easily_grab_it_by_calling_primary_label">if the attribute has only one label, you can easily grab it by calling #primary_label</a></li>
-<li><a href="#_if_a_label_has_multiple_labels_you_can_select_the_correct_one_like_this">if a label has multiple labels, you can select the correct one like this</a></li>
-<li><a href="#_label_attribute_label_by_name_city_name">label = attribute.label_by_name('City name')</a>
-<ul class="sectlevel4">
-<li><a href="#_preconditions">Preconditions</a></li>
 <li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
 </ul>
 </li>
@@ -3443,58 +3433,29 @@ jane.doe@example.com,Prague</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">[source,ruby]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h1 id="_encoding_utf_8" class="sect0">encoding: utf-8</h1>
-<div class="openblock partintro">
-<div class="content">
-<div class="paragraph">
-<p>require 'gooddata'</p>
-</div>
-<div class="paragraph">
-<p>client = GoodData.conect('login', 'password')
-project = client.projects('project_id')</p>
-</div>
-</div>
-</div>
-<h1 id="_first_let_s_grab_an_attribute" class="sect0">First let&#8217;s grab an attribute</h1>
-<div class="openblock partintro">
-<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.conect('login', 'password')
+project = client.projects('project_id')
+
+# First let's grab an attribute
 attribute = project.attributes('attr.region.city')
-</div>
-</div>
-<h1 id="_to_set_up_a_value_we_need_a_specific_label" class="sect0">to set up a value we need a specific label</h1>
 
-<h1 id="_if_the_attribute_has_only_one_label_you_can_easily_grab_it_by_calling_primary_label" class="sect0">if the attribute has only one label, you can easily grab it by calling #primary_label</h1>
-<div class="openblock partintro">
-<div class="content">
+# to set up a value we need a specific label
+# if the attribute has only one label, you can easily grab it by calling #primary_label
 label = attribute.primary_label
-</div>
-</div>
-<h1 id="_if_a_label_has_multiple_labels_you_can_select_the_correct_one_like_this" class="sect0">if a label has multiple labels, you can select the correct one like this</h1>
 
-<h1 id="_label_attribute_label_by_name_city_name" class="sect0">label = attribute.label_by_name('City name')</h1>
-<div class="openblock partintro">
-<div class="content">
-<div class="paragraph">
-<p>filters = GoodData::UserFilterBuilder::get_filters('data.csv', {
-  :type &#8658; :filter,
-  :labels &#8658; [{:label &#8658; label, :column &#8658; 'company'}]
-})</p>
-</div>
-<div class="paragraph">
-<p>project.add_data_permissions(filters)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre></pre>
-</div>
-</div>
+# if a label has multiple labels, you can select the correct one like this
+# label = attribute.label_by_name('City name')
+
+filters = GoodData::UserFilterBuilder::get_filters('data.csv', {
+  :type =&gt; :filter,
+  :labels =&gt; [{:label =&gt; label, :column =&gt; 'company'}]
+})
+
+project.add_data_permissions(filters)</code></pre>
 </div>
 </div>
 <div class="sect4">
@@ -3503,6 +3464,8 @@ label = attribute.primary_label
 <p>Several things has to be true for this code to work correctly
 * all the users are present in the project
 * all the values are present in the data loaded in the project</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3522,9 +3485,11 @@ label = attribute.primary_label
 </div>
 </div>
 </div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-29 11:18:51 PST
+Last updated 2015-01-29 11:22:24 PST
 </div>
 </div>
 </body>
