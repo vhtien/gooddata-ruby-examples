@@ -28,7 +28,7 @@ client = GoodData.conect('login', 'password')
 project = client.projects('project_id')
 
 # First let's grab an attribute
-attribute = project.attribtes('attr.region.city')
+attribute = project.attributes('attr.region.city')
 
 # to set up a value we need a specific label
 # if the attribute has only one label, you can easily grab it by calling #primary_label

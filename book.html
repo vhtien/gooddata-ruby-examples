@@ -514,6 +514,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_11_working_with_data_filters">11 Working With Data Filters</a>
 <ul class="sectlevel2">
 <li><a href="#_quickly_setting_simple_data_filter">Quickly setting simple Data filter</a></li>
+<li><a href="#_list_the_filters">List the filters</a></li>
 <li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
 </ul>
 </li>
@@ -3314,7 +3315,7 @@ client = GoodData.conect('login', 'password')
 project = client.projects('project_id')
 
 # First let's grab an attribute
-attribute = project.attribtes('attr.region.city')
+attribute = project.attributes('attr.region.city')
 
 # to set up a value we need a specific label
 # if the attribute has only one label, you can easily grab it by calling #primary_label
@@ -3342,18 +3343,48 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<h3 id="_list_the_filters">List the filters</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_57">Problem</h4>
 <div class="paragraph">
-<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+<p>You have a project that has the filters set up. You would like to know who has set what.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_57">Solution</h4>
+<div class="paragraph">
+<p>There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.conect('login', 'password')
+project = client.projects('project_id')
+
+project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_58">Problem</h4>
+<div class="paragraph">
+<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_58">Solution</h4>
 
 </div>
 </div>
@@ -3362,7 +3393,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-01-28 16:07:55 PST
+Last updated 2015-01-29 10:29:41 PST
 </div>
 </div>
 </body>
