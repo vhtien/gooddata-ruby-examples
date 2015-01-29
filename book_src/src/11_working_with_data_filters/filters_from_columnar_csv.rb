@@ -17,7 +17,7 @@ label = attribute.primary_label
 
 filters = GoodData::UserFilterBuilder::get_filters('data.csv', { 
   :type => :filter, 
-  :labels => [{:label => label, :column => 'company'}]
+  :labels => [{:label => label, :column => 'city'}]
 })
 
 project.add_data_permissions(filters)
