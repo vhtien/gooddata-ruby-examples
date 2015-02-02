@@ -542,14 +542,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Use jack_in functionality which sets up an interactive environment for you and logs you in into a specific project.</p>
 </div>
-<div class="paragraph">
-<p>gooddata -p project_pid -U <a href="mailto:john.doe@example.com">john.doe@example.com</a> -P secret project jack_in</p>
+<div class="literalblock">
+<div class="content">
+<pre>gooddata -p project_pid -U john.doe@example.com -P secret project jack_in</pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_discussion">Discussion</h4>
 <div class="paragraph">
 <p>You should be in an interactive session where you can evaluate your ideas and verify that everything works in an fast fashion before you put your program in a file that is much more useful for a batch oriented execution</p>
+</div>
+<div class="paragraph">
+<p>If you need to connect to another server (most probably a whitelabeled domain), use</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>gooddata -s https://mydomain.com -p project_pid -U john.doe@example.com -P secret project jack_in</pre>
+</div>
 </div>
 </div>
 </div>
@@ -3497,7 +3507,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-01 21:11:14 PST
+Last updated 2015-02-01 21:30:29 PST
 </div>
 </div>
 </body>

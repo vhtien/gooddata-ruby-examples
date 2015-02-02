@@ -8,7 +8,11 @@ You want to use SDK on a project but writing a script seems like too much of a h
 
 Use +jack_in+ functionality which sets up an interactive environment for you and logs you in into a specific project.
 
-gooddata -p project_pid -U john.doe@example.com -P secret project jack_in
+  gooddata -p project_pid -U john.doe@example.com -P secret project jack_in
 
 ==== Discussion
 You should be in an interactive session where you can evaluate your ideas and verify that everything works in an fast fashion before you put your program in a file that is much more useful for a batch oriented execution
+
+If you need to connect to another server (most probably a whitelabeled domain), use
+
+  gooddata -s https://mydomain.com -p project_pid -U john.doe@example.com -P secret project jack_in
