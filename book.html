@@ -943,7 +943,7 @@ end</code></pre>
 <div class="sect3">
 <h4 id="_prerequisites_2">Prerequisites</h4>
 <div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult support to get one.
 Works only with 0.6.12 and higher</p>
 </div>
 </div>
@@ -962,7 +962,7 @@ GoodData.with_connection do |client|
   users_to_add = domain.users.reject { |u| u.login != client.user.login }
 
   # Let's add all as viewer
-  users_to_add.each { |u| u.add_user(u, 'Viewer') }
+  users_to_add.each { |u| u.add_user(u, 'Viewer', domain: domain) }
 
 end</code></pre>
 </div>
@@ -3507,7 +3507,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-01 21:30:29 PST
+Last updated 2015-02-01 22:09:34 PST
 </div>
 </div>
 </body>
