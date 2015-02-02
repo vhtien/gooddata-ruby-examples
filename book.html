@@ -429,17 +429,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_02_working_with_users">02 Working With Users</a>
 <ul class="sectlevel2">
-<li><a href="#_adding_user_to_organization">Adding user to organization</a></li>
-<li><a href="#_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</a></li>
-<li><a href="#_adding_user_to_organization_from_csv_file">Adding user to organization from CSV file</a></li>
-<li><a href="#_adding_user_to_project_and_organization_from_csv_file_in_one_go">Adding user to project and organization from CSV file in one go</a></li>
-<li><a href="#_adding_users_to_project_from_domain">Adding users to project from domain</a></li>
-<li><a href="#_checking_user_in_project">Checking user in project</a></li>
-<li><a href="#_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</a></li>
-<li><a href="#_enabling_and_disabling_user">Enabling and disabling user</a></li>
-<li><a href="#_listing_organization_users">Listing organization users</a></li>
 <li><a href="#_listing_project_users">Listing project users</a></li>
+<li><a href="#_checking_user_in_project">Checking user in project</a></li>
+<li><a href="#_enabling_and_disabling_user">Enabling and disabling user</a></li>
+<li><a href="#_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</a></li>
 <li><a href="#_invitate_user_to_project">Invitate user to project</a></li>
+<li><a href="#_listing_organization_users">Listing organization users</a></li>
+<li><a href="#_adding_user_to_organization">Adding user to organization</a></li>
+<li><a href="#_adding_user_to_organization_from_csv_file">Adding user to organization from CSV file</a></li>
+<li><a href="#_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</a></li>
+<li><a href="#_adding_users_to_project_from_domain">Adding users to project from domain</a></li>
+<li><a href="#_adding_user_to_project_and_organization_from_csv_file_in_one_go">Adding user to project and organization from CSV file in one go</a></li>
 </ul>
 </li>
 <li><a href="#_03_automation_recipes">03 Automation Recipes</a>
@@ -883,24 +883,310 @@ end</code></pre>
 <h2 id="_02_working_with_users">02 Working With Users</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_adding_user_to_organization">Adding user to organization</h3>
+<h3 id="_listing_project_users">Listing project users</h3>
 <div class="paragraph">
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_9">Problem</h4>
 <div class="paragraph">
-<p>You would like to add a user to organization programmatically</p>
+<p>You would like to list users in project</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_prerequisites">Prerequisites</h4>
 <div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+<p>You have to have a user who is a project admin. If you do not have that please follow recipe XY.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_9">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+  project = client.projects('project_pid')
+  pp project.users
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_checking_user_in_project">Checking user in project</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_10">Problem</h4>
+<div class="paragraph">
+<p>You would like to see if a user is part of a project.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_2">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_10">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+  GoodData.with_project('project_pid') do |project|
+    project.member?(' jane.doe @example.com ')
+  end
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_9">Discussion</h4>
+<div class="paragraph">
+<p>You can ask on membership not just by login but also check an object. This might be useful especially if you check a user from several projects.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enabling_and_disabling_user">Enabling and disabling user</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_11">Problem</h4>
+<div class="paragraph">
+<p>You need to enable or disable users in a project.
+This works only in 0.6.12 (not yet released)</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_3">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin in a project you would like to disable users in.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_11">Solution</h4>
+<div class="paragraph">
+<p>Disable and enable particular user in GoodData project</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+# Connect to platform using credentials
+GoodData.with_connection do |c|
+  project = c.projects(PROJECT_PID)
+  user = project.member('john@example.com')
+  user.disable
+  # You can reenable the user again
+  user.enable
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Disable all users in GoodData project</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+# Connect to platform using credentials
+GoodData.with_connection do |c|
+  project = c.projects(PROJECT_PID)
+
+  # We collect all users minus current user
+  # so we do not disable ourselves from the project
+  users_to_disable = project.users.reject { |u| u.login == c.user.login }
+
+  # disable all users
+  users_to_disable.pmap {|u| u.disable}
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to keep more than one user you can do something like this</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+# Connect to platform using credentials
+GoodData.with_connection do |c|
+  project = c.projects(PROJECT_PID)
+
+  keepers = ['john@example.com', c.user.login]
+
+  # We collect all users and remove those from the keepers array
+  users_to_disable = project.users.reject { |u| keepers.include?(u.login) }
+
+  # disable all users
+  users_to_disable.pmap { |u| u.disable }
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_10">Discussion</h4>
+<div class="paragraph">
+<p>As you can see from the above examples possibilities are endless and you can easily enable or disable users just by correctly prepare the array of users to work with by using regular methods on arrays.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</h3>
+<div class="paragraph">
+<p>by Patrick McConlogue, Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_12">Problem</h4>
+<div class="paragraph">
+<p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_4">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project and be admin of it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_12">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+
+require 'gooddata'
+
+# Project ID
+PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
+
+# Connect to GoodData platform
+c = GoodData.connect('user', 'password')
+
+GoodData.with_connection do |c|
+    project = c.project(PROJECT_ID)
+
+    path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
+    puts "Loading #{path}"
+    CSV.foreach(path) do |user|
+        email = user[0]
+        role = user[1]
+        project.invite(email, role)
+    end
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_invitate_user_to_project">Invitate user to project</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_13">Problem</h4>
+<div class="paragraph">
+<p>You would like to add a user into project.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_5">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_13">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+  GoodData.with_project('project_pid') do |project|
+    project.invite('joe@example.com', 'admin', 'Hey Joe, look at this.')
+  end
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_11">Discussion</h4>
+<div class="paragraph">
+<p>Invitation can be sent by any administrator. It also means that the recipient will receive an email with instructions how to proceed. If you are interested in how to invite users without their knowledge (this is very useful for Powered By GoodData scenarios) see Recipe XX.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_listing_organization_users">Listing organization users</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_14">Problem</h4>
+<div class="paragraph">
+<p>You would like to list users in organization</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_6">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_14">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+# Connect to platform using credentials
+GoodData.with_connection('user', 'password') do |client|
+  domain = client.domain('gooddata-tomas-svarovsky')
+  users = domain.users
+  pp users
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_user_to_organization">Adding user to organization</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_15">Problem</h4>
+<div class="paragraph">
+<p>You would like to add a user to organization programmatically</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_7">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_15">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -930,58 +1216,18 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_10">Problem</h4>
-<div class="paragraph">
-<p>You have users added in organization (domain). You would like to add them into the project.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_2">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult support to get one.
-Works only with 0.6.12 and higher</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_10">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
-
-GoodData.with_connection do |client|
-
-  # Get your domain ..
-  domain = client.domain('custom_domain')
-
-  # Let's get all users except of ourselves
-  users_to_add = domain.users.reject { |u| u.login != client.user.login }
-
-  # Let's add all as viewer
-  users_to_add.each { |u| u.add_user(u, 'Viewer', domain: domain) }
-
-end</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_adding_user_to_organization_from_csv_file">Adding user to organization from CSV file</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_11">Problem</h4>
+<h4 id="_problem_16">Problem</h4>
 <div class="paragraph">
 <p>You would like to add a users to organization programmatically. What you have is a CSV file holding the information about the users.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_3">Prerequisites</h4>
+<h4 id="_prerequisites_8">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
 </div>
@@ -999,7 +1245,7 @@ john@example.com,John,Doe,12345678</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_11">Solution</h4>
+<h4 id="_solution_16">Solution</h4>
 <div class="paragraph">
 <p>First let&#8217;s have a look how to implement an addition with having the file as in the axample above. This has the advantage that you do not have to mangle with the headers.</p>
 </div>
@@ -1086,75 +1332,41 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_user_to_project_and_organization_from_csv_file_in_one_go">Adding user to project and organization from CSV file in one go</h3>
+<h3 id="_adding_user_to_project_from_organization_domain">Adding user to project from organization (domain)</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_12">Problem</h4>
+<h4 id="_problem_17">Problem</h4>
 <div class="paragraph">
-<p>You would like to add users from CSV file to a project and domain in one go. Best practice with automated projects is to add users to domain (organization) and then to add users from that domain to specific project(s). This allows you to bypass the invitation process and you can manipulate users without their consent which is usually what you want in those cases. Sometimes it could be useful to do this in one go. This is especially true if you have only one project and one organization.</p>
+<p>You have users added in organization (domain). You would like to add them into the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_4">Prerequisites</h4>
+<h4 id="_prerequisites_9">Prerequisites</h4>
 <div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
-</div>
-<div class="paragraph">
-<p>We assume that you have a file with details handy. The file can look for example like this</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>login,first_name,last_name,password,role
-john@example.com,John,Doe,12345678,admin</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The headers we used are defaults. If you have different ones you will have to do some mangling. Minimal information that you have to provide for the user creation to be successful is login.</p>
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult support to get one.
+Works only with 0.6.12 and higher</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_12">Solution</h4>
-<div class="paragraph">
-<p>SDK has a method import_users that takes care of all the details and does exactly what is described above. Adds users to domain and then project.</p>
-</div>
-<div class="sect4">
-<h5 id="_notes">Notes</h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Process of adding users is not additive but declarative. What you provide on the input is what SDK will strive to have in the project at the end. This has some constraints on data preparation but it is much more resilient approach.</p>
-</li>
-<li>
-<p>Connected to previous point sometimes you have users that you do not want to be touched by this process. ETL developers, admins etc that usually do not come from data. You can provide list of whitelist expressions as either string or regular expressions. What this means is the user that would be added or removed based on the data will be ignored by the process. In our example we want to omit user under which you are logged in.</p>
-</li>
-<li>
-<p>Be careful so you do not lock yourself (etl administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data.</p>
-</li>
-<li>
-<p>Note that above data will not work. Currently there is a constraint that each user has to have unique login across all users in GoodData. It is likely that there already is a <code>john@example.com</code> somewhere so change the test data accordingly.</p>
-</li>
-</ul>
-</div>
+<h4 id="_solution_17">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
 
-require 'gooddata'
+GoodData.with_connection do |client|
 
-GoodData.with_connection('user', 'password') do |client|
+  # Get your domain ..
+  domain = client.domain('custom_domain')
 
-  project = client.projects('project_pid')
+  # Let's get all users except of ourselves
+  users_to_add = domain.users.reject { |u| u.login != client.user.login }
 
-  users = []
-  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
-    users &lt;&lt; row.to_hash.symbolize_keys
-  end
+  # Let's add all as viewer
+  users_to_add.each { |u| u.add_user(u, 'Viewer', domain: domain) }
 
-  project.import_users(users, domain: domain, whitelists: [/john\.doe\/])
 end</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -1165,13 +1377,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_13">Problem</h4>
+<h4 id="_problem_18">Problem</h4>
 <div class="paragraph">
 <p>You would like to add a users to project programmatically. You already have all the user profiles created in domain (organization). You potentially have many projects that you would like to populate.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_5">Prerequisites</h4>
+<h4 id="_prerequisites_10">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
 You have a domain populated with user. If you do not have a look at recipe (z)</p>
@@ -1190,7 +1402,7 @@ john@example.com,admin</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_13">Solution</h4>
+<h4 id="_solution_18">Solution</h4>
 <div class="paragraph">
 <p>First let&#8217;s have a look how to implement an addition with having the file as in the example above.</p>
 </div>
@@ -1206,7 +1418,11 @@ GoodData.with_connection('user', 'password') do |client|
   domain = client.domain('domain-name')
   users = []
   CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
-    users &lt;&lt; row.to_hash.symbolize_keys.slice(:login, :role)
+    user = {
+      :user =&gt; row['login'],
+      :role =&gt; row['role']
+    }
+    users &lt;&lt; user
   end
 
   project.create_users(users, domain: domain, whitelists: ['svarovsky@goodata.com'])
@@ -1265,260 +1481,14 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_checking_user_in_project">Checking user in project</h3>
+<h3 id="_adding_user_to_project_and_organization_from_csv_file_in_one_go">Adding user to project and organization from CSV file in one go</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_14">Problem</h4>
-<div class="paragraph">
-<p>You would like to see if a user is part of a project.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_6">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_14">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-  GoodData.with_project('project_pid') do |project|
-    project.member?(' jane.doe @example.com ')
-  end
-end</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_discussion_9">Discussion</h4>
-<div class="paragraph">
-<p>You can ask on membership not just by login but also check an object. This might be useful especially if you check a user from several projects.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_creating_users_in_bulk_from_csv">Creating users in Bulk from CSV</h3>
-<div class="paragraph">
-<p>by Patrick McConlogue, Tomas Korcak</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_15">Problem</h4>
-<div class="paragraph">
-<p>You have CSV containing users, their roles and passwords and you want to create them in bulk.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_7">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have existing project and be admin of it.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_15">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
-
-require 'gooddata'
-
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
-
-# Connect to GoodData platform
-c = GoodData.connect('user', 'password')
-
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
-
-    path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
-    puts "Loading #{path}"
-    CSV.foreach(path) do |user|
-        email = user[0]
-        role = user[1]
-        project.invite(email, role)
-    end
-end</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_enabling_and_disabling_user">Enabling and disabling user</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_16">Problem</h4>
-<div class="paragraph">
-<p>You need to enable or disable users in a project.
-This works only in 0.6.12 (not yet released)</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_8">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have a user who is an admin in a project you would like to disable users in.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_16">Solution</h4>
-<div class="paragraph">
-<p>Disable and enable particular user in GoodData project</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-# Connect to platform using credentials
-GoodData.with_connection do |c|
-  project = c.projects(PROJECT_PID)
-  user = project.member('john@example.com')
-  user.disable
-  # You can reenable the user again
-  user.enable
-end</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Disable all users in GoodData project</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-# Connect to platform using credentials
-GoodData.with_connection do |c|
-  project = c.projects(PROJECT_PID)
-
-  # We collect all users minus current user
-  # so we do not disable ourselves from the project
-  users_to_disable = project.users.reject { |u| u.login == c.user.login }
-
-  # disable all users
-  users_to_disable.pmap {|u| u.disable}
-end</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you want to keep more than one user you can do something like this</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-# Connect to platform using credentials
-GoodData.with_connection do |c|
-  project = c.projects(PROJECT_PID)
-
-  keepers = ['john@example.com', c.user.login]
-
-  # We collect all users and remove those from the keepers array
-  users_to_disable = project.users.reject { |u| keepers.include?(u.login) }
-
-  # disable all users
-  users_to_disable.pmap { |u| u.disable }
-end</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_discussion_10">Discussion</h4>
-<div class="paragraph">
-<p>As you can see from the above examples possibilities are endless and you can easily enable or disable users just by correctly prepare the array of users to work with by using regular methods on arrays.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_listing_organization_users">Listing organization users</h3>
-<div class="paragraph">
-<p>by Tomas Korcak</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_17">Problem</h4>
-<div class="paragraph">
-<p>You would like to list users in organization</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_9">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_17">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-# Connect to platform using credentials
-GoodData.with_connection('user', 'password') do |client|
-  domain = client.domain('gooddata-tomas-svarovsky')
-  users = domain.users
-  pp users
-end</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_listing_project_users">Listing project users</h3>
-<div class="paragraph">
-<p>by Tomas Korcak</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_18">Problem</h4>
-<div class="paragraph">
-<p>You would like to list users in project</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prerequisites_10">Prerequisites</h4>
-<div class="paragraph">
-<p>You have to have a user who is a project admin. If you do not have that please follow recipe XY.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_18">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-  project = client.projects('project_pid')
-  pp project.users
-end</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_invitate_user_to_project">Invitate user to project</h3>
-<div class="paragraph">
-<p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_19">Problem</h4>
 <div class="paragraph">
-<p>You would like to add a user into project.</p>
+<p>You would like to add users from CSV file to a project and domain in one go. Best practice with automated projects is to add users to domain (organization) and then to add users from that domain to specific project(s). This allows you to bypass the invitation process and you can manipulate users without their consent which is usually what you want in those cases. Sometimes it could be useful to do this in one go. This is especially true if you have only one project and one organization.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1526,9 +1496,42 @@ end</code></pre>
 <div class="paragraph">
 <p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
 </div>
+<div class="paragraph">
+<p>We assume that you have a file with details handy. The file can look for example like this</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>login,first_name,last_name,password,role
+john@example.com,John,Doe,12345678,admin</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The headers we used are defaults. If you have different ones you will have to do some mangling. Minimal information that you have to provide for the user creation to be successful is login.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_solution_19">Solution</h4>
+<div class="paragraph">
+<p>SDK has a method import_users that takes care of all the details and does exactly what is described above. Adds users to domain and then project.</p>
+</div>
+<div class="sect4">
+<h5 id="_notes">Notes</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Process of adding users is not additive but declarative. What you provide on the input is what SDK will strive to have in the project at the end. This has some constraints on data preparation but it is much more resilient approach.</p>
+</li>
+<li>
+<p>Connected to previous point sometimes you have users that you do not want to be touched by this process. ETL developers, admins etc that usually do not come from data. You can provide list of whitelist expressions as either string or regular expressions. What this means is the user that would be added or removed based on the data will be ignored by the process. In our example we want to omit user under which you are logged in.</p>
+</li>
+<li>
+<p>Be careful so you do not lock yourself (etl administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data.</p>
+</li>
+<li>
+<p>Note that above data will not work. Currently there is a constraint that each user has to have unique login across all users in GoodData. It is likely that there already is a <code>john@example.com</code> somewhere so change the test data accordingly.</p>
+</li>
+</ul>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -1536,17 +1539,18 @@ end</code></pre>
 require 'gooddata'
 
 GoodData.with_connection('user', 'password') do |client|
-  GoodData.with_project('project_pid') do |project|
-    project.invite('joe@example.com', 'admin', 'Hey Joe, look at this.')
+
+  project = client.projects('project_pid')
+
+  users = []
+  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
+    users &lt;&lt; row.to_hash.symbolize_keys
   end
+
+  project.import_users(users, domain: domain, whitelists: [/john\.doe\/])
 end</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_discussion_11">Discussion</h4>
-<div class="paragraph">
-<p>Invitation can be sent by any administrator. It also means that the recipient will receive an email with instructions how to proceed. If you are interested in how to invite users without their knowledge (this is very useful for Powered By GoodData scenarios) see Recipe XX.</p>
 </div>
 </div>
 </div>
@@ -3507,7 +3511,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-01 22:11:59 PST
+Last updated 2015-02-02 15:13:18 PST
 </div>
 </div>
 </body>
