@@ -3,8 +3,19 @@
 # require 'rake/notes/rake_task'
 # require 'rspec/core/rake_task'
 
-desc 'Run continuous integration test'
+desc 'Generates the book'
+task :book do
+  system 'cd lib && rake book'
+end
+
+desc 'Build book'
+task :build do
+  system 'cd lib && rake build'
+end
+
+desc 'Run continuous integration'
 task :ci do
+  system 'cd lib && rake ci'
 end
 
 desc 'Run all tests'
