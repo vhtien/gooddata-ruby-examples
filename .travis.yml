@@ -14,3 +14,7 @@ before_install:
   - gem update bundler
 
 script: rake ci
+
+notifications:
+  slack:
+    secure: VIiymls7MDsR+3TeICWA41+uK4WAfe+CaNZhMvC/9Z/uWrPD9EsH7sX/GT2GoPJdjj7wCzTjWMy5fQOwY243cXu17umkTRHKYYhZYPjhGi4X0Diqjdx7A/eKieIUMS2xGb12a40HTPIB5Owc2+8C+sOPRk5AXRR/YrOB5xG61y8=
