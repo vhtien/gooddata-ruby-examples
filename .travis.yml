@@ -17,4 +17,4 @@ script: rake ci
 
 notifications:
   slack:
-    secure: VIiymls7MDsR+3TeICWA41+uK4WAfe+CaNZhMvC/9Z/uWrPD9EsH7sX/GT2GoPJdjj7wCzTjWMy5fQOwY243cXu17umkTRHKYYhZYPjhGi4X0Diqjdx7A/eKieIUMS2xGb12a40HTPIB5Owc2+8C+sOPRk5AXRR/YrOB5xG61y8=
+    secure: WAn5zR+P0LYPC6feqWJOIsDEsSWNMw4qam1vl9+i4XYwRxlc7GXL10Cxfqw23okkDJLaQiCxa/Qw/oDANgCZzlg8hGS+49R6VTTjnnKB8oOJ9fIziGEDEDR+6WaQlO8cC+f39+FwIych4aLsTsODgIYj2UEqTc0rEyCUlzRBh9I=
