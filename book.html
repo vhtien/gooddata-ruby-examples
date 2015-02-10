@@ -577,14 +577,67 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_solution_2">Solution</h4>
 <div class="paragraph">
-<p>gooddata -p project_pid -U <a href="mailto:john.doe@example.com">john.doe@example.com</a> -P secret project jack-in</p>
+<p>Let&#8217;s assume that your fantastic code that you have is fairly simple. You would like to print the title of the project. So the session looks something like this</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>project_live_session: puts project.title
+"My project Test (2)"
+=&gt; nil</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Not too fancy but it is enough to help us illustrate couple of points. First you need to save your code to a file. Go ahead take your favorite text editor and create a new file and put your code into it so it looks like this</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>puts client.projects</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Go ahead and save it and call it 'my_first_sdk_program.rb'. Do not execute because it would not work now. Let&#8217;s add couple more things.</p>
+</div>
+<div class="paragraph">
+<p>Jack in does couple of things for you so you can be productive quickly but we have to handle them ourselves in a program.</p>
+</div>
+<div class="paragraph">
+<p>1) Loads Automation SDK libraries
+2) It logs you in and provides you the client as a <code>client</code> variable
+3) It jacks into a project and provides you the project as a <code>project</code> variable</p>
+</div>
+<div class="paragraph">
+<p>If you were wondering why the project.title worked in the interactive session this is why.</p>
+</div>
+<div class="paragraph">
+<p>We can easily do the same things with these 3 lines of code respectively. So add them to the file so the end result looks like this.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>require 'gooddata'</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>client = GoodData.connect('username', 'pass')
+project = client.projects('project_id')
+puts client.projects</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Done. Save it.</p>
+</div>
+<div class="paragraph">
+<p>Now you can run it by using this command</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ruby my_first_sdk_program.rb</pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_discussion_2">Discussion</h4>
-<div class="paragraph">
-<p>You should be in an interactive session where you can evaluate your ideas and verify that everything works in an fast fashion before you put your program in a file that is much more useful for a batch oriented execution</p>
-</div>
+
 </div>
 </div>
 <div class="sect2">
@@ -1247,25 +1300,10 @@ john@example.com,John,Doe,12345678</pre>
 <div class="sect3">
 <h4 id="_solution_16">Solution</h4>
 <div class="paragraph">
-<p>First let&#8217;s have a look how to implement an addition with having the file as in the axample above. This has the advantage that you do not have to mangle with the headers.</p>
+<p>First let&#8217;s have a look how to implement an addition with having the file as in the example above. This has the advantage that you do not have to mangle with the headers.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-
-  domain = client.domain('domain-name')
-  users = []
-  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
-    users &lt;&lt; row.to_hash.symbolize_keys
-  end
-
-  domain.create_users(users)
-end</code></pre>
-</div>
+<div class="paragraph">
+<p>&lt;%= render_ruby 'src/02_working_with_users/users_to_domain_from_csv.rb' %&gt;</p>
 </div>
 <div class="paragraph">
 <p>Sometimes though what you have is that the file that comes from the system has different headers than would be ideal. One possible thing you can do is to transform it in a separate ETL process or you can change the code slightly to compensate. In the next code snippet we will show you how to do just that.</p>
@@ -1285,27 +1323,8 @@ john@example.com,John,Doe,12345678</pre>
 <div class="paragraph">
 <p>This is the code add those users to a domain.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-
-  headers = ["UserLogin", "FirstName", "LastName", "UserPassword"]
-  new_headers = [:login, :first_name, :last_name, :password]
-
-  domain = client.domain('domain-name')
-  users = []
-  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
-    new_data = new_headers.zip(row.to_hash.values_at(*headers))
-    users &lt;&lt; Hash[new_data]
-  end
-
-  domain.create_users(users)
-end</code></pre>
-</div>
+<div class="paragraph">
+<p>&lt;%= render_ruby 'src/02_working_with_users/users_to_domain_from_csv_header_mangle.rb' %&gt;</p>
 </div>
 <div class="paragraph">
 <p>Notice that the bulk of the code is the same. The only differences are that we defined <code>headers</code> which contain the values of the headers in the CSV file provided. Variable <code>new_headers</code> provide the corresponding values for those headers that the SDK expects. Take not that the position is important and the headers for corresponding columns has to be in the same order in both variables.</p>
@@ -3512,7 +3531,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-10 09:32:12 PST
+Last updated 2015-02-10 15:40:10 PST
 </div>
 </div>
 </body>

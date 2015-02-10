@@ -26,6 +26,7 @@ GoodData.with_connection do |c|
   # You can reenable the user again
   user.enable
 end
+
 ----
 
 Disable all users in GoodData project
@@ -47,6 +48,7 @@ GoodData.with_connection do |c|
   # disable all users
   users_to_disable.pmap {|u| u.disable}
 end
+
 ----
 
 If you want to keep more than one user you can do something like this
