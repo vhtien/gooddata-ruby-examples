@@ -20,9 +20,9 @@ Go ahead and save it and call it 'my_first_sdk_program.rb'. Do not execute becau
 
 Jack in does couple of things for you so you can be productive quickly but we have to handle them ourselves in a program.
 
-1) Loads Automation SDK libraries
-2) It logs you in and provides you the client as a `client` variable
-3) It jacks into a project and provides you the project as a `project` variable
+* Loads Automation SDK libraries
+* It logs you in and provides you the client as a `client` variable
+* It jacks into a project and provides you the project as a `project` variable
 
 If you were wondering why the project.title worked in the interactive session this is why.
 
