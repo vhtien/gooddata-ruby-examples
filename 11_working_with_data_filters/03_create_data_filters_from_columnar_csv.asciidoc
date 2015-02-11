@@ -18,8 +18,11 @@ In this case we will be setting a simple filter in a general shape of
 
 Let's say we would like to set up these specific values
 
-  ['john.doe@example.com', 'San Francisco', 'Amsterdam']
-  ['jane.doe@example.com', 'San Francisco', 'Prague']
+[source]
+----
+['john.doe@example.com', 'San Francisco', 'Amsterdam']
+['jane.doe@example.com', 'San Francisco', 'Prague']
+----
 
 The CSV we are going to take values from should contain the information about the first and the third item from the list. It could look like this (let's also assume the file will be in the file named data.csv).
 
