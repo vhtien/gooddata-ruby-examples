@@ -454,6 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_computing_number_of_lines_in_a_dataset">Computing number of lines in a dataset</a></li>
 <li><a href="#_creating_model">Creating model</a></li>
 <li><a href="#_finding_out_date_dimensions">Finding out date dimensions</a></li>
+<li><a href="#_removing_data_from_dataset_s">Removing data from dataset(s)</a></li>
 <li><a href="#_getting_some_information_about_unknown_project">Getting some information about unknown project</a></li>
 <li><a href="#_removing_date_facts">Removing date facts</a></li>
 <li><a href="#_updating_model">Updating model</a></li>
@@ -467,30 +468,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_06_working_with_projects">06 Working With Projects</a>
 <ul class="sectlevel2">
-<li><a href="#_creating_a_small_project_in_one_page_of_code">Creating a small project in one page of code</a></li>
+<li><a href="#_create_an_empty_project">Create an empty project</a></li>
+<li><a href="#_renaming_a_project">Renaming a project</a></li>
 <li><a href="#_cloning_project">Cloning project</a></li>
 <li><a href="#_cloning_project_in_between_organizations">Cloning project in between organizations</a></li>
-<li><a href="#_create_an_empty_project">Create an empty project</a></li>
 <li><a href="#_creating_a_project_from_blueprint">Creating a project from blueprint</a></li>
-<li><a href="#_creating_a_project_from_template">Creating a project from template</a></li>
 <li><a href="#_getting_a_blueprint_from_existing_project">Getting a blueprint from existing project</a></li>
-<li><a href="#_renaming_a_project">Renaming a project</a></li>
+<li><a href="#_creating_a_project_from_template">Creating a project from template</a></li>
+<li><a href="#_creating_a_small_project_in_one_page_of_code">Creating a small project in one page of code</a></li>
 </ul>
 </li>
 <li><a href="#_07_deployment_recipes">07 Deployment Recipes</a>
 <ul class="sectlevel2">
+<li><a href="#_deploying_a_process_programmatically">Deploying a process programmatically</a></li>
+<li><a href="#_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</a></li>
 <li><a href="#_adding_a_schedule_to_a_deployed_process">Adding a schedule to a deployed process</a></li>
 <li><a href="#_disabling_schedules_in_all_your_projects">Disabling schedules in all your projects</a></li>
 <li><a href="#_executing_a_schedule">Executing a schedule</a></li>
 <li><a href="#_executing_a_deployed_process">Executing a deployed process</a></li>
-<li><a href="#_deploying_a_process_programmatically">Deploying a process programmatically</a></li>
-<li><a href="#_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</a></li>
 </ul>
 </li>
 <li><a href="#_08_working_with_reports">08 Working With Reports</a>
 <ul class="sectlevel2">
-<li><a href="#_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</a></li>
 <li><a href="#_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</a></li>
+<li><a href="#_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</a></li>
 <li><a href="#_adding_user_to_organization_2">Adding user to organization</a></li>
 <li><a href="#_warning_still_in_development">Warning - still in development</a></li>
 <li><a href="#_you_would_like_to_create_a_report_which_counts_lines_of_all_the_datasets">You would like to create a report which counts lines of all the datasets</a></li>
@@ -609,12 +610,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>It logs you in and provides you the client as a <code>client</code> variable</p>
 </li>
 <li>
-<p>It jacks into a project and provides you the project as a <code>project</code> variable</p>
+<p>It jacks into a project and provides you the project as a <code>project</code> variable. If you were wondering why the <code>project.title</code> worked in the interactive session in the first place since we never defined <code>project</code> this is why.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>If you were wondering why the project.title worked in the interactive session this is why.</p>
 </div>
 <div class="paragraph">
 <p>We can easily do the same things with these 3 lines of code respectively. So add them to the file so the end result looks like this.</p>
@@ -777,7 +775,7 @@ end</code></pre>
 <div class="sect3">
 <h4 id="_discussion_5">Discussion</h4>
 <div class="paragraph">
-<p>Never share the token with other people. It is the same thing as you name and password. You can do almost everything with it.</p>
+<p>Never share the token with other people. It is the same thing as your login and password. You can do almost everything with it.</p>
 </div>
 </div>
 </div>
@@ -957,7 +955,7 @@ end</code></pre>
 <div class="sect3">
 <h4 id="_prerequisites">Prerequisites</h4>
 <div class="paragraph">
-<p>You have to have a user who is a project admin. If you do not have that please follow recipe XY.</p>
+<p>You have to have a user who is a project admin.</p>
 </div>
 </div>
 <div class="sect3">
@@ -990,7 +988,7 @@ end</code></pre>
 <div class="sect3">
 <h4 id="_prerequisites_2">Prerequisites</h4>
 <div class="paragraph">
-<p>You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.</p>
+<p>You have to have a user who is an admin of an organization. If you do not have that please consult support to get one.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1310,8 +1308,23 @@ john@example.com,John,Doe,12345678</pre>
 <div class="paragraph">
 <p>First let&#8217;s have a look how to implement an addition with having the file as in the example above. This has the advantage that you do not have to mangle with the headers.</p>
 </div>
-<div class="paragraph">
-<p>&lt;%= render_ruby 'src/02_working_with_users/users_to_domain_from_csv.rb' %&gt;</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+
+  domain = client.domain('domain-name')
+  users = []
+  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
+    users &lt;&lt; row.to_hash.symbolize_keys
+  end
+
+  domain.create_users(users)
+end</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Sometimes though what you have is that the file that comes from the system has different headers than would be ideal. One possible thing you can do is to transform it in a separate ETL process or you can change the code slightly to compensate. In the next code snippet we will show you how to do just that.</p>
@@ -1331,8 +1344,27 @@ john@example.com,John,Doe,12345678</pre>
 <div class="paragraph">
 <p>This is the code add those users to a domain.</p>
 </div>
-<div class="paragraph">
-<p>&lt;%= render_ruby 'src/02_working_with_users/users_to_domain_from_csv_header_mangle.rb' %&gt;</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+
+  headers = ["UserLogin", "FirstName", "LastName", "UserPassword"]
+  new_headers = [:login, :first_name, :last_name, :password]
+
+  domain = client.domain('domain-name')
+  users = []
+  CSV.foreach('data.csv', :headers =&gt; true, :return_headers =&gt; false) do |row|
+    new_data = new_headers.zip(row.to_hash.values_at(*headers))
+    users &lt;&lt; Hash[new_data]
+  end
+
+  domain.create_users(users)
+end</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Notice that the bulk of the code is the same. The only differences are that we defined <code>headers</code> which contain the values of the headers in the CSV file provided. Variable <code>new_headers</code> provide the corresponding values for those headers that the SDK expects. Take not that the position is important and the headers for corresponding columns has to be in the same order in both variables.</p>
@@ -1865,7 +1897,9 @@ end</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
 
 GoodData.with_connection do |c|
   project = GoodData.use('project_id')
@@ -1914,7 +1948,9 @@ end</code></pre>
 <h4 id="_solution_25">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
 
 GoodData.with_connection do |c|
   project = GoodData.use('project_id')
@@ -1931,18 +1967,61 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_getting_some_information_about_unknown_project">Getting some information about unknown project</h3>
+<h3 id="_removing_data_from_dataset_s">Removing data from dataset(s)</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_26">Problem</h4>
 <div class="paragraph">
-<p>You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?</p>
+<p>Sometimes you need to get rid of the data in project. SDK allows to do it quickly and elegantly.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_26">Solution</h4>
+<div class="paragraph">
+<p>What happens underneath is that you can call a MAQL expression along the lines of</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SYNCHRONIZE {dataset.users};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>for each dataset you would like to clear. You can achieve the same like this.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  project = GoodData.use('project_id')
+  dataset = project.datasets.find {|d| d.title == 'Users'}
+  dataset.delete_data # dataset.synchronize works as well
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_18">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_getting_some_information_about_unknown_project">Getting some information about unknown project</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_27">Problem</h4>
+<div class="paragraph">
+<p>You just got invited to this project. Its original owner just left the company. There is no documentation. Nobody owns it. What to do?</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_27">Solution</h4>
 <div class="paragraph">
 <p>One of good ways to start is to see what is there. How many datasets, how much data is there how many processes etc. This is failry time consuming. You have to find the primary attributes of each dataset create a count metric and a lot of other stuff. This can be automated and it is so useful we actually created a command that does just this.</p>
 </div>
@@ -1996,7 +2075,7 @@ Size - 487117.0 rows
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 
 </div>
 </div>
@@ -2006,13 +2085,13 @@ Size - 487117.0 rows
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_27">Problem</h4>
+<h4 id="_problem_28">Problem</h4>
 <div class="paragraph">
 <p>Not too recently Date fact was the only way how to compute with dates and get answers like "Give me number of days an order was opened". For some time now you can do the same computations with attributes. This can simplify your ETL and model a bit so why not to give it a try. Unfortunately people are often scared of how much work that might be.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="paragraph">
 <p>Before we start tackling that let&#8217;s first try to look around and see how much work is ahead of us. Removing Date facts can be only partially automated so it is good to have an idea if you can do this in a day or hire an army of interns for 2 weeks.</p>
 </div>
@@ -2053,7 +2132,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_19">Discussion</h4>
+<h4 id="_discussion_20">Discussion</h4>
 
 </div>
 </div>
@@ -2063,11 +2142,11 @@ end</code></pre>
 <p>by Anonymous Author</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_28">Problem</h4>
+<h4 id="_problem_29">Problem</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_solution_28">Solution</h4>
+<h4 id="_solution_29">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># THIS IS NOT IMPLEMENTED YET</code></pre>
@@ -2075,7 +2154,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 
 </div>
 </div>
@@ -2095,13 +2174,13 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_problem_29">Problem</h4>
+<h4 id="_problem_30">Problem</h4>
 <div class="paragraph">
 <p>Often you are working with a project that was not created using SDK so you do not have a textual representation of the logical model. You would still like to work with it in the same manner as it was a local blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to get the model of a current project and behind scenes it translates it into a blueprint. Let&#8217;s have a look at a simplified example how to work with it</p>
 </div>
@@ -2131,7 +2210,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_21">Discussion</h4>
+<h4 id="_discussion_22">Discussion</h4>
 
 </div>
 </div>
@@ -2146,13 +2225,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_31">Problem</h4>
 <div class="paragraph">
 <p>You want to be sure that reports return expected results. This is a basis for delving later into test driven BI projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2170,7 +2249,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_22">Discussion</h4>
+<h4 id="_discussion_23">Discussion</h4>
 
 </div>
 </div>
@@ -2180,90 +2259,59 @@ end</code></pre>
 <h2 id="_06_working_with_projects">06 Working With Projects</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_creating_a_small_project_in_one_page_of_code">Creating a small project in one page of code</h3>
+<h3 id="_create_an_empty_project">Create an empty project</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_31">Problem</h4>
+<h4 id="_problem_32">Problem</h4>
 <div class="paragraph">
-<p>You would like to create the whole project from code for whatever reason.</p>
+<p>You need to create a project programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_12">Prerequisites</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Project token</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_31">Solution</h4>
-<div class="paragraph">
-<p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
-</div>
+<h4 id="_solution_32">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
 
 require 'gooddata'
 
-GoodData.with_connection('user', 'password') do |client|
-  blueprint = GoodData::Model::ProjectBlueprint.build('Acme project') do |p|
-    p.add_date_dimension('committed_on')
-
-    p.add_dataset('devs') do |d|
-      d.add_anchor('dev_id')
-      d.add_label('email', :reference =&gt; 'dev_id')
-    end
-
-    p.add_dataset('commits') do |d|
-      d.add_fact('lines_changed')
-      d.add_date('committed_on', :dataset =&gt; 'committed_on')
-      d.add_reference('dev_id', :dataset =&gt; 'devs')
-    end
-  end
-
-  project = GoodData::Project.create_from_blueprint(blueprint, auth_token: '')
-  puts "Created project #{project.pid}"
-
-  GoodData::with_project(project) do |p|
-    # Load data
-    commits_data = [
-      %w(lines_changed committed_on dev_id repo_id),
-      [1, '01/01/2014', 1, 1],
-      [3, '01/02/2014', 2, 2],
-      [5, '05/02/2014', 3, 1]]
-    GoodData::Model.upload_data(commits_data, blueprint, 'commits')
-
-    devs_data = [
-      ["dev_id", "email"],
-      [1, 'tomas@gooddata.com'],
-      [2, 'petr@gooddata.com'],
-      [3, 'jirka@gooddata.com']]
-    GoodData::Model.upload_data(devs_data, blueprint, 'devs')
-
-    # create a metric
-    metric = p.facts('fact.commits.lines_changed').create_metric
-    metric.save
-
-    report = p.create_report(title: 'Awesome_report', top: [metric], left: ['label.devs.dev_id.email'])
-    report.save
-
-    ['john@example.com'].each do |email|
-      p.invite(email, 'admin', "Guys checkout this report #{report.browser_uri}")
-    end
-  end
+GoodData.with_connection('user', 'password') do |c|
+  GoodData::Project.create(title: 'This is my new project', auth_token: 'TOKEN')
 end</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_23">Discussion</h4>
+<h4 id="_discussion_24">Discussion</h4>
 
+</div>
+</div>
+<div class="sect2">
+<h3 id="_renaming_a_project">Renaming a project</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_33">Problem</h4>
+<div class="paragraph">
+<p>You need to rename the project.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_33">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |c|
+  project = GoodData.use('project_id')
+  project.title = "New and much better title"
+  project.save
+end</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2272,13 +2320,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_32">Problem</h4>
+<h4 id="_problem_34">Problem</h4>
 <div class="paragraph">
 <p>You would like to create an exact copy of a project</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="paragraph">
 <p>You can use cloning capabilities.</p>
 </div>
@@ -2299,7 +2347,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_24">Discussion</h4>
+<h4 id="_discussion_25">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project. In the example above we explicitly specified the params so you can see how it works.</p>
 </div>
@@ -2311,13 +2359,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_33">Problem</h4>
+<h4 id="_problem_35">Problem</h4>
 <div class="paragraph">
 <p>You would like to clone project to a different organization</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_35">Solution</h4>
 <div class="paragraph">
 <p>Usually you would be happy using <code>project.clone</code> but sometimes you need more granularity in controlling who is doing what. In this recipe we are going to explain what is happening when you clone a project and how you can leverage the lower level API.</p>
 </div>
@@ -2354,36 +2402,6 @@ to_project.import_clone(export_token)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_25">Discussion</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_create_an_empty_project">Create an empty project</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_34">Problem</h4>
-<div class="paragraph">
-<p>You need to create a project programmatically.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_34">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |c|
-  GoodData::Project.create(title: 'This is my new project', auth_token: 'TOKEN')
-end</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
 <h4 id="_discussion_26">Discussion</h4>
 
 </div>
@@ -2394,16 +2412,18 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_35">Problem</h4>
+<h4 id="_problem_36">Problem</h4>
 <div class="paragraph">
 <p>You would like to spin up a project from a blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_35">Solution</h4>
+<h4 id="_solution_36">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
 
 GoodData.with_connection do |c|
 
@@ -2477,38 +2497,6 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_a_project_from_template">Creating a project from template</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_36">Problem</h4>
-<div class="paragraph">
-<p>You have a template created for you and you would like to spin a project from this template.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_36">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |c|
-  project = GoodData::Project.create(title: 'New project',
-                                     template: 'https://secure.gooddata.com/projectTemplates/SuperSoda/1/',
-                                     auth_token: 'token')
-end</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_discussion_28">Discussion</h4>
-
-</div>
-</div>
-<div class="sect2">
 <h3 id="_getting_a_blueprint_from_existing_project">Getting a blueprint from existing project</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
@@ -2537,29 +2525,124 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_renaming_a_project">Renaming a project</h3>
+<h3 id="_creating_a_project_from_template">Creating a project from template</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_38">Problem</h4>
 <div class="paragraph">
-<p>You need to rename the project.</p>
+<p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_38">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
 
 GoodData.with_connection('user', 'password') do |c|
-  project = GoodData.use('project_id')
-  project.title = "New and much better title"
-  project.save
+  project = GoodData::Project.create(title: 'New project',
+                                     template: 'https://secure.gooddata.com/projectTemplates/SuperSoda/1/',
+                                     auth_token: 'token')
 end</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_28">Discussion</h4>
+<div class="paragraph">
+<p>Note that people behind SDK do not endorse usage of templates so consider it being here for legacy purposes.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_small_project_in_one_page_of_code">Creating a small project in one page of code</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_39">Problem</h4>
+<div class="paragraph">
+<p>You would like to create the whole project from code for whatever reason.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_12">Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Project token</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_39">Solution</h4>
+<div class="paragraph">
+<p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection('user', 'password') do |client|
+  blueprint = GoodData::Model::ProjectBlueprint.build('Acme project') do |p|
+    p.add_date_dimension('committed_on')
+
+    p.add_dataset('devs') do |d|
+      d.add_anchor('dev_id')
+      d.add_label('email', :reference =&gt; 'dev_id')
+    end
+
+    p.add_dataset('commits') do |d|
+      d.add_fact('lines_changed')
+      d.add_date('committed_on', :dataset =&gt; 'committed_on')
+      d.add_reference('dev_id', :dataset =&gt; 'devs')
+    end
+  end
+
+  project = GoodData::Project.create_from_blueprint(blueprint, auth_token: '')
+  puts "Created project #{project.pid}"
+
+  GoodData::with_project(project) do |p|
+    # Load data
+    commits_data = [
+      %w(lines_changed committed_on dev_id repo_id),
+      [1, '01/01/2014', 1, 1],
+      [3, '01/02/2014', 2, 2],
+      [5, '05/02/2014', 3, 1]]
+    GoodData::Model.upload_data(commits_data, blueprint, 'commits')
+
+    devs_data = [
+      ["dev_id", "email"],
+      [1, 'tomas@gooddata.com'],
+      [2, 'petr@gooddata.com'],
+      [3, 'jirka@gooddata.com']]
+    GoodData::Model.upload_data(devs_data, blueprint, 'devs')
+
+    # create a metric
+    metric = p.facts('fact.commits.lines_changed').create_metric
+    metric.save
+
+    report = p.create_report(title: 'Awesome_report', top: [metric], left: ['label.devs.dev_id.email'])
+    report.save
+
+    ['john@example.com'].each do |email|
+      p.invite(email, 'admin', "Guys checkout this report #{report.browser_uri}")
+    end
+  end
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_29">Discussion</h4>
+
 </div>
 </div>
 </div>
@@ -2568,18 +2651,100 @@ end</code></pre>
 <h2 id="_07_deployment_recipes">07 Deployment Recipes</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_deploying_a_process_programmatically">Deploying a process programmatically</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_40">Problem</h4>
+<div class="paragraph">
+<p>You would like to deploy a CloudConnect or Ruby process to GoodData platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_40">Solution</h4>
+<div class="paragraph">
+<p>SDK allows you to deploy a process. Just point it to a file, directory or a zipped archive and that will be deployed.
+Below is an example of CloudConnect process deployment. When deploying CloudConnect processes you typically want to take the whole folder structure of a CloudConnect project and deploy it. So you will want to pass either path to the root folder of the structure or you can zip it first and pass just a path to the zip archive. The below example points to the root folder of a CloudConnect project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  project = client.projects('project_id')
+  project.deploy_process('./path/to_cloud_connect_directory',
+    name: 'Test ETL Process')
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default the process is deployed as a CloudConnect process. You can deploy as other types by providing specific type (CloudConnect is the only one generally available).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  project = client.projects('project_id')
+  project.deploy_process('./path/to_cloud_connect_process.rb',
+    type: :ruby,
+    name: 'Test ETL Process')
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This also shows you how to deploy a single file.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_41">Problem</h4>
+<div class="paragraph">
+<p>You would like to redeploy a CloudConnect or Ruby process to GoodData platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_41">Solution</h4>
+<div class="paragraph">
+<p>SDK allows you a nice shorthand for redeploying a process all you have to do is to get a handle on the process. Here we are using hypothetical process id, but you can use any traditional way to get a process. Take note that the same deployment rules as in <code>project.deploy_process</code> apply. You can deploy a directory file or a compressed package.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.connect
+project = client.projects('project_id')
+process = project.processes('process_id')
+process.deploy('path_to_your_process')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_adding_a_schedule_to_a_deployed_process">Adding a schedule to a deployed process</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_39">Problem</h4>
+<h4 id="_problem_42">Problem</h4>
 <div class="paragraph">
 <p>You have a process deployed but you would like to add a schedule to it so the process is executed regularly</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_39">Solution</h4>
+<h4 id="_solution_42">Solution</h4>
 <div class="paragraph">
 <p>You can easily add a time based schedule to any process. There are couple of advantages to a schedule as compared to a process. Schedule executions are logged and logs are kept around for some time (~10 days). Also schedule keeps list of parameters so you create it once and you do not need to care about them anymore.</p>
 </div>
@@ -2590,7 +2755,7 @@ end</code></pre>
 require 'gooddata'
 
 GoodData.with_connection do |client|
-  project = GoodData.use('project_id')
+  project = client.project('project_id')
   process = project.deploy_process('./hello_world.rb',
                                    type: :ruby,
                                    name: "example_process")
@@ -2600,7 +2765,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_29">Discussion</h4>
+<h4 id="_discussion_30">Discussion</h4>
 
 </div>
 </div>
@@ -2610,17 +2775,18 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_40">Problem</h4>
+<h4 id="_problem_43">Problem</h4>
 <div class="paragraph">
 <p>You would like to disable all schedules on all processes on all the projects you have access to and have sufficient privileges to do so</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_40">Solution</h4>
+<h4 id="_solution_43">Solution</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby">require 'gooddata'
-require 'pmap'
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
 
 client = GoodData.connect
 GoodData.with_connection do |client|
@@ -2634,7 +2800,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_30">Discussion</h4>
+<h4 id="_discussion_31">Discussion</h4>
 
 </div>
 </div>
@@ -2644,13 +2810,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_41">Problem</h4>
+<h4 id="_problem_44">Problem</h4>
 <div class="paragraph">
 <p>You have a process with a schedule. You would like to run it out of schedule.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_41">Solution</h4>
+<h4 id="_solution_44">Solution</h4>
 <div class="paragraph">
 <p>Since schedule already have information about executable and parameters stored it is very easy. You just need to find the schedule and execute it.</p>
 </div>
@@ -2668,7 +2834,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_31">Discussion</h4>
+<h4 id="_discussion_32">Discussion</h4>
 
 </div>
 </div>
@@ -2678,13 +2844,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_42">Problem</h4>
+<h4 id="_problem_45">Problem</h4>
 <div class="paragraph">
 <p>You would like to execute a process without a schedule.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_42">Solution</h4>
+<h4 id="_solution_45">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to execute a process. This is not something that you should do regularly since you have to specify the parameters during execution and logs are not kept for individual runs but it might be occasionally useful.</p>
 </div>
@@ -2705,7 +2871,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_32">Discussion</h4>
+<h4 id="_discussion_33">Discussion</h4>
 <div class="paragraph">
 <p>There are also couple of other useful tricks. You might execute arbitrary process that is already deployed. You just need to get a handle of it. Let&#8217;s find a process based on its id. There is actually a helper for that.</p>
 </div>
@@ -2743,106 +2909,55 @@ end</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_deploying_a_process_programmatically">Deploying a process programmatically</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_43">Problem</h4>
-<div class="paragraph">
-<p>You would like to deploy a CloudConnect or Ruby process to GoodData platform.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_43">Solution</h4>
-<div class="paragraph">
-<p>SDK allows you to deploy a process. Just point it to a file, directory or a zipped archive and that will be deployed.
-Below is an example of CloudConnect process deployment. When deploying CloudConnect processes you typically want to take the whole folder structure of a CloudConnect project and deploy it. So you will want to pass either path to the root folder of the structure or you can zip it first and pass just a path to the zip archive. The below example points to the root folder of a CloudConnect project.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection do |client|
-project = GoodData.use('project_id')
-project.deploy_process('./path/to_cloud_connect_directory',
-name: 'Test ETL Process')
-end</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default the process is deployed as a CloudConnect process. You can deploy as other types by providing specific type (CloudConnect is the only one generally available).</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection do |client|
-project = GoodData.use('project_id')
-project.deploy_process('./path/to_cloud_connect_process.rb',
-type: :ruby,
-name: 'Test ETL Process')
-end</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This also shows you how to deploy a single file.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_redeploying_an_existing_process_programmatically">Redeploying an existing process programmatically</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_44">Problem</h4>
-<div class="paragraph">
-<p>You would like to redeploy a CloudConnect or Ruby process to GoodData platform.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_44">Solution</h4>
-<div class="paragraph">
-<p>SDK allows you a nice shorthand for redeploying a process all you have to do is to get a handle on the process. Here we are using hypothetical process id, but you can use any traditional way to get a process. Take note that the same deployment rules as in <code>project.deploy_process</code> apply. You can deploy a directory file or a compressed package.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-client = GoodData.connect
-project = client.projects('project_id')
-process = project.processes('process_id')
-process.deploy('path_to_your_process')</code></pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_08_working_with_reports">08 Working With Reports</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_46">Problem</h4>
+<div class="paragraph">
+<p>You have a report saved and you would like to get the numbers programatically.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_46">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  project = client.projects('project_id')
+  puts project.reports(1234).execute
+end</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_34">Discussion</h4>
+
+</div>
+</div>
+<div class="sect2">
 <h3 id="_you_would_like_to_compare_reports_across_projects">You would like to compare reports across projects</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_45">Problem</h4>
+<h4 id="_problem_47">Problem</h4>
 <div class="paragraph">
 <p>You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_45">Solution</h4>
+<h4 id="_solution_47">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2865,7 +2980,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_33">Discussion</h4>
+<h4 id="_discussion_35">Discussion</h4>
 <div class="paragraph">
 <p>If there is more reports this can obviously take a lot of time so it would be nice if you could do computation or reports in parallel and not sequentially. Imagine we have a list of reports that should be checked tagged by tag <code>to_check</code>. Let&#8217;s rewrite previous code snippet to be parallel friendly.</p>
 </div>
@@ -2898,37 +3013,6 @@ end</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_you_would_like_to_compute_an_existing_report">You would like to compute an existing report</h3>
-<div class="paragraph">
-<p>by Tomas Svarovsky</p>
-</div>
-<div class="sect3">
-<h4 id="_problem_46">Problem</h4>
-<div class="paragraph">
-<p>You have a report saved and you would like to get the numbers programatically.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_solution_46">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
-  puts project.reports(1234).execute
-end</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_discussion_34">Discussion</h4>
-
-</div>
-</div>
-<div class="sect2">
 <h3 id="_adding_user_to_organization_2">Adding user to organization</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
@@ -2937,7 +3021,7 @@ end</code></pre>
 <div class="sect2">
 <h3 id="_warning_still_in_development">Warning - still in development</h3>
 <div class="sect3">
-<h4 id="_problem_47">Problem</h4>
+<h4 id="_problem_48">Problem</h4>
 <div class="paragraph">
 <p>You would like to exchange a date dimension in the project for a different one</p>
 </div>
@@ -2953,7 +3037,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_47">Solution</h4>
+<h4 id="_solution_48">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -2994,13 +3078,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_48">Problem</h4>
+<h4 id="_problem_49">Problem</h4>
 <div class="paragraph">
-<p>As stated in another recipe, creating a report that counts lines in a dataset is a tedious and difficult task in UI. Why not automate it?</p>
+<p>As stated in another recipe, creating a report that counts lines in a dataset is a tedious and difficult task in UI. Why not automating it?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_48">Solution</h4>
+<h4 id="_solution_49">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -3023,9 +3107,9 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_35">Discussion</h4>
+<h4 id="_discussion_36">Discussion</h4>
 <div class="paragraph">
-<p>Currently the API is not ideal and the recipe depdends on user not messing with identifiers of anchors (connection_points) in case they are without labels.</p>
+<p>Currently the API is not ideal and the recipe depends on user not messing with identifiers of anchors (connection_points) in case they are without labels.</p>
 </div>
 </div>
 </div>
@@ -3035,13 +3119,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_49">Problem</h4>
+<h4 id="_problem_50">Problem</h4>
 <div class="paragraph">
 <p>You have a report somebody set up a colormapping. You would like to remove it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_49">Solution</h4>
+<h4 id="_solution_50">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -3061,7 +3145,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_36">Discussion</h4>
+<h4 id="_discussion_37">Discussion</h4>
 
 </div>
 </div>
@@ -3076,7 +3160,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_50">Problem</h4>
+<h4 id="_problem_51">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3088,29 +3172,8 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_50">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<h4 id="_solution_51">Solution</h4>
 
-require 'gooddata'
-
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
-
-# Connect to GoodData platform
-c = GoodData.connect('user', 'password')
-
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
-
-    attribute = project.attributes('attr.devs.dev_id')
-    metric = attribute.create_metric(:title =&gt; "Count of [#{attribute.identifier}]")
-    metric.save
-    metric.execute
-end</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -3119,7 +3182,7 @@ end</code></pre>
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_51">Problem</h4>
+<h4 id="_problem_52">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3131,31 +3194,8 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_51">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<h4 id="_solution_52">Solution</h4>
 
-require 'gooddata'
-
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
-
-# Connect to GoodData platform
-c = GoodData.connect('user', 'password')
-
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
-
-    fact = project.facts('fact.commits.lines_changed')
-    metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
-    metric.save
-    res = metric.execute
-
-    puts res
-end</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -3164,7 +3204,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_52">Problem</h4>
+<h4 id="_problem_53">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics to CSV.</p>
 </div>
@@ -3176,35 +3216,8 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_52">Solution</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
+<h4 id="_solution_53">Solution</h4>
 
-require 'gooddata'
-
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
-
-# Connect to GoodData platform
-c = GoodData.connect('user', 'password')
-
-GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
-
-    CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
-        metrics = project.metrics
-        metrics.each do |metric|
-            m = metric.pretty_expression
-            puts m
-            csv &lt;&lt; [m]
-        end
-    end
-
-    puts 'The CSV is ready!'
-end</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -3213,17 +3226,17 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_53">Problem</h4>
+<h4 id="_problem_54">Problem</h4>
 <div class="paragraph">
 <p>You want to find an object that uses a certain known object. Imagine that you would like to find all metrics using a particular attribute.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_53">Solution</h4>
+<h4 id="_solution_54">Solution</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_discussion_37">Discussion</h4>
+<h4 id="_discussion_38">Discussion</h4>
 
 </div>
 </div>
@@ -3233,13 +3246,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_54">Problem</h4>
+<h4 id="_problem_55">Problem</h4>
 <div class="paragraph">
 <p>You have a project and you would like to update formatting of all metrics programatically. They are currently formatted for dollars but you would like to change this to Euros.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_54">Solution</h4>
+<h4 id="_solution_55">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
@@ -3267,7 +3280,7 @@ end</code></pre>
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_55">Problem</h4>
+<h4 id="_problem_56">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -3279,7 +3292,7 @@ end</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_55">Solution</h4>
+<h4 id="_solution_56">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
@@ -3314,13 +3327,13 @@ end</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_56">Problem</h4>
+<h4 id="_problem_57">Problem</h4>
 <div class="paragraph">
 <p>You would like to set a User filter for one or two users. It can be a one off.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_56">Solution</h4>
+<h4 id="_solution_57">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -3391,13 +3404,13 @@ project.add_data_permissions(filters)</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_57">Problem</h4>
+<h4 id="_problem_58">Problem</h4>
 <div class="paragraph">
 <p>You have a project that has the filters set up. You would like to know who has set what.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_57">Solution</h4>
+<h4 id="_solution_58">Solution</h4>
 <div class="paragraph">
 <p>There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.</p>
 </div>
@@ -3421,13 +3434,13 @@ project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}</code
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_58">Problem</h4>
+<h4 id="_problem_59">Problem</h4>
 <div class="paragraph">
 <p>You would like to set a User filter for a bunch of users. As a source you have a CSV</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_58">Solution</h4>
+<h4 id="_solution_59">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -3524,13 +3537,13 @@ project.add_data_permissions(filters)</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_59">Problem</h4>
+<h4 id="_problem_60">Problem</h4>
 <div class="paragraph">
 <p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_59">Solution</h4>
+<h4 id="_solution_60">Solution</h4>
 
 </div>
 </div>
@@ -3539,7 +3552,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-10 15:43:05 PST
+Last updated 2015-02-11 12:53:01 PST
 </div>
 </div>
 </body>

@@ -1,0 +1,22 @@
+=== Executing a deployed process
+by Tomas Svarovsky
+
+==== Problem
+You would like to execute a process without a schedule.
+
+==== Solution
+SDK allows you to execute a process. This is not something that you should do regularly since you have to specify the parameters during execution and logs are not kept for individual runs but it might be occasionally useful.
+
+<%= render_ruby 'src/07_deployment_recipes/executing_process.rb' %>
+
+==== Discussion
+
+There are also couple of other useful tricks. You might execute arbitrary process that is already deployed. You just need to get a handle of it. Let's find a process based on its id. There is actually a helper for that.
+
+<%= render_ruby 'src/07_deployment_recipes/executing_arbitrary_process.rb' %>
+
+Or you can try to find by other things. One of the more common will probably going to be name of the process.
+
+<%= render_ruby 'src/07_deployment_recipes/executing_named_process.rb' %>
+
+If you do not know what the executable is you can look it up by using `process.executables`. We recommend using the same for all processes like `main.grf` (for CloudConnect) or `main.rb`.

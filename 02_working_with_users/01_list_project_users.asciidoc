@@ -5,7 +5,7 @@ by Tomas Korcak
 You would like to list users in project
 
 ==== Prerequisites
-You have to have a user who is a project admin. If you do not have that please follow recipe XY.
+You have to have a user who is a project admin.
 
 ==== Solution
 

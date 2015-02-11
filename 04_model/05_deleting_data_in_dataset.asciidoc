@@ -1,0 +1,28 @@
+=== Removing data from dataset(s)
+by Tomas Svarovsky
+
+==== Problem
+Sometimes you need to get rid of the data in project. SDK allows to do it quickly and elegantly.
+
+==== Solution
+What happens underneath is that you can call a MAQL expression along the lines of
+
+  SYNCHRONIZE {dataset.users};
+
+for each dataset you would like to clear. You can achieve the same like this.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  project = GoodData.use('project_id')
+  dataset = project.datasets.find {|d| d.title == 'Users'}
+  dataset.delete_data # dataset.synchronize works as well
+end
+
+----
+
+==== Discussion

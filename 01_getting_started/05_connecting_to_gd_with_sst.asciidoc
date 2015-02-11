@@ -28,4 +28,4 @@ end
 
 ==== Discussion
 
-Never share the token with other people. It is the same thing as you name and password. You can do almost everything with it.
+Never share the token with other people. It is the same thing as your login and password. You can do almost everything with it.

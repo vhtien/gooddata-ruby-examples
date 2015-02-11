@@ -1,0 +1,13 @@
+=== You would like to create a report which counts lines of all the datasets
+by Tomas Svarovsky
+
+==== Problem
+As stated in another recipe, creating a report that counts lines in a dataset is a tedious and difficult task in UI. Why not automating it?
+
+==== Solution
+
+<%= render_ruby 'src/08_working_with_reports/report_lines_count.rb' %>
+
+==== Discussion
+
+Currently the API is not ideal and the recipe depends on user not messing with identifiers of anchors (connection_points) in case they are without labels.

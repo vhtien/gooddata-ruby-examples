@@ -1,0 +1,15 @@
+=== You would like to compare reports across projects
+by Tomas Svarovsky
+
+==== Problem
+You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.
+
+==== Solution
+
+<%= render_ruby 'src/08_working_with_reports/comparing_reports.rb' %>
+
+==== Discussion
+
+If there is more reports this can obviously take a lot of time so it would be nice if you could do computation or reports in parallel and not sequentially. Imagine we have a list of reports that should be checked tagged by tag `to_check`. Let's rewrite previous code snippet to be parallel friendly.
+
+<%= render_ruby 'src/08_working_with_reports/comparing_reports_parallel.rb' %>
