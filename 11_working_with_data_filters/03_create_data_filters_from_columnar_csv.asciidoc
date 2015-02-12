@@ -1,16 +1,16 @@
-=== Quickly setting simple Data filter
+=== Setting Data permissions from CSV oriented in a columnar way
 
 by Tomas Svarovsky
 
 ==== Problem
-You would like to set a User filter for a bunch of users. As a source you have a CSV
+You would like to set a User filter for a bunch of users. As a source you have a CSV that have its data oriented in a columnar way
 
 ==== Solution
 SDK offers couple of convenience features for doing this. Let's first recap what we need to set up a filter.
 
 In this case we will be setting a simple filter in a general shape of
 
-  WHERE city IN (san francisco, prague, amsterdam)
+  WHERE city IN ('San Francisco', 'Prague', 'Amsterdam')
 
 * We need to know the values we wold like to set. In our case that is (san francisco, prague, amsterdam)
 * We need to know what label these values are related to. In our case city

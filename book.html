@@ -517,8 +517,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_quickly_setting_simple_data_filter">Quickly setting simple Data filter</a></li>
 <li><a href="#_list_the_filters">List the filters</a></li>
-<li><a href="#_quickly_setting_simple_data_filter_2">Quickly setting simple Data filter</a></li>
-<li><a href="#_setting_up_a_simple_data_filter">Setting up a simple Data filter</a></li>
+<li><a href="#_setting_data_permissions_from_csv_oriented_in_a_columnar_way">Setting Data permissions from CSV oriented in a columnar way</a></li>
+<li><a href="#_setting_data_permissions_from_csv_oriented_in_a_row_way">Setting Data permissions from CSV oriented in a row way</a></li>
 </ul>
 </li>
 </ul>
@@ -3463,14 +3463,14 @@ project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}</code
 </div>
 </div>
 <div class="sect2">
-<h3 id="_quickly_setting_simple_data_filter_2">Quickly setting simple Data filter</h3>
+<h3 id="_setting_data_permissions_from_csv_oriented_in_a_columnar_way">Setting Data permissions from CSV oriented in a columnar way</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_60">Problem</h4>
 <div class="paragraph">
-<p>You would like to set a User filter for a bunch of users. As a source you have a CSV</p>
+<p>You would like to set a User filter for a bunch of users. As a source you have a CSV that have its data oriented in a columnar way</p>
 </div>
 </div>
 <div class="sect3">
@@ -3483,7 +3483,7 @@ project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}</code
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>WHERE city IN (san francisco, prague, amsterdam)</pre>
+<pre>WHERE city IN ('San Francisco', 'Prague', 'Amsterdam')</pre>
 </div>
 </div>
 <div class="ulist">
@@ -3566,19 +3566,106 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setting_up_a_simple_data_filter">Setting up a simple Data filter</h3>
+<h3 id="_setting_data_permissions_from_csv_oriented_in_a_row_way">Setting Data permissions from CSV oriented in a row way</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
 <h4 id="_problem_61">Problem</h4>
 <div class="paragraph">
-<p>You would like to constrain users visibility of data to a group of users using Data filters.</p>
+<p>You would like to set a User filter for a bunch of users. As a source you have a CSV that have its data oriented in a row way</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_61">Solution</h4>
+<div class="paragraph">
+<p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
+</div>
+<div class="paragraph">
+<p>In this case we will be setting a simple filter in a general shape of</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>WHERE city IN ('San Francisco', 'Prague', 'Amsterdam')</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We need to know the values we wold like to set. In our case that is (san francisco, prague, amsterdam)</p>
+</li>
+<li>
+<p>We need to know what label these values are related to. In our case city</p>
+</li>
+<li>
+<p>We also need to know which user you would like to assign this filter. In this case use yourself or any other user that you like.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s say we would like to set up these specific values</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>['john.doe@example.com', 'San Francisco', 'Amsterdam']
+['jane.doe@example.com', 'San Francisco', 'Prague']</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The CSV we are going to take values from should contain the information about the first and the third item from the list. It could look like this (let&#8217;s also assume the file will be in the file named data.csv).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>john.doe@example.com,San Francisco,Amsterdam
+jane.doe@example.com,San Francisco,Prague</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you looked at previous example with columnar based CSV notice that this file looks different. There are no headers because the file can have different number of columns on each line. Also it does not make sense the file to contain information about more attributes besides city because it would be difficult to isolate the columns. It is not a typical situation to get a file in this format but it happens so we wanted to have a way to process it without additional pre-processing.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: utf-8
 
+require 'gooddata'
+
+client = GoodData.conect('login', 'password')
+project = client.projects('project_id')
+
+# First let's grab an attribute
+attribute = project.attributes('attr.region.city')
+
+# to set up a value we need a specific label
+# if the attribute has only one label, you can easily grab it by calling #primary_label
+label = attribute.primary_label
+
+# if a label has multiple labels, you can select the correct one like this
+# label = attribute.label_by_name('City name')
+
+filters = GoodData::UserFilterBuilder::get_filters('data.csv', {
+  :type =&gt; :filter,
+  :labels =&gt; [{:label =&gt; label}]
+})
+
+project.add_data_permissions(filters)</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_preconditions_2">Preconditions</h5>
+<div class="paragraph">
+<p>Several things has to be true for this code to work correctly</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All the users are present in the project</p>
+</li>
+<li>
+<p>All the values are present in the data loaded in the project</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3586,7 +3673,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-11 14:05:53 PST
+Last updated 2015-02-12 11:46:10 PST
 </div>
 </div>
 </body>
