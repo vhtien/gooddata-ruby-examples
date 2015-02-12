@@ -21,7 +21,7 @@ Let's say we would like to set up these specific values
 [source]
 ----
 ['john.doe@example.com', 'San Francisco', 'Amsterdam']
-['jane.doe@example.com', 'San Francisco', 'Prague']
+['jane.doe@example.com', 'San Francisco', 'Prague', 'Berlin']
 ----
 
 The CSV we are going to take values from should contain the information about the first and the third item from the list. It could look like this (let's also assume the file will be in the file named data.csv).
@@ -29,7 +29,7 @@ The CSV we are going to take values from should contain the information about th
 [source]
 ----
 john.doe@example.com,San Francisco,Amsterdam
-jane.doe@example.com,San Francisco,Prague
+jane.doe@example.com,San Francisco,Prague,Berlin
 ----
 
 If you looked at previous example with columnar based CSV notice that this file looks different. There are no headers because the file can have different number of columns on each line. Also it does not make sense the file to contain information about more attributes besides city because it would be difficult to isolate the columns. It is not a typical situation to get a file in this format but it happens so we wanted to have a way to process it without additional pre-processing.
