@@ -1,0 +1,21 @@
+=== Importing CSV files to ADS
+
+by Patrick McConlogue
+
+==== Problem
+You would like to import CSV files into ADS using Ruby.
+
+==== Solution
+With the GoodData DataWarehouse GEM you can import local files.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata_datawarehouse'
+
+dwh = GoodData::Datawarehouse.new('you@gooddata.com', 'yourpass', 'your ADS instance id')
+
+dwh.csv_to_new_table('my_table', 'path/to/my.csv')
+
+----

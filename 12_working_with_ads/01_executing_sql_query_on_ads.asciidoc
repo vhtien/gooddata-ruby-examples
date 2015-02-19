@@ -1,0 +1,32 @@
+=== Executing SQL Queries on ADS
+
+by Patrick McConlogue
+
+==== Problem
+You have a SQL query you would like to run on ADS (Vertica) programatically with Ruby.
+
+==== Solution
+Using the GoodData DataWarehouse GEM you have several ways to execute SQL on the platform. Note, interfacing with ADS requires the use of JRuby.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata_datawarehouse'
+
+dwh = GoodData::Datawarehouse.new('you@gooddata.com', 'yourpass', 'your ADS instance id')
+
+dwh.execute('ALTER TABLE my_table ADD COLUMN col3 INTEGER')
+
+----
+
+When running results that process or select use this method to computer the data in the enumerator.
+
+[source,ruby]
+----
+
+dwh.execute_select('SELECT * FROM my_table ORDER BY col1') do |row|
+	puts row[:col1]
+end
+
+----

@@ -1,0 +1,22 @@
+=== Create Table In ADS
+
+by Patrick McConlogue
+
+==== Problem
+Using Ruby, you would like to create a table in ADS.
+
+==== Solution
+With the GoodData DataWarehouse gem you are given many methods to work with tables. Note, interfacing with ADS requires the use of JRuby.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata_datawarehouse'
+
+dwh = GoodData::Datawarehouse.new('you@gooddata.com', 'yourpass', 'your ADS instance id')
+
+# Check if a table exists?
+dwh.create_table('my_table') # BOOL
+
+----

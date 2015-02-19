@@ -1,0 +1,27 @@
+=== Editing Tables In ADS
+
+by Patrick McConlogue
+
+==== Problem
+Using Ruby, you would like to edit, rename, validate existence, or delete a table.
+
+==== Solution
+With the GoodData DataWarehouse gem you are given many methods to work with tables. Note, interfacing with ADS requires the use of JRuby.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata_datawarehouse'
+
+dwh = GoodData::Datawarehouse.new('you@gooddata.com', 'yourpass', 'your ADS instance id')
+
+# Check if a table exists?
+dwh.table_exists?('my_table') # BOOL
+
+# Rename a table
+dwh.rename_table('my_table', 'my_new_table')
+
+# Drop table
+dwh.drop_table('my_new_table')
+----
