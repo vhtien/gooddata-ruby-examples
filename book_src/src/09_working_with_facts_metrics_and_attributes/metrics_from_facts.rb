@@ -1,17 +1,3 @@
-=== Creating metrics from facts
-
-by Patrick McConlogue, Tomas Svarovsky
-
-==== Problem
-You have several facts in a project. You would like to create some basic metric out of them.
-
-==== Prerequisites
-You have to have existing project with model and data loaded.
-
-==== Solution
-
-[source,ruby]
-----
 # encoding: UTF-8
 
 require 'gooddata'
@@ -26,5 +12,3 @@ metric.save
 res = metric.execute
 
 puts res
-
-----

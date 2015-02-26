@@ -3207,7 +3207,21 @@ end</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_solution_52">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
 
+require 'gooddata'
+
+# Connect to GoodData platform
+client = GoodData.connect('user', 'password')
+
+attribute = project.attributes('attr.devs.dev_id')
+metric = attribute.create_metric(:title =&gt; "Count of [#{attribute.identifier}]")
+metric.save
+metric.execute</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3229,7 +3243,24 @@ end</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_solution_53">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
 
+require 'gooddata'
+
+# Connect to GoodData platform
+client = GoodData.connect('user', 'password')
+project = client.project(PROJECT_ID)
+
+fact = project.facts('fact.commits.lines_changed')
+metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
+metric.save
+res = metric.execute
+
+puts res</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3251,7 +3282,28 @@ end</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_solution_54">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby"># encoding: UTF-8
 
+require 'gooddata'
+
+# Connect to GoodData platform
+client = GoodData.connect('user', 'password')
+project = client.project(PROJECT_ID)
+
+CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
+    metrics = project.metrics
+    metrics.each do |metric|
+        m = metric.pretty_expression
+        puts m
+        csv &lt;&lt; [m]
+    end
+end
+
+puts 'The CSV is ready!'</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3673,7 +3725,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-12 11:57:17 PST
+Last updated 2015-02-26 11:46:11 PST
 </div>
 </div>
 </body>

@@ -9,3 +9,19 @@ You have several attributes in a project. You would like to create some basic me
 You have to have existing project with model and data loaded.
 
 ==== Solution
+
+[source,ruby]
+----
+# encoding: UTF-8
+
+require 'gooddata'
+
+# Connect to GoodData platform
+client = GoodData.connect('user', 'password')
+
+attribute = project.attributes('attr.devs.dev_id')
+metric = attribute.create_metric(:title => "Count of [#{attribute.identifier}]")
+metric.save
+metric.execute
+
+----

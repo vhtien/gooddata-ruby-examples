@@ -1,17 +1,3 @@
-=== Write information about your metrics to CSV file
-
-by Tomas Korcak
-
-==== Problem
-You would like to store information about all project metrics to CSV.
-
-==== Prerequisites
-You have to have existing project with metric(s).
-
-==== Solution
-
-[source,ruby]
-----
 # encoding: UTF-8
 
 require 'gooddata'
@@ -30,5 +16,3 @@ CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
 end
 
 puts 'The CSV is ready!'
-
-----
