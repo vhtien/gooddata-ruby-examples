@@ -3215,6 +3215,7 @@ require 'gooddata'
 
 # Connect to GoodData platform
 client = GoodData.connect('user', 'password')
+project = client.projects(PROJECT_ID)
 
 attribute = project.attributes('attr.devs.dev_id')
 metric = attribute.create_metric(:title =&gt; "Count of [#{attribute.identifier}]")
@@ -3251,7 +3252,7 @@ require 'gooddata'
 
 # Connect to GoodData platform
 client = GoodData.connect('user', 'password')
-project = client.project(PROJECT_ID)
+project = client.projects(PROJECT_ID)
 
 fact = project.facts('fact.commits.lines_changed')
 metric = fact.create_metric(:title =&gt; "Sum of [#{fact.identifier}]")
@@ -3290,19 +3291,20 @@ require 'gooddata'
 
 # Connect to GoodData platform
 client = GoodData.connect('user', 'password')
-project = client.project(PROJECT_ID)
+project = client.projects(PROJECT_ID)
 
 CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
     metrics = project.metrics
-    metrics.each do |metric|
-        m = metric.pretty_expression
-        puts m
-        csv &lt;&lt; [m]
+    metrics.peach do |metric|
+        csv &lt;&lt; [metric.title, metric.pretty_expression]
     end
 end
 
 puts 'The CSV is ready!'</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and prettified metric MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.</p>
 </div>
 </div>
 </div>
@@ -3347,6 +3349,7 @@ require 'gooddata'
 
 client = GoodData.connect
 project = client.projects(PROJECT_ID)
+
 project.metrics.pmap do |metric|
   metric.content['format'] = metric.content['format'].gsub('$', '€')
   metric.save
@@ -3725,7 +3728,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-26 11:46:11 PST
+Last updated 2015-02-26 12:02:45 PST
 </div>
 </div>
 </body>

@@ -4,14 +4,12 @@ require 'gooddata'
 
 # Connect to GoodData platform
 client = GoodData.connect('user', 'password')
-project = client.project(PROJECT_ID)
+project = client.projects(PROJECT_ID)
 
 CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
     metrics = project.metrics
-    metrics.each do |metric|
-        m = metric.pretty_expression
-        puts m
-        csv << [m]
+    metrics.peach do |metric|
+        csv << [metric.title, metric.pretty_expression]
     end
 end
 
