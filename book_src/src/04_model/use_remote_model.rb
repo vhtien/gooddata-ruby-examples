@@ -10,7 +10,7 @@ GoodData.with_connection do |client|
   blueprint.datasets.count # => 3
 
   # gives you list of attributes in the whole project
-  blueprint.fields.filter { |x| x[:type].to_s == 'attribute' }
+  blueprint.fields.select { |x| x[:type].to_s == 'attribute' }
 
   # lists datasets that do have anchor (connection point)
   blueprint.datasets.select &:anchor?
