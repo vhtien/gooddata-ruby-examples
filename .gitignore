@@ -10,7 +10,7 @@
 /test/version_tmp/
 /tmp/
 
-# book.html
+book.html
 Gemfile.lock
 
 ## Specific to RubyMotion:

@@ -25,4 +25,23 @@ task :usage do
   puts 'No rake task specified, use rake -T to list them'
 end
 
+# deploy task is in the root, because we need to push stuff to gh-pages branch
+# where the lib directory doesn't exist
+desc 'Deploy the book to the web'
+task :deploy do
+  last_commit = `git log -n 1`.split("\n")[0].split(' ')[1] rescue 'unknown'
+  # build the book
+  Rake::Task['build'].invoke
+
+  # checkout the gh-pages branch
+  `git checkout gh-pages`
+
+  # make it an index and push it there
+  `mv book.html index.html
+   git add index.html
+   git commit -m "new cookbook version from master #{last_commit}"
+   git push origin gh-pages
+   git checkout master`
+end
+
 task :default => [:usage]
