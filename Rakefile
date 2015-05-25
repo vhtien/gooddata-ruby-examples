@@ -34,7 +34,7 @@ task :deploy do
   Rake::Task['build'].invoke
 
   # checkout the gh-pages branch
-  `git checkout gh-pages`
+  system('git checkout gh-pages') or fail "Checkout failed"
 
   # make it an index and push it there
   `mv book.html index.html
