@@ -32,7 +32,7 @@ We can easily do the same things with these 3 lines of code respectively. So add
   project = client.projects('project_id')
   puts client.projects
 
-Done. Save it. 
+Done. Save it.
 
 Now you can run it by using this command
 
