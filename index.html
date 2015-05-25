@@ -2737,10 +2737,10 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
   <span class="constant">GoodData</span>::with_project(project) <span class="keyword">do</span> |p|
     <span class="comment"># Load data</span>
     commits_data = [
-      <span class="string"><span class="delimiter">%w(</span><span class="content">lines_changed committed_on dev_id repo_id</span><span class="delimiter">)</span></span>,
-      [<span class="integer">1</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/01/2014</span><span class="delimiter">'</span></span>, <span class="integer">1</span>, <span class="integer">1</span>],
-      [<span class="integer">3</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">2</span>, <span class="integer">2</span>],
-      [<span class="integer">5</span>, <span class="string"><span class="delimiter">'</span><span class="content">05/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">3</span>, <span class="integer">1</span>]]
+      <span class="string"><span class="delimiter">%w(</span><span class="content">lines_changed committed_on dev_id</span><span class="delimiter">)</span></span>,
+      [<span class="integer">1</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/01/2014</span><span class="delimiter">'</span></span>, <span class="integer">1</span>],
+      [<span class="integer">3</span>, <span class="string"><span class="delimiter">'</span><span class="content">01/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">2</span>],
+      [<span class="integer">5</span>, <span class="string"><span class="delimiter">'</span><span class="content">05/02/2014</span><span class="delimiter">'</span></span>, <span class="integer">3</span>]]
     <span class="constant">GoodData</span>::<span class="constant">Model</span>.upload_data(commits_data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">commits</span><span class="delimiter">'</span></span>)
 
     devs_data = [
@@ -3819,7 +3819,7 @@ project.add_data_permissions(filters)</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-20 16:16:39 CEST
+Last updated 2015-05-25 14:11:22 CEST
 </div>
 </div>
 </body>
