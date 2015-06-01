@@ -5,7 +5,7 @@ by Tomas Svarovsky
 You would like to add a users to project programmatically. You already have all the user profiles created in domain (organization). You potentially have many projects that you would like to populate.
 
 ==== Prerequisites
-You have to have a user who is an admin of an organization. If you do not have that please consult (xy) to get one.
+You have to have a user who is an admin of an organization. If you don't have the organization admin account, please contact your primary GoodData contact person or GoodData support (e-mail support@gooddata.com). 
 You have a domain populated with user. If you do not have a look at recipe (z)
 
 We assume that you have a file with details which users should be added to a project. The file has to contain three pieces of information. Who you would like to add to a project, role that the user should take on in that project and which project he should be added to. In the first example we will assume all the users should be added to a single project so we will have only 2 columns.

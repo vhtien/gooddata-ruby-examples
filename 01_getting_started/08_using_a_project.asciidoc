@@ -35,5 +35,3 @@ GoodData.with_connection('user', 'password') do |client|
 end
 
 ----
-
-==== Discussion
