@@ -1,13 +1,13 @@
 <%= render 'src/_general/header.rb' %>
 
 GoodData.with_connection do |c|
-    project = c.project(PROJECT_ID)
-
+  GoodData.with_project(PROJECT_ID) do |project|
     path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
     puts "Loading #{path}"
     CSV.foreach(path, :headers => true, :return_headers => false) do |user|
-        email = user[0]
-        role = user[1]
-        project.invite(email, role)
+      email = user[0]
+      role = user[1]
+      project.invite(email, role)
     end
+  end
 end

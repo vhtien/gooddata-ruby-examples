@@ -27,7 +27,7 @@ GoodData.with_connection do |c|
 
     path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
     puts "Loading #{path}"
-    CSV.foreach(path) do |user|
+    CSV.foreach(path, :headers => true, :return_headers => false) do |user|
         email = user[0]
         role = user[1]
         project.invite(email, role)
