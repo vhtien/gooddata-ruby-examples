@@ -32,10 +32,17 @@ We can easily do the same things with these 3 lines of code respectively. So add
   project = client.projects('project_id')
   puts client.projects
 
-Done. Save it. 
+Done. Save it.
 
 Now you can run it by using this command
 
   ruby my_first_sdk_program.rb
 
 ==== Discussion
+
+By default GoodData SDK logs basic information to the standard output. Right now there isn't much of the logs but we're getting better. If you want to see every request and response the SDK is doing, use
+
+  require 'gooddata'
+  GoodData.logger.level = Logger::DEBUG
+
+Be prepared to see a lot of rubbish popping up. This replaces the GoodData.logging_on function used in previous versions.
