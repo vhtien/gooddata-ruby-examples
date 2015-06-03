@@ -18,6 +18,9 @@ Gemfile.lock
 .repl_history
 build/
 
+## mac files
+.DS_Store
+
 ## Documentation cache and generated files:
 /.yardoc/
 /_yardoc/
