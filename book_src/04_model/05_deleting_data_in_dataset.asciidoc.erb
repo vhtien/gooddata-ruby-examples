@@ -2,10 +2,10 @@
 by Tomas Svarovsky
 
 ==== Problem
-Sometimes you need to get rid of the data in project. SDK allows to do it quickly and elegantly.
+Sometimes you need to delete all data from a dataset.
 
 ==== Solution
-What happens underneath is that you can call a MAQL expression along the lines of
+SDK calls the MAQL SYNCHRONUIZE command on the dataset
 
   SYNCHRONIZE {dataset.users};
 

@@ -2,13 +2,15 @@
 
 require 'gooddata'
 
-client = GoodData.connect
-project = client.projects('project_id')
+GoodData.with_connection do |c|
+  GoodData.with_project('project_pid') do |project|
 
-# You can select the dataset in several ways
-dataset = project.datasets.find {|d| d.title == 'Users'}
-dataset = project.datasets('dataset.users')
-dataset = project.datasets(345)
-dataset.delete_data
-# dataset.synchronize works as well
-
+    # You can select the dataset in several ways
+    dataset = project.datasets.find {|d| d.title == 'Users'}
+    dataset = project.datasets('dataset.users')
+    dataset = project.datasets(345)
+    # dataset.synchronize works as well
+    dataset.delete_data
+    
+  end
+end

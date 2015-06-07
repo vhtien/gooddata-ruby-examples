@@ -3,8 +3,11 @@
 require 'gooddata'
 
 GoodData.with_connection do |c|
-  project = GoodData.use('project_id')
-  blueprint = project.blueprint
-  count = blueprint.datasets.first.count(project)
-  puts "Number of lines in a dataset is #{count}"
+  GoodData.with_project('project_pid') do |project|
+    blueprint = project.blueprint
+    blueprint.datasets.each do |dataset|
+      count = dataset.count(project)
+      puts "Number of record in a dataset #{dataset.title} is #{count}"
+    end
+  end
 end

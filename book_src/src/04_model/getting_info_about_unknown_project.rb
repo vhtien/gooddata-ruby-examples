@@ -2,7 +2,8 @@
 
 require 'gooddata'
 
-GoodData.with_connection('user', 'password') do |client|
-  project = GoodData.use('project_id')
-  project.info
+GoodData.with_connection do |c|
+  GoodData.with_project('project_pid') do |project|
+    project.info
+  end
 end
