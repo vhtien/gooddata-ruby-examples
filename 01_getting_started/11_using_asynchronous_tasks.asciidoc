@@ -1,4 +1,4 @@
-=== Using asynchronous tasks with timouts
+=== Using asynchronous tasks with timeouts
 by Tomas Svarovsky
 
 ==== Problem

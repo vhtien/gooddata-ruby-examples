@@ -7,7 +7,7 @@ You already know how to do many things but now you would like to do the same thi
 ==== Solution
 The basis of the solution is pretty simple. We need to iterate over projects and perform an operation on each of them.
 
-Lets illustrate this on a simple example. We will compile a list of all reports from user's projects that have been changed since last week by somebody from GoodData. If there is more than one revision in a report we'll assume that the report is changing frequently and create a scheduled email for QA to validate the report. We'll also tag all reports with "to_be_checked" tag to make their life a little easier.
+Lets illustrate this on a simple example. We will compile a list of all reports from user's projects that have been changed since last week by somebody from GoodData. If there is more than one revision in a report we'll assume that the report is changing frequently and tag it with 'to_be_checked' tag for QA to validate the report.
 
 This is a lot to do. Let's try to break the tasks down to smaller pieces.
 
@@ -20,16 +20,14 @@ This is a lot to do. Let's try to break the tasks down to smaller pieces.
 <%= render_ruby 'src/03_automation_recipes/select_reports.rb' %>
 
 ===== Remove tag
+We'll first remove the 'to_be_checked' tag from all reports
 
 <%= render_ruby 'src/03_automation_recipes/remove_tag.rb' %>
 
 ===== Add tag
+Then we'll add the 'to_be_checked' tag to all qualifying reports
 
 <%= render_ruby 'src/03_automation_recipes/add_tag.rb' %>
-
-===== Schedule
-
-<%= render_ruby 'src/03_automation_recipes/schedule.rb' %>
 
 ===== Full example - all pieces together
 

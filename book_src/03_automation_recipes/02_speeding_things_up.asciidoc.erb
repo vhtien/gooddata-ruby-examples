@@ -5,7 +5,7 @@ by Tomas Svarovsky
 You created the script. It works but it is slow. Let's have at one trick how to possibly make it faster.
 
 ==== Solution
-Often times if you look at the API the structure is orthogonal to your usecase. For example you might need to invite user to many projects but the API has only an endpoint to invite a user to single project. If you do something like.
+Often if you look at the API the structure is orthogonal to your usecase. For example you might need to invite user to many projects but the API has only an endpoint to invite a user to single project. If you do something like.
 
 [source,ruby]
 ----
@@ -14,9 +14,9 @@ projects.map do |project|
 end
 ----
 
-it will work but it will create as many requests as there are projects. The requests will happen sequentially and this takes time. Just by some back of the napkin computation you can estimate. Let's say we have 1000 projects and invitation request takes 500ms (half a second). This means it will take 500 seconds that is almost 10 mins.
+it will work but it will create as many requests as there are projects. The requests will be processed sequentially and this takes time. Just by some back of the napkin computation you can estimate. Let's say we have 1000 projects and invitation request takes 500ms (half a second). This means it will take 500 seconds that is almost 10 mins.
 
-The nice thing is that the requests for inviting the user to each project are totally independent. I do not need to one invitation to finish before I can start inviting him into another. This limitation is completely technical not in the problem domain. If we had some programming technique how to run multiple things at the same time it would be great. It turns out that we have such a thing without introducing any more complexity.
+The nice thing is that the requests for inviting user to each project are totally independent. You don't need a project invitation to finish before you invite the user to another project. So you can invoke multiple invitations at the same time. The following code invokes multiple invitations in parallel
 
 [source,ruby]
 ----
@@ -25,6 +25,4 @@ projects.pmap do |project|
 end
 ----
 
-Here we just changed one letter. We are using pmap which stands for parallel map. It behaves exactly the same as map with one difference. Block for each item of the array runs in a separate thread. You do not need to think about it it just happens faster. We have currently 20 thread reserved so it will run 20 times faster. that is under 0.5 mins.
-
-==== Discussion
+We've just changed single letter. We are using pmap which stands for parallel map. It behaves exactly the same as map with one difference. Block for each item of the array runs in a separate thread. You do not need to think about it it just happens faster. We have currently 20 thread reserved so it will run 20 times faster. that is under 0.5 mins.
