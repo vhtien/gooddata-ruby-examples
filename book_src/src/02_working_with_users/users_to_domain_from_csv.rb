@@ -2,13 +2,12 @@
 
 require 'gooddata'
 
-GoodData.with_connection('user', 'password') do |client|
+client = GoodData.connect
 
-  domain = client.domain('domain-name')
-  users = []
-  CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
-    users << row.to_hash.symbolize_keys
-  end
-
-  domain.create_users(users)
+domain = client.domain('domain-name')
+users = []
+CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
+  users << row.to_hash.symbolize_keys
 end
+
+domain.create_users(users)

@@ -10,7 +10,8 @@ You have to have a user who is an admin of an organization. If you don't have th
 We assume that you have a file with details handy. The file can look for example like this
 
     login,first_name,last_name,password,role
-    john@example.com,John,Doe,12345678,admin
+    john@example.com,John,Smith,12345678,admin
+    john.doe@example.com,John,Doe,87616393,admin
 
 The headers we used are defaults. If you have different ones you will have to do some mangling (see the recipe Adding user to organization from CSV file above). Minimal information that you have to provide for the user creation to be successful is login.
 
@@ -35,7 +36,10 @@ GoodData.with_connection('user', 'password') do |client|
     CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
       users << row.to_hash.symbolize_keys
     end
-    project.import_users(users, domain: domain, whitelists: [/john\.doe\/])
+    domain.create_users(users)
+    project.import_users(users, domain: domain)
   end
 end
+
+
 ----

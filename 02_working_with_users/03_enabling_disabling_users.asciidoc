@@ -26,7 +26,6 @@ GoodData.with_connection do |c|
     user.enable
   end
 end
-
 ----
 
 Disable all users in GoodData project
@@ -38,6 +37,7 @@ Disable all users in GoodData project
 require 'gooddata'
 
 # Connect to platform using credentials
+
 GoodData.with_connection do |c|
   GoodData.with_project('project_pid') do |project|
     # We collect all users minus current user
@@ -47,7 +47,6 @@ GoodData.with_connection do |c|
     users_to_disable.pmap {|u| u.disable}
   end
 end
-
 ----
 
 If you want to keep more than one user you can do something like this
