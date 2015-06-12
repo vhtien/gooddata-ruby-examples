@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You created a new version of a project. You made some changes to the reports but you would like to verify that the report is still computing the same numbers.
+You created a new version of a project. You made some changes to the reports and you would like to verify that the report is still computing the same numbers.
 
 ==== Solution
 
@@ -12,7 +12,7 @@ You created a new version of a project. You made some changes to the reports but
 
 require 'gooddata'
 
-GoodData.with_connection do |client|
+GoodData.with_connection do |c|
   original_project = c.projects('project_id_1')
   new_project = c.projects('project_id_2')
 
