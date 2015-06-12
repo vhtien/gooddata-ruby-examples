@@ -3,14 +3,12 @@
 by Tomas Korcak
 
 ==== Problem
-You would like to store information about all project metrics to CSV.
+You would like to store information about all project metrics in CSV.
 
 ==== Prerequisites
 You have to have existing project with metric(s).
 
 ==== Solution
-
-
 <%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/metrics_to_csv.rb' %>
 
-It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and prettified metric MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.
+It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and pretty printed metric's MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.

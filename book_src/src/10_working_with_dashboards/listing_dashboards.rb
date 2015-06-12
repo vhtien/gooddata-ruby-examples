@@ -2,13 +2,9 @@
 
 require 'gooddata'
 
-# Project ID
-PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
-
-GoodData.with_connection do |client|
-    project = client.project(PROJECT_ID)
-
+GoodData.with_connection do |c|
+  GoodData.with_project('we1vvh4il93r0927r809i3agif50d7iz') do |project|
     # List all dashboards
-    dashboards = project.dashboards
-    pp dashboards
+    pp project.dashboards
+  end
 end
