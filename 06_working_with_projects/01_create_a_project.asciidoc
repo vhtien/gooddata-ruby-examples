@@ -20,5 +20,3 @@ puts project.uri
 puts project.title # => 'My project title'
 
 ----
-
-==== Discussion

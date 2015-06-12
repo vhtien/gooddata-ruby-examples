@@ -23,4 +23,4 @@ cloned_project = project.clone(title: 'New title',
 ----
 
 ==== Discussion
-There are two options that you can specify. You can pick if you want to clone just structures or also data. Default is with data. Also you can pick if you want to transfer all users to the new project. Default is no users. Only you will be in the new project. In the example above we explicitly specified the params so you can see how it works.
+There are two options that you can specify. You can pick if you want to clone just metadata (e.g. attributes, facts, metrics reports, dashboards etc.) or also data (this is default). Also you can choose if you want to transfer all old project's users to the new project. No users are transferred by default. In the example above we explicitly specified the _users_ and _data_ optional parameters so you can see how it works.
