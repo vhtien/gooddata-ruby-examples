@@ -39,10 +39,10 @@ end
 ==== Discussion
 These data types are currently supported on the platform
 
-DECIMAL(m, d)
-INTEGER
-LONG
-VARCHAR(n)
+- DECIMAL(m, d)
+- INTEGER
+- LONG
+- VARCHAR(n)
 
 The case where this is very useful are
 
