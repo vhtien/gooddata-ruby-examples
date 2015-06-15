@@ -2,14 +2,12 @@
 by Tomas Svarovsky
 
 ==== Problem
-You would like to use folders in your model to help dlarity on UI 
+You would like to use folders for organizing your project's model 
 
 ==== Solution
-
-By default all the attributes and facts are automatically assigned a folder based on name of the dataset. This name is either generated from name or the title is used if defined. You can also override this and specify its own folder for particular field.
+By default all the attributes and facts are automatically assigned a folder based on it's dataset name. This name is either generated from the dataset's name or title (if defined). You can override this default and specify your own folder for any field.
 
 <%= render_ruby 'src/12_working_with_blueprints/folders.rb' %>
 
 ==== Discussion
-
-One thing to note is that folders are not removed if you would publish a model where a previously used folder would stay empty.
+Folders are not removed. If you would publish a model that doesn't contain an existing folder, the folder isn't autyomatically removed (it is empty).
