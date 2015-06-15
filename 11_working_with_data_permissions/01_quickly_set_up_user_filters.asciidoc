@@ -1,9 +1,9 @@
-=== Quickly setting simple Data filter
+=== Quickly setting simple Data Permission
 
 by Tomas Svarovsky
 
 ==== Problem
-You would like to set a user filter (data permission or MUF filter) for one or two users. 
+You would like to set a data permission (user filter or MUF filter) for one or two users. 
 
 ==== Solution
 SDK offers couple of convenience features for doing this. Let's first recap what we need to set up a data permission filter. We'll be setting a simple filter along these lines
