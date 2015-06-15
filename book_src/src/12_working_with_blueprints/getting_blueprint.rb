@@ -2,7 +2,10 @@
 
 require 'gooddata'
 
-client = GoodData.connect
-project = client.projects('project_id')
-bp = project.blueprint
-bp.store_to_file('model.json')
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    bp = project.blueprint
+    bp.store_to_file('model.json')
+  end
+end
+

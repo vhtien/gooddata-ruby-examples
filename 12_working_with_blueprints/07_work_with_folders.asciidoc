@@ -1,0 +1,42 @@
+=== Working with Folders
+by Tomas Svarovsky
+
+==== Problem
+You would like to use folders for organizing your project's model 
+
+==== Solution
+By default all the attributes and facts are automatically assigned a folder based on it's dataset name. This name is either generated from the dataset's name or title (if defined). You can override this default and specify your own folder for any field.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  blueprint = GoodData::Model::ProjectBlueprint.build("my_bp") do |p|
+    p.add_dataset('sales_reps', title: 'Awesome Sales Reps') do |d|
+      d.add_anchor('id')
+      d.add_attribute('name')
+    end
+    p.add_dataset('regions') do |d|
+      d.add_anchor('id')
+      d.add_attribute('name')
+    end
+    p.add_dataset('opportunities') do |d|
+      d.add_fact('amount', folder: 'My Special Folder')
+      d.add_reference('sales_rep_id', dataset: 'sales_reps')
+      d.add_reference('region_id', dataset: 'regions')
+    end
+  end
+  project = client.create_project_from_blueprint(blueprint, auth_token: 'token_id')
+  # Currently there is not support in SDK to directly explore folders but we can reach to API directly
+  # You can also go to the project in your browser and look for folders there
+  client.get("#{project.md['query']}/dimensions")['query']['entries'].map {|i| i['title']} # => ["Sales Reps", "Regions", "Opportunities"]
+  client.get("#{project.md['query']}/folders")['query']['entries'].map {|i| i['title']} # => ["My Special Folder"]
+end
+
+----
+
+==== Discussion
+Folders are not removed. If you would publish a model that doesn't contain an existing folder, the folder isn't autyomatically removed (it is empty).

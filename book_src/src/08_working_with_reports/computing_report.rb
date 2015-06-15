@@ -3,6 +3,7 @@
 require 'gooddata'
 
 GoodData.with_connection do |c|
-  project = client.projects('project_id')
-  puts project.reports(1234).execute
+  GoodData.with_project('project_id') do |project|
+    puts project.reports(1234).execute
+  end
 end

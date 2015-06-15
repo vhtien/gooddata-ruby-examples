@@ -1,4 +1,4 @@
-=== You want to test if report returns expected results
+=== Testing Report Result
 by Tomas Svarovsky
 
 ==== Problem
@@ -20,5 +20,3 @@ GoodData.with_connection('user', 'password') do |client|
   end
 end
 ----
-
-==== Discussion

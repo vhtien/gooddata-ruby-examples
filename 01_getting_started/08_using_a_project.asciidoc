@@ -1,4 +1,4 @@
-=== Using a project
+=== Using Project
 by Tomas Svarovsky
 
 ==== Problem
@@ -35,5 +35,3 @@ GoodData.with_connection('user', 'password') do |client|
 end
 
 ----
-
-==== Discussion

@@ -1,4 +1,4 @@
-=== Create an empty project
+=== Creating Empty Project
 by Tomas Svarovsky
 
 ==== Problem
@@ -20,5 +20,3 @@ puts project.uri
 puts project.title # => 'My project title'
 
 ----
-
-==== Discussion

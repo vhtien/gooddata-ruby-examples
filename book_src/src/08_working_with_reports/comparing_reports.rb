@@ -2,7 +2,7 @@
 
 require 'gooddata'
 
-GoodData.with_connection do |client|
+GoodData.with_connection do |c|
   original_project = c.projects('project_id_1')
   new_project = c.projects('project_id_2')
 

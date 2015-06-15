@@ -1,4 +1,4 @@
-=== Creating a project from template
+=== Creating Project from Template
 by Tomas Svarovsky
 
 ==== Problem

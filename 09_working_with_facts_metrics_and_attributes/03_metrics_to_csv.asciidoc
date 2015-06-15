@@ -1,16 +1,14 @@
-=== Write information about your metrics to CSV file
+=== Write Information about Project's Metrics to CSV
 
 by Tomas Korcak
 
 ==== Problem
-You would like to store information about all project metrics to CSV.
+You would like to store information about all project metrics in CSV.
 
 ==== Prerequisites
 You have to have existing project with metric(s).
 
 ==== Solution
-
-
 [source,ruby]
 ----
 # encoding: UTF-8
@@ -18,18 +16,16 @@ You have to have existing project with metric(s).
 require 'gooddata'
 
 # Connect to GoodData platform
-client = GoodData.connect('user', 'password')
-project = client.projects(PROJECT_ID)
-
-CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
     metrics = project.metrics
     metrics.peach do |metric|
         csv << [metric.title, metric.pretty_expression]
     end
+    puts 'The CSV is ready!'
+  end
 end
-
-puts 'The CSV is ready!'
-
 ----
 
-It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and prettified metric MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.
+It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and pretty printed metric's MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.

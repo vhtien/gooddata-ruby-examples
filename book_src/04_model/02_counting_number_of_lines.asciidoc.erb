@@ -1,12 +1,10 @@
-=== Computing number of lines in a dataset
+=== Computing Dataset's Number of Records
 by Tomas Svarovsky
 
 ==== Problem
-Very often there is a need to know how many lines there are in a dataset.
+Very often there is a need to know how many records there are in a dataset.
 
 ==== Solution
-This is not so easy to do on UI. You basically have to find the main attribute on a dataset and then create a report. It is much easier to use SDK for a shortcut.
+This is not so easy to do on UI. You basically have to find the dataset's connection point and then create a simple report with COUNT metric. SDK makes this very simple task.
 
 <%= render_ruby 'src/04_model/counting_lod.rb' %>
-
-==== Discussion

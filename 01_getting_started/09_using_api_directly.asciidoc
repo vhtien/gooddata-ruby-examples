@@ -1,4 +1,4 @@
-=== Using a project
+=== Using APIs
 by Tomas Svarovsky
 
 ==== Problem
@@ -17,5 +17,3 @@ client.delete("/gdc/projects/#{project_id}")
 
 client.put("/gdc/projects/#{project_id}", {a: 'b'})
 ----
-
-==== Discussion

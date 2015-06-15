@@ -1,19 +1,13 @@
-=== Perform an operation on multiple projects
+=== Performing Operations on Multiple Projects
 by Tomas Svarovsky
 
-==== TODO
-- create scheduling
-- check if it works
-- link other recipes
-
 ==== Problem
-You already know how to do many things but now you would like to do the same thing on many projects at once
+You already know how to do many things but now you would like to do the same thing on many projects at once.
 
 ==== Solution
+The basis of the solution is pretty simple. We need to iterate over projects and perform an operation on each of them.
 
-The basis of the solution is pretty simple. We need to iterate over projects and perform the operation on each of those. So we do something real in the projects we will combine several other recipes so you can see how to combine recipes to solve more complex problems. So this is what we will do.
-
-We will compile a list of reports from each project which were changed in last week by somebody from gooddata. If there is more than one revision we assume that this is something that is changing more often and we will create a scheduled email for our testing department to verify their correctness. Also to make their life a little easier we tag the reports by tag "to_be_checked".
+Lets illustrate this on a simple example. We will compile a list of all reports from user's projects that have been changed since last week by somebody from GoodData. If there is more than one revision in a report we'll assume that the report is changing frequently and tag it with 'to_be_checked' tag for QA to validate the report.
 
 This is a lot to do. Let's try to break the tasks down to smaller pieces.
 
@@ -38,12 +32,13 @@ end
 
 [source,ruby]
 ----
-reports_to_tag = p.reports
+reports_to_tag = project.reports
                    .select { |report| report.updated_at > 2.weeks.ago }
                    .select { |report| report.revisions.count > 1 }
 ----
 
 ===== Remove tag
+We'll first remove the 'to_be_checked' tag from all reports
 
 [source,ruby]
 ----
@@ -54,6 +49,7 @@ end
 ----
 
 ===== Add tag
+Then we'll add the 'to_be_checked' tag to all qualifying reports
 
 [source,ruby]
 ----
@@ -61,13 +57,6 @@ reports_to_tag.each do |report|
   report.add_tag('to_be_checked')
   report.save
 end
-----
-
-===== Schedule
-
-[source,ruby]
-----
-# SCHEDULE TBD
 ----
 
 ===== Full example - all pieces together
@@ -118,6 +107,4 @@ GoodData.disconnect
 ----
 
 ==== Discussion
-
-- discuss parallel execution
-- discuss several ways to pass project pids
+Please note that the reports in projects are processed sequentially (one after another).

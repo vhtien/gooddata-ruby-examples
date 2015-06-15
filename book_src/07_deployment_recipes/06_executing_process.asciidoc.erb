@@ -1,21 +1,21 @@
-=== Executing a deployed process
+=== Executing Process
 by Tomas Svarovsky
 
 ==== Problem
 You would like to execute a process without a schedule.
 
 ==== Solution
-SDK allows you to execute a process. This is not something that you should do regularly since you have to specify the parameters during execution and logs are not kept for individual runs but it might be occasionally useful.
+SDK allows you to execute a process. This is not something that you should do regularly since you have to specify the parameters during execution and logs are not kept for individual executions but it might be occasionally useful.
 
 <%= render_ruby 'src/07_deployment_recipes/executing_process.rb' %>
 
 ==== Discussion
 
-There are also couple of other useful tricks. You might execute arbitrary process that is already deployed. You just need to get a handle of it. Let's find a process based on its id. There is actually a helper for that.
+There are also couple of other useful tricks. You might execute arbitrary process that is already deployed. You just need to get the process by its id.
 
 <%= render_ruby 'src/07_deployment_recipes/executing_arbitrary_process.rb' %>
 
-Or you can try to find by other things. One of the more common will probably going to be name of the process.
+Or you can get a process by it's name too.
 
 <%= render_ruby 'src/07_deployment_recipes/executing_named_process.rb' %>
 

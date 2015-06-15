@@ -1,0 +1,20 @@
+=== Setting Up Simple Data Permission
+
+by Tomas Svarovsky
+
+==== Problem
+You would like to set a data permission (user filter or MUF filter) for one or two users. 
+
+==== Solution
+SDK offers couple of convenience features for doing this. Let's first recap what we need to set up a data permission filter. We'll be setting a simple filter along these lines
+
+  WHERE city IN (San Francisco, Prague, Amsterdam)
+
+* We need to know the label to filter. In our case this is the _city_ label
+* We need to know the label's values. In our case these are (San Francisco, Prague, Amsterdam)
+* We also need to know the user assigned with the filter. We'll use your account in the example (you may use any valid user).
+
+Although we present this as an executable script this is something that is often done interactively. 
+So do not fear to jack in to a project and follow along.
+
+<%= render_ruby 'src/11_working_with_data_filters/create_filters_interactively.rb' %>

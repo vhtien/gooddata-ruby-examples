@@ -1,8 +1,8 @@
-=== Getting a blueprint from existing project
+=== Getting Blueprint from Existing Project
 by Tomas Svarovsky
 
 ==== Problem
-You have an existing project and would like to get a blueprint out of it.
+You have an existing project and would like to reverse engineer it's blueprint.
 
 ==== Solution
 
@@ -12,9 +12,12 @@ You have an existing project and would like to get a blueprint out of it.
 
 require 'gooddata'
 
-client = GoodData.connect
-project = client.projects('project_id')
-bp = project.blueprint
-bp.store_to_file('model.json')
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    bp = project.blueprint
+    bp.store_to_file('model.json')
+  end
+end
+
 
 ----

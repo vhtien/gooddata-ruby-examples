@@ -1,4 +1,4 @@
-=== Working with a project in interactive manner
+=== Working with Project Interactively
 by Tomas Svarovsky
 
 ==== Problem

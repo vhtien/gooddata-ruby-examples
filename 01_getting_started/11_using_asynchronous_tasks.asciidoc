@@ -1,4 +1,4 @@
-=== Using asynchronous tasks with timouts
+=== Using Asynchronous Tasks with Timeouts
 by Tomas Svarovsky
 
 ==== Problem
@@ -30,5 +30,3 @@ rescue GoodData::ExecutionLimitExceeded => e
 end
 
 ----
-
-==== Discussion
