@@ -3,7 +3,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You have a project that has the filters set up. You would like to know who has set what.
+You have a project that has the data permissions set up. You would like to review them.
 
 ==== Solution
 There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.
@@ -14,8 +14,10 @@ There is no UI that would provide a good overview and API is a little crude but 
 
 require 'gooddata'
 
-client = GoodData.conect('login', 'password')
-project = client.projects('project_id')
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}
+  end
+end
 
-project.data_permissions.pmap {|f| [f.related.login, f.pretty_expression]}
 ----

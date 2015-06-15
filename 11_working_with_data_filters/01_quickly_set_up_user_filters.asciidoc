@@ -3,20 +3,19 @@
 by Tomas Svarovsky
 
 ==== Problem
-You would like to set a User filter for one or two users. It can be a one off.
+You would like to set a user filter (data permission or MUF filter) for one or two users. 
 
 ==== Solution
-SDK offers couple of convenience features for doing this. Let's first recap what we need to set up a filter.
+SDK offers couple of convenience features for doing this. Let's first recap what we need to set up a data permission filter. We'll be setting a simple filter along these lines
 
-In this case we will be setting a simple filter in a general shape of
+  WHERE city IN (San Francisco, Prague, Amsterdam)
 
-  WHERE city IN (san francisco, prague, amsterdam)
+* We need to know the label to filter. In our case this is the _city_ label
+* We need to know the label's values. In our case these are (San Francisco, Prague, Amsterdam)
+* We also need to know the user assigned with the filter. We'll use your account in the example (you may use any valid user).
 
-* We need to know the values we wold like to set. In our case that is (san francisco, prague, amsterdam)
-* We need to know what label these values are related to. In our case city
-* We also need to know which user you would like to assign this filter. In this case use yourself or any other user that you like.
-
-Although we present this as an executable script this is something that is best done interactively so do not fear to jack in to a project and follow along.
+Although we present this as an executable script this is something that is often done interactively. 
+So do not fear to jack in to a project and follow along.
 
 [source,ruby]
 ----
@@ -24,31 +23,25 @@ Although we present this as an executable script this is something that is best 
 
 require 'gooddata'
 
-client = GoodData.conect('login', 'password')
-project = client.projects('project_id')
-
-# First let's grab an attribute
-attribute = project.attributes('attr.region.city')
-
-# to set up a value we need a specific label
-# if the attribute has only one label, you can easily grab it by calling #primary_label
-label = attribute.primary_label
-
-# if a label has multiple labels, you can select the correct one like this
-# label = attribute.label_by_name('City name')
-
-# Let's construct filters we are going to set up
-# We will do it for two hypothetical users
-
-filters = [
-  ['john.doe@example.com', label.uri, 'San Francisco', 'Amsterdam']
-  ['jane.doe@example.com', label.uri, 'San Francisco', 'Prague']
-]
-
-# Obvious question might be how do you know that the values are correct
-# you can find out like this
-# label.value?('Amsterdam')
-
-# Let's now update the project
-project.add_data_permissions(filters)
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    # First let's grab an attribute
+    attribute = project.attributes('attr.region.city')
+    # to set up a value we need a specific label
+    # if the attribute has only one label, you can easily grab it by calling #primary_label
+    label = attribute.primary_label
+    # if a label has multiple labels, you can select the correct one like this
+    # label = attribute.label_by_name('City Name')
+    # Let's construct filters we are going to set up
+    # We will do it for two hypothetical users
+    filters = [
+      ['john.doe@example.com', label.uri, 'San Francisco', 'Amsterdam']
+      ['jane.doe@example.com', label.uri, 'San Francisco', 'Prague']
+    ]
+    # Obvious question might be how do you know that the values are correct
+    # you can find out like this label.value?('Amsterdam')
+    # Let's now update the project
+    project.add_data_permissions(filters)
+  end
+end
 ----
