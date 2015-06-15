@@ -1,4 +1,4 @@
-=== Disabling schedules in all your projects
+=== Disabling Schedules in All Projects
 by Tomas Svarovsky
 
 ==== Problem

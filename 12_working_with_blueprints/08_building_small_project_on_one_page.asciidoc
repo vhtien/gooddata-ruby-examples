@@ -1,4 +1,4 @@
-=== Creating a small project in one page of code
+=== Creating Project in One Page of Code
 by Tomas Svarovsky
 
 ==== Problem

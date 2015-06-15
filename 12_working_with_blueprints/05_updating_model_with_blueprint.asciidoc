@@ -1,4 +1,4 @@
-=== Updating a project with blueprint
+=== Adding New LDM Fields to Project
 by Tomas Svarovsky
 
 ==== Problem

@@ -1,4 +1,4 @@
-=== Scheduling a deployed process
+=== Scheduling Process
 by Tomas Svarovsky
 
 ==== Problem

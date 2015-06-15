@@ -1,4 +1,4 @@
-=== Adding user to organization from CSV file
+=== Adding Multiple Users to Organization from CSV
 by Tomas Svarovsky
 
 ==== Problem

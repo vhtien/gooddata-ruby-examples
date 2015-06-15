@@ -1,4 +1,4 @@
-=== Loading Data with Specific Date format
+=== Loading Data with Specific Date Format
 by Tomas Svarovsky
 
 ==== Problem

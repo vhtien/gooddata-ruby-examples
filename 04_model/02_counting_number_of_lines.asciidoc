@@ -1,4 +1,4 @@
-=== Computing number of records in a dataset
+=== Computing Dataset's Number of Records
 by Tomas Svarovsky
 
 ==== Problem

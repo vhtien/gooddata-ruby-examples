@@ -1,4 +1,4 @@
-=== Executing a deployed process
+=== Executing Process
 by Tomas Svarovsky
 
 ==== Problem

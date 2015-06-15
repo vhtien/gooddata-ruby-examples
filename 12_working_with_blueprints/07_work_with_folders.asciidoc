@@ -1,4 +1,4 @@
-=== Working with folders
+=== Working with Folders
 by Tomas Svarovsky
 
 ==== Problem

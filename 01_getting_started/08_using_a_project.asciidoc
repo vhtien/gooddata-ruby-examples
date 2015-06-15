@@ -1,4 +1,4 @@
-=== Using a project
+=== Using Project
 by Tomas Svarovsky
 
 ==== Problem

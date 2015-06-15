@@ -1,4 +1,4 @@
-=== Connecting to gooddata
+=== Connecting to Gooddata Platform
 by Tomas Svarovsky
 
 ==== Problem

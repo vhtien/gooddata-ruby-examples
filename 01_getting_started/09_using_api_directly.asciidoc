@@ -1,4 +1,4 @@
-=== Using a project
+=== Using APIs
 by Tomas Svarovsky
 
 ==== Problem

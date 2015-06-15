@@ -1,4 +1,4 @@
-=== Redeploying an existing process programmatically
+=== Redeploying Existing Process
 by Tomas Svarovsky
 
 ==== Problem

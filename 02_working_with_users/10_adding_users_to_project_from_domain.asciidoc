@@ -1,4 +1,4 @@
-=== Adding users to project from organization
+=== Adding Users from Organization to Multiple Projects 
 by Tomas Svarovsky
 
 ==== Problem

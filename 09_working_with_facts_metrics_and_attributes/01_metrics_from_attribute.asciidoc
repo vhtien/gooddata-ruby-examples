@@ -1,4 +1,4 @@
-=== Creating metrics from attribute
+=== Creating Metrics from Attributes
 
 by Patrick McConlogue, Tomas Svarovsky
 

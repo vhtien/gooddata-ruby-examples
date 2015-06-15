@@ -1,4 +1,4 @@
-=== You would like to compute an existing report 
+=== Computing Report 
 by Tomas Svarovsky
 
 ==== Problem

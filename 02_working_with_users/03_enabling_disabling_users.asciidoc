@@ -1,4 +1,4 @@
-=== Enabling and disabling user
+=== Enabling and Disabling Users
 by Tomas Svarovsky
 
 ==== Problem

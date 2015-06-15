@@ -1,4 +1,4 @@
-=== You need to reset a colormapping in a report
+=== Reseting Report Color Map
 by Tomas Svarovsky
 
 ==== Problem

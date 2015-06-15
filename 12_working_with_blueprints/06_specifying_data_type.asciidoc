@@ -1,4 +1,4 @@
-=== Specifying data type in the blueprint
+=== Specifying Fields Data Type
 by Tomas Svarovsky
 
 ==== Problem

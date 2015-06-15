@@ -1,4 +1,4 @@
-=== Adding user to project and organization from CSV file in one go
+=== Adding User to Both Organization and Project from CSV
 by Tomas Svarovsky
 
 ==== Problem

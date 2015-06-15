@@ -1,4 +1,4 @@
-=== Getting a blueprint from existing project
+=== Getting Blueprint from Existing Project
 by Tomas Svarovsky
 
 ==== Problem
