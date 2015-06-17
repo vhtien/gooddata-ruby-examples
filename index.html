@@ -1877,43 +1877,36 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
-client = <span class="constant">GoodData</span>.connect(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>)
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
 
-projects = [
-  client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>),
-  client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>)
-]
+  projects = [
+      client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_a</span><span class="delimiter">'</span></span>),
+      client.projects(<span class="string"><span class="delimiter">'</span><span class="content">project_pid_b</span><span class="delimiter">'</span></span>)
+  ]
 
-<span class="constant">GoodData</span>.with_connection(<span class="string"><span class="delimiter">'</span><span class="content">user</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |client|
   results = projects.map <span class="keyword">do</span> |project|
-    <span class="constant">GoodData</span>.with_project(project) <span class="keyword">do</span> |project|
+    reports_to_validate = project.reports
+                                .select { |report| report.updated &gt; <span class="integer">2</span>.weeks.ago }
+                                .select { |report| report.definitions.count &gt; <span class="integer">1</span> }
 
-      reports_to_validate = project.reports
-                              .select { |report| report.updated_at &gt; <span class="integer">2</span>.weeks.ago }
-                              .select { |report| report.revisions.count &gt; <span class="integer">1</span> }
-
-      <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>, <span class="symbol">:project</span> =&gt; project).each <span class="keyword">do</span> |report|
-        report.remove_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
-        report.save
-      <span class="keyword">end</span>
-
-      reports_to_validate.each <span class="keyword">do</span> |report|
-        report.add_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
-        report.save
-      <span class="keyword">end</span>
-
-      {<span class="key">project</span>: project, <span class="key">reports_to_validate</span>: reports_to_validate.count}
+    <span class="constant">GoodData</span>::<span class="constant">Report</span>.find_by_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>, <span class="symbol">:project</span> =&gt; project).each <span class="keyword">do</span> |report|
+      report.remove_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
+      report.save
     <span class="keyword">end</span>
+
+    reports_to_validate.each <span class="keyword">do</span> |report|
+      report.add_tag(<span class="string"><span class="delimiter">'</span><span class="content">to_be_checked</span><span class="delimiter">'</span></span>)
+      report.save
+    <span class="keyword">end</span>
+
+    {<span class="key">project</span>: project, <span class="key">reports_to_validate</span>: reports_to_validate.count}
   <span class="keyword">end</span>
 
   results.each <span class="keyword">do</span> |result|
     puts <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>result[<span class="symbol">:project</span>].pid<span class="inline-delimiter">}</span></span><span class="content">: there are </span><span class="inline"><span class="inline-delimiter">#{</span>result[<span class="symbol">:reports_to_validate</span>]<span class="inline-delimiter">}</span></span><span class="content"> reports to check</span><span class="delimiter">&quot;</span></span>
   <span class="keyword">end</span>
-<span class="keyword">end</span>
 
-<span class="comment"># And disconnect finally</span>
-puts <span class="string"><span class="delimiter">'</span><span class="content">Disconnecting ...</span><span class="delimiter">'</span></span>
-<span class="constant">GoodData</span>.disconnect</code></pre>
+<span class="keyword">end</span></code></pre>
 </div>
 </div>
 </div>
@@ -3985,7 +3978,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-06-16 11:42:00 CEST
+Last updated 2015-06-17 11:10:10 CEST
 </div>
 </div>
 </body>
