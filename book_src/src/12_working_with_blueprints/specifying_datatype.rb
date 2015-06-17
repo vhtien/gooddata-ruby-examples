@@ -2,9 +2,7 @@
 
 require 'gooddata'
 
-logger = Logger.new(STDOUT)
-logger.level = Logger::DEBUG
-GoodData.logger = logger
+GoodData.logging_on
 
 GoodData.with_connection do |c|
   blueprint = GoodData::Model::ProjectBlueprint.build('Acme project') do |p|
