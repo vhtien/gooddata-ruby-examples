@@ -549,6 +549,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_enumerating_date_dimensions">Enumerating Date Dimensions</a></li>
 <li><a href="#_removing_data">Removing Data</a></li>
 <li><a href="#_exploring_unknown_project">Exploring Unknown Project</a></li>
+<li><a href="#_substitute_date_dimension_for_another_one">Substitute Date Dimension for Another One</a></li>
 </ul>
 </li>
 <li><a href="#_05_testing">05 Testing</a>
@@ -2251,6 +2252,96 @@ Size - 487117.0 rows
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_substitute_date_dimension_for_another_one">Substitute Date Dimension for Another One</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_30">Problem</h4>
+<div class="paragraph">
+<p>You want to substitute an existing date dimension in your project for another date dimension. This is particularly handy when you are consolidating date dimensions (perhaps you want to have only one date dimension in your project) or replacing your standard date dimension with a fiscal date dimension.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_30">Solution</h4>
+<div class="paragraph">
+<p>The code snippet below substitutes all occurences of a date dimension objects (attributes and labels) for another date dimension&#8217;s objects (that must obviously exist in the project). The substitution is performed in following objects:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Metrics</p>
+</li>
+<li>
+<p>Report Definitions</p>
+</li>
+<li>
+<p>Reports</p>
+</li>
+<li>
+<p>Report Specific Metrics</p>
+</li>
+<li>
+<p>Dashboards</p>
+</li>
+<li>
+<p>Mandatory User Filters aka Data Permissions</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_pid</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
+
+    opts = {
+      <span class="comment"># You can specify name of new and old date dimension...</span>
+      <span class="comment"># :old =&gt; 'Close',</span>
+      <span class="comment"># :new =&gt; 'Completed',</span>
+
+      <span class="comment"># Or explicitly specify mapping using identifiers...</span>
+      <span class="symbol">:mapping</span> =&gt; {
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.date</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.date</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.day.in.euweek</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.day.in.euweek</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.month</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.month</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.month.in.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.month.in.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.euweek.in.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week.in.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.euweek</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.quarter</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.quarter</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.day.in.month</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.day.in.month</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.week.in.quarter</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week.in.quarter</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.quarter.in.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.quarter.in.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.week</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.day.in.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.day.in.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.day.in.week</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.day.in.week</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.week.in.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week.in.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.euweek.in.quarter</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.week.in.quarter</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.day.in.quarter</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.day.in.quarter</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.year</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">closedate.year</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">closedate.month.in.quarter</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">abortdate.month.in.quarter</span><span class="delimiter">'</span></span>
+      },
+
+      <span class="symbol">:dry_run</span> = <span class="predefined-constant">false</span> <span class="comment"># Optional. Default 'false'</span>
+    }
+
+    project.replace_date_dimension(opts)
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_11">Discussion</h4>
+<div class="paragraph">
+<p>You need to specify complete mapping between the current and new date dimensions attributes. This is straightforward in case when both date dimensions have the same structure (see the commented out <em>:old</em> / <em>:new</em> syntax). Full mapping is necessary when the date dimensions have different structures. For example the <em>abortdate</em> date dimension in the code above doesn&#8217;t have any <em>EU week</em> attributes. The existing <em>closedate</em>'s <em>EU week</em> attributes are mapped to standard week attributes of the <em>abortdate</em> dimension.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2262,13 +2353,13 @@ Size - 487117.0 rows
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_30">Problem</h4>
+<h4 id="_problem_31">Problem</h4>
 <div class="paragraph">
 <p>You want to be sure that reports return expected results. This is a basis for delving later into test driven BI projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2297,13 +2388,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_31">Problem</h4>
+<h4 id="_problem_32">Problem</h4>
 <div class="paragraph">
 <p>You need to create a project programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_31">Solution</h4>
+<h4 id="_solution_32">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2326,13 +2417,13 @@ puts project.title <span class="comment"># =&gt; 'My project title'</span></code
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_32">Problem</h4>
+<h4 id="_problem_33">Problem</h4>
 <div class="paragraph">
 <p>You need to rename the project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby">require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
@@ -2351,13 +2442,13 @@ project.save</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_33">Problem</h4>
+<h4 id="_problem_34">Problem</h4>
 <div class="paragraph">
 <p>You would like to create an exact copy of a project</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="paragraph">
 <p>You can use cloning capabilities.</p>
 </div>
@@ -2377,7 +2468,7 @@ cloned_project = project.clone(<span class="key">title</span>: <span class="stri
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_11">Discussion</h4>
+<h4 id="_discussion_12">Discussion</h4>
 <div class="paragraph">
 <p>There are two options that you can specify. You can pick if you want to clone just metadata (e.g. attributes, facts, metrics reports, dashboards etc.) or also data (this is default). Also you can choose if you want to transfer all old project&#8217;s users to the new project. No users are transferred by default. In the example above we explicitly specified the <em>users</em> and <em>data</em> optional parameters so you can see how it works.</p>
 </div>
@@ -2389,13 +2480,13 @@ cloned_project = project.clone(<span class="key">title</span>: <span class="stri
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_34">Problem</h4>
+<h4 id="_problem_35">Problem</h4>
 <div class="paragraph">
 <p>You would like to clone project to a different organization</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_34">Solution</h4>
+<h4 id="_solution_35">Solution</h4>
 <div class="paragraph">
 <p>Usually you would be happy using <code>project.clone</code> but sometimes you need more granularity in controlling who is doing what. In this recipe we are going to explain what is happening when you clone a project and how you can leverage the lower level API.</p>
 </div>
@@ -2442,7 +2533,7 @@ to_project.import_clone(export_token)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_12">Discussion</h4>
+<h4 id="_discussion_13">Discussion</h4>
 <div class="paragraph">
 <p>You can also leverage this more granular interface when you need to clone one project to multiple target projects.</p>
 </div>
@@ -2454,13 +2545,13 @@ to_project.import_clone(export_token)</code></pre>
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_35">Problem</h4>
+<h4 id="_problem_36">Problem</h4>
 <div class="paragraph">
 <p>You have a template created for you and you would like to spin a project from this template.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_35">Solution</h4>
+<h4 id="_solution_36">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2475,7 +2566,7 @@ project = client.create_project(<span class="key">title</span>: <span class="str
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_13">Discussion</h4>
+<h4 id="_discussion_14">Discussion</h4>
 <div class="paragraph">
 <p>Note that people behind SDK do not endorse usage of templates so consider it being here for legacy purposes.</p>
 </div>
@@ -2492,13 +2583,13 @@ project = client.create_project(<span class="key">title</span>: <span class="str
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_36">Problem</h4>
+<h4 id="_problem_37">Problem</h4>
 <div class="paragraph">
 <p>You would like to deploy a CloudConnect or Ruby SDK process to GoodData platform.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_36">Solution</h4>
+<h4 id="_solution_37">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to deploy a process. Just point it to a file, directory or a zipped archive and that will be deployed.
 Below is an example of CloudConnect process deployment. When deploying CloudConnect processes you typically want to take the whole folder structure of a CloudConnect project and deploy it. So you will want to pass either path to the root folder of the structure or you can zip it first and pass just a path to the zip archive. The below example points to the root folder of a CloudConnect project.</p>
@@ -2546,13 +2637,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_37">Problem</h4>
+<h4 id="_problem_38">Problem</h4>
 <div class="paragraph">
 <p>You would like to redeploy a CloudConnect or Ruby process to GoodData platform.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_37">Solution</h4>
+<h4 id="_solution_38">Solution</h4>
 <div class="paragraph">
 <p>SDK provides means for redeploying a process (with a new updated content). All you have to do is to get a handle on the process. Here we are using a process id to identify the process that we want to redeploy. You can use any other way to identify the process to redeploy. Take note that the same deployment rules as in <code>project.deploy_process</code> apply. You can deploy a directory, file or a compressed package.</p>
 </div>
@@ -2578,13 +2669,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_38">Problem</h4>
+<h4 id="_problem_39">Problem</h4>
 <div class="paragraph">
 <p>You have a process deployed and you would like to add a schedule to it so the process is executed regularly</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_38">Solution</h4>
+<h4 id="_solution_39">Solution</h4>
 <div class="paragraph">
 <p>You can easily add a time based schedule to any process. Scheduled process execution has couple advantages over the ad-hoc process executions. Scheduled executions are logged and logs are kept around for some time (~10 days). Also schedule keeps list of parameters so you create it once and you do not need to care about them anymore.</p>
 </div>
@@ -2612,13 +2703,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_39">Problem</h4>
+<h4 id="_problem_40">Problem</h4>
 <div class="paragraph">
 <p>You would like to disable all schedules on all processes on all the projects you have access to and have sufficient privileges to do so.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_39">Solution</h4>
+<h4 id="_solution_40">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2643,13 +2734,13 @@ client = <span class="constant">GoodData</span>.connect
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_40">Problem</h4>
+<h4 id="_problem_41">Problem</h4>
 <div class="paragraph">
 <p>You have a process with a schedule. You would like to execute it out of schedule.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_40">Solution</h4>
+<h4 id="_solution_41">Solution</h4>
 <div class="paragraph">
 <p>Since schedule already have information about executable and parameters stored it is very easy. You just need to find the schedule and execute it.</p>
 </div>
@@ -2673,13 +2764,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_41">Problem</h4>
+<h4 id="_problem_42">Problem</h4>
 <div class="paragraph">
 <p>You would like to execute a process without a schedule.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_41">Solution</h4>
+<h4 id="_solution_42">Solution</h4>
 <div class="paragraph">
 <p>SDK allows you to execute a process. This is not something that you should do regularly since you have to specify the parameters during execution and logs are not kept for individual executions but it might be occasionally useful.</p>
 </div>
@@ -2701,7 +2792,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_14">Discussion</h4>
+<h4 id="_discussion_15">Discussion</h4>
 <div class="paragraph">
 <p>There are also couple of other useful tricks. You might execute arbitrary process that is already deployed. You just need to get the process by its id.</p>
 </div>
@@ -2753,13 +2844,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_42">Problem</h4>
+<h4 id="_problem_43">Problem</h4>
 <div class="paragraph">
 <p>You have an existing report and you would like to execute it programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_42">Solution</h4>
+<h4 id="_solution_43">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2781,13 +2872,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_43">Problem</h4>
+<h4 id="_problem_44">Problem</h4>
 <div class="paragraph">
 <p>You created a new version of a project. You made some changes to the reports and you would like to verify that the report is still computing the same numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_43">Solution</h4>
+<h4 id="_solution_44">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2810,7 +2901,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_15">Discussion</h4>
+<h4 id="_discussion_16">Discussion</h4>
 <div class="paragraph">
 <p>If there is more reports this can obviously take a lot of time so it would be nice if you could do computation or reports in parallel and not sequentially. Imagine we have a list of reports that should be checked tagged by tag <code>to_check</code>. Let&#8217;s rewrite previous code snippet to be parallel friendly.</p>
 </div>
@@ -2851,7 +2942,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p><strong>Warning:</strong> still in development</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_44">Problem</h4>
+<h4 id="_problem_45">Problem</h4>
 <div class="paragraph">
 <p>You would like to substitute a date dimension in the project for a different one (perhaps a fiscal date dimension).</p>
 </div>
@@ -2867,7 +2958,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_44">Solution</h4>
+<h4 id="_solution_45">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2908,13 +2999,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_45">Problem</h4>
+<h4 id="_problem_46">Problem</h4>
 <div class="paragraph">
 <p>We&#8217;ve shown how to compute records in all project&#8217;s datasets already in a separate recipe. Here we are going to use the same scenario to demonstrate on fly report creation and execution</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_45">Solution</h4>
+<h4 id="_solution_46">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2936,7 +3027,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_16">Discussion</h4>
+<h4 id="_discussion_17">Discussion</h4>
 <div class="paragraph">
 <p>Currently the API is not ideal and the recipe depends on user not messing with identifiers of anchors (connection_points) in case they are without labels.</p>
 </div>
@@ -2948,13 +3039,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_46">Problem</h4>
+<h4 id="_problem_47">Problem</h4>
 <div class="paragraph">
 <p>You have a report somebody set up a colormapping with. You would like to remove it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_46">Solution</h4>
+<h4 id="_solution_47">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -2985,7 +3076,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_47">Problem</h4>
+<h4 id="_problem_48">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -2997,7 +3088,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_47">Solution</h4>
+<h4 id="_solution_48">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3023,7 +3114,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_48">Problem</h4>
+<h4 id="_problem_49">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3035,7 +3126,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_48">Solution</h4>
+<h4 id="_solution_49">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3062,7 +3153,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_49">Problem</h4>
+<h4 id="_problem_50">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics in CSV.</p>
 </div>
@@ -3074,7 +3165,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_49">Solution</h4>
+<h4 id="_solution_50">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3105,13 +3196,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_50">Problem</h4>
+<h4 id="_problem_51">Problem</h4>
 <div class="paragraph">
 <p>You have a project and you would like to update formatting of all metrics programatically. They are currently formatted for dollar values but you would like to change the all formats to Euro.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_50">Solution</h4>
+<h4 id="_solution_51">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3141,7 +3232,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_51">Problem</h4>
+<h4 id="_problem_52">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -3153,7 +3244,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_51">Solution</h4>
+<h4 id="_solution_52">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3181,13 +3272,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_52">Problem</h4>
+<h4 id="_problem_53">Problem</h4>
 <div class="paragraph">
 <p>You would like to set a data permission (user filter or MUF filter) for one or two users.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_52">Solution</h4>
+<h4 id="_solution_53">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a data permission filter. We&#8217;ll be setting a simple filter along these lines</p>
 </div>
@@ -3250,13 +3341,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_53">Problem</h4>
+<h4 id="_problem_54">Problem</h4>
 <div class="paragraph">
 <p>You have a project that has the data permissions set up. You would like to review them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_53">Solution</h4>
+<h4 id="_solution_54">Solution</h4>
 <div class="paragraph">
 <p>There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.</p>
 </div>
@@ -3281,13 +3372,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_54">Problem</h4>
+<h4 id="_problem_55">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_54">Solution</h4>
+<h4 id="_solution_55">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -3381,13 +3472,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_55">Problem</h4>
+<h4 id="_problem_56">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_55">Solution</h4>
+<h4 id="_solution_56">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -3486,13 +3577,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_56">Problem</h4>
+<h4 id="_problem_57">Problem</h4>
 <div class="paragraph">
 <p>You would like to create a new project with a data model programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_56">Solution</h4>
+<h4 id="_solution_57">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3518,7 +3609,7 @@ project.datasets.count <span class="comment"># =&gt; 2</span></code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_17">Discussion</h4>
+<h4 id="_discussion_18">Discussion</h4>
 <div class="paragraph">
 <p>Let&#8217;s have a look at couple of other scenarios.</p>
 </div>
@@ -3582,13 +3673,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_57">Problem</h4>
+<h4 id="_problem_58">Problem</h4>
 <div class="paragraph">
 <p>You have an existing project and would like to reverse engineer it&#8217;s blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_57">Solution</h4>
+<h4 id="_solution_58">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3611,13 +3702,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_58">Problem</h4>
+<h4 id="_problem_59">Problem</h4>
 <div class="paragraph">
 <p>You would like to load data into project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_58">Solution</h4>
+<h4 id="_solution_59">Solution</h4>
 <div class="paragraph">
 <p>To load data you have to have 3 things. Blueprint, project and data.</p>
 </div>
@@ -3667,13 +3758,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_59">Problem</h4>
+<h4 id="_problem_60">Problem</h4>
 <div class="paragraph">
 <p>You need to upload dates but you have a nonstandard formatting</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_59">Solution</h4>
+<h4 id="_solution_60">Solution</h4>
 <div class="paragraph">
 <p>You can specify a date loading format in your blueprint. If you do not specify any format then the default <em>MM/dd/yyyy</em> format is used</p>
 </div>
@@ -3745,13 +3836,13 @@ We did not have to update the project. to be able to load dates in a different f
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_60">Problem</h4>
+<h4 id="_problem_61">Problem</h4>
 <div class="paragraph">
 <p>You would like to update a project with additional fields</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_60">Solution</h4>
+<h4 id="_solution_61">Solution</h4>
 <div class="paragraph">
 <p>Blueprints are easy to create programmatically and even to merge them together. In this example we will create a simple blueprint with one dataset and then add an additional field into blueprint and update the model.</p>
 </div>
@@ -3785,7 +3876,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_18">Discussion</h4>
+<h4 id="_discussion_19">Discussion</h4>
 <div class="paragraph">
 <p>In the example above we have created a new model and updated it right away. This is not a typical situation however and there are couple of things that you need to be aware of.</p>
 </div>
@@ -3827,13 +3918,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_61">Problem</h4>
+<h4 id="_problem_62">Problem</h4>
 <div class="paragraph">
 <p>You would like to specify a different data type for attribute or fact in a blueprint</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_61">Solution</h4>
+<h4 id="_solution_62">Solution</h4>
 <div class="paragraph">
 <p>Each column in blueprint is eventually translated into a physical column in a database. While the defaults are typically what you want sometimes it might be useful to override them. You can specify the data type with gd_data_type clause.</p>
 </div>
@@ -3865,7 +3956,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_19">Discussion</h4>
+<h4 id="_discussion_20">Discussion</h4>
 <div class="paragraph">
 <p>These data types are currently supported on the platform</p>
 </div>
@@ -3906,13 +3997,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_62">Problem</h4>
+<h4 id="_problem_63">Problem</h4>
 <div class="paragraph">
 <p>You would like to use folders for organizing your project&#8217;s model</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_62">Solution</h4>
+<h4 id="_solution_63">Solution</h4>
 <div class="paragraph">
 <p>By default all the attributes and facts are automatically assigned a folder based on it&#8217;s dataset name. This name is either generated from the dataset&#8217;s name or title (if defined). You can override this default and specify your own folder for any field.</p>
 </div>
@@ -3948,7 +4039,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 <div class="paragraph">
 <p>Folders are not removed. If you would publish a model that doesn&#8217;t contain an existing folder, the folder isn&#8217;t autyomatically removed (it is empty).</p>
 </div>
@@ -3960,7 +4051,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_63">Problem</h4>
+<h4 id="_problem_64">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -3972,7 +4063,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_63">Solution</h4>
+<h4 id="_solution_64">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -4030,7 +4121,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-06-17 14:17:07 CEST
+Last updated 2015-06-17 14:51:45 CEST
 </div>
 </div>
 </body>
