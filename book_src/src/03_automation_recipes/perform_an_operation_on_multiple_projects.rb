@@ -2,40 +2,33 @@
 
 require 'gooddata'
 
-client = GoodData.connect('user', 'password')
+GoodData.with_connection do |client|
 
-projects = [
-  client.projects('project_pid_a'),
-  client.projects('project_pid_b')
-]
+  projects = [
+      client.projects('project_pid_a'),
+      client.projects('project_pid_b')
+  ]
 
-GoodData.with_connection('user', 'password') do |client|
   results = projects.map do |project|
-    GoodData.with_project(project) do |project|
+    reports_to_validate = project.reports
+                                .select { |report| report.updated > 2.weeks.ago }
+                                .select { |report| report.definitions.count > 1 }
 
-      reports_to_validate = project.reports
-                              .select { |report| report.updated_at > 2.weeks.ago }
-                              .select { |report| report.revisions.count > 1 }
-
-      GoodData::Report.find_by_tag('to_be_checked', :project => project).each do |report|
-        report.remove_tag('to_be_checked')
-        report.save
-      end
-
-      reports_to_validate.each do |report|
-        report.add_tag('to_be_checked')
-        report.save
-      end
-
-      {project: project, reports_to_validate: reports_to_validate.count}
+    GoodData::Report.find_by_tag('to_be_checked', :project => project).each do |report|
+      report.remove_tag('to_be_checked')
+      report.save
     end
+
+    reports_to_validate.each do |report|
+      report.add_tag('to_be_checked')
+      report.save
+    end
+
+    {project: project, reports_to_validate: reports_to_validate.count}
   end
 
   results.each do |result|
     puts "#{result[:project].pid}: there are #{result[:reports_to_validate]} reports to check"
   end
-end
 
-# And disconnect finally
-puts 'Disconnecting ...'
-GoodData.disconnect
+end
