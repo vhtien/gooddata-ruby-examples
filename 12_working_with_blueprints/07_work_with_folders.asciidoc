@@ -39,4 +39,4 @@ end
 ----
 
 ==== Discussion
-Folders are not removed. If you would publish a model that doesn't contain an existing folder, the folder isn't autyomatically removed (it is empty).
+Folders are not removed. If you would publish a model that doesn't contain an existing folder, the folder isn't automatically removed (it is empty).
