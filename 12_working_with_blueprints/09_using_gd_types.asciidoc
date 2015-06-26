@@ -1,0 +1,71 @@
+=== Using Attribute Types when Creating Project
+by Tomas Korcak
+
+==== Problem
+You would like to explicitly specify GD types for labels for whatever reason.
+
+==== Prerequisites
+You have a provisioning token for project creation.
+
+==== Solution
+
+What we will do is to create a simple project with 1 dataset. We want to specify attribute type for one of the columns. We want to use 'GDC.Link' for URL.
+
+.Common Types
+* GDC.link
+* GDC.text
+* GDC.time
+
+.Types for Geo
+* GDC.geo.pin                 _(Geo pushpin)_
+* GDC.geo.ausstates.name      _(Australia States (Name))_
+* GDC.geo.ausstates.code      _(Australia States (ISO code))_
+* GDC.geo.usstates.name       _(US States (Name))_
+* GDC.geo.usstates.geo_id     _(US States (US Census ID))_
+* GDC.geo.usstates.code       _(US States (2-letter code))_
+* GDC.geo.uscounties.geo_id   _(US Counties (US Census ID))_
+* GDC.geo.worldcountries.name _(World countries (Name))_
+* GDC.geo.worldcountries.iso2 _(World countries (ISO a2))_
+* GDC.geo.worldcountries.iso3 _(World countries (ISO a3))_
+* GDC.geo.czdistricts.name    _(Czech Districts (Name))_
+* GDC.geo.czdistricts.name_no_diacritics _(Czech Districts)_
+* GDC.geo.czdistricts.nuts4   _(Czech Districts (NUTS 4))_
+* GDC.geo.czdistricts.knok    _(Czech Districts (KNOK))_
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  blueprint = GoodData::Model::ProjectBlueprint.build('Beers Project') do |p|
+    p.add_date_dimension('created_at')
+
+    # Add Breweries Dataset
+    p.add_dataset('breweries') do |d|
+      d.add_anchor('brewery_id')
+      d.add_label('name', :reference => 'brewery_id')
+      d.add_label('link', :reference => 'brewery_id', :gd_type => 'GDC.link') # <--- Notice this!
+      d.add_date('created_at', :dataset => 'created_at')
+    end
+  end
+
+  project = GoodData::Project.create_from_blueprint(blueprint, auth_token: 'YOUR_TOKEN_HERE')
+  puts "Created project #{project.pid}"
+
+  GoodData::with_project(project) do |p|
+    # Load Brewery Data
+    data = [
+      %w(brewery_id name link created_at),
+      [1, '21st Amendment Brewery', 'http://21st-amendment.com/', '06/23/2015'],
+      [2, 'Almanac Beer Company', 'http://www.almanacbeer.com/', '06/23/2015'],
+      [3, 'Anchor Brewing Company', 'http://www.anchorbrewing.com/', '06/23/2015'],
+      [4, 'Ballast Point Brewing Company', 'http://www.ballastpoint.com/', '06/23/2015'],
+      [5, 'San Francisco Brewing Company', 'http://www.ballastpoint.com/', '06/23/2015'],
+      [6, 'Speakeasy Ales and Lagers', 'http://www.goodbeer.com/', '06/23/2015']
+    ]
+    GoodData::Model.upload_data(data, blueprint, 'breweries')
+  end
+end
+----
