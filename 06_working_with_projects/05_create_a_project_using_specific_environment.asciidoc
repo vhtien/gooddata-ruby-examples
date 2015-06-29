@@ -1,0 +1,29 @@
+=== Creating Empty Project using specific environment.
+by Tomas Korcak
+
+==== Problem
+You need to create a project programmatically using specific environment.
+
+.Environments
+* PRODUCTION _(DEFAULT)_
+* DEVELOPMENT
+* TESTING
+
+Beware that environment names are case sensitive.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+client = GoodData.connect
+project = client.create_project(title: 'My project title', auth_token: 'PROJECT_CREATION_TOKEN', :environment => 'TESTING')
+
+# after some time the project is created and you can start working with it
+puts project.uri
+puts project.environment # => 'TESTING'
+
+----
