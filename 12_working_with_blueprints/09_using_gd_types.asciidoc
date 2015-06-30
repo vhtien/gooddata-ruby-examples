@@ -2,14 +2,13 @@
 by Tomas Korcak
 
 ==== Problem
-You would like to explicitly specify GD types for labels for whatever reason.
+You want to specify certain label's data type see http://developer.gooddata.com/article/setting-up-data-for-geo-charts[this document] for more details.
 
 ==== Prerequisites
 You have a provisioning token for project creation.
 
 ==== Solution
-
-What we will do is to create a simple project with 1 dataset. We want to specify attribute type for one of the columns. We want to use 'GDC.Link' for URL.
+We'll create a simple project's blueprint that contains a label with the 'GDC.link' (hyperlink) datatype in the code snippet below. 
 
 .Common Types
 * GDC.link
