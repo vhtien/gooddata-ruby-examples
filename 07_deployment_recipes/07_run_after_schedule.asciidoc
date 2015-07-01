@@ -1,0 +1,29 @@
+=== Run-After Scheduling 
+by Zdenek Svoboda
+
+==== Problem
+You want to schedule a process to run upon successful completion of another process (schedule). This is also known as run-after triggered schedule.
+
+==== Solution
+If you use an existing schedule object instead of a cron expression in the create_schedule method, the scheduled process will be scheduled to execute upon successful completion of the passed schedule.
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  GoodData.with_project('project_id') do |project|
+    process = project.deploy_process('./parent_process.rb',
+      type: :ruby,
+      name: "parent_process")
+    parent_schedule = process.create_schedule('0 15 * * *', 'parent_process.rb', params: { param1: 'a', param2: 'b' })
+	# The after_process will run after the parent_schedule successfully finishes 
+    process = project.deploy_process('./after_process.rb',
+      type: :ruby,
+      name: "after_process")
+	# Note passing the parent_schedule instead of a cron expression 
+    process.create_schedule(parent_schedule, 'after_process.rb', params: { param1: 'a', param2: 'b' })
+  end  
+end
+----
