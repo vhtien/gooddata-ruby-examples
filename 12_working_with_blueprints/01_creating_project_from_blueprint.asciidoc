@@ -42,7 +42,7 @@ This created a project with very simple model with just 2 datasets. One is date 
 Let's have a look at couple of other variations and more complex examples.
 
 ===== Defining identifiers
-Majority of the objects defined in the bluepritn will end up as object in metadata server in the project. Each of theses objects has its URI, object id (this number is part of the URI) and identifier which is a textual id. URI and object id are created automatically during creation of a model and you cannot influence them in any way but you have to define the identifiers. This is also the first parameter in majority of the add_... commands. Namely
+Majority of the objects defined in a blueprint will end up as object in metadata server in the project. Each of these objects has its URI, object id (this number is part of the URI) and identifier which is a textual id. URI and object id are created automatically during creation of a model and you cannot influence them in any way but you have to define the identifiers. This is also the first parameter in majority of the add_... commands. Namely
 
   add_anchor
   add_label
@@ -228,4 +228,4 @@ project.facts('fact.users.amount').title # => 'Amount Sold'
 ----
 
 ===== Specifying data types
-Ocasionally the default datatypes of the fields will not be what you want. You can redefine them for both labels and facts as exepected with parameter :gd_data_type. There is more information about this in its owne recipe.
+Ocasionally the default datatypes of the fields will not be what you want. You can redefine them for both labels and facts as exepected with parameter :gd_data_type. There is more information about this in a following recipe.

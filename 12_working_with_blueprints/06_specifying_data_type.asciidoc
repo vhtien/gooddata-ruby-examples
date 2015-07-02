@@ -43,7 +43,6 @@ end
 ==== Discussion
 These data types are currently supported on the platform
 
-fields and refactoring.
 - DECIMAL(m, d)
 - INTEGER
 - LONG

@@ -77,4 +77,4 @@ end
 ----
 
 Note couple of things
-We did not have to update the project. to be able to load dates in a different format. Date format information is used only during the data upload and the model is unaffected. This is something to think about when you are inferring the blueprint from the model using `project.blueprint`. This information is not persisted in the project.
+We did not have to update the project to be able to load dates in a different format. Date format information is used only during the data upload and the model is unaffected. This is something to think about when you are inferring the blueprint from the model using `project.blueprint`. This information is not persisted in the project.
