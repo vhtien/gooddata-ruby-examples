@@ -4,6 +4,7 @@ require 'gooddata'
 
 BLUEPRINT_FILE = 'blueprint_file.json'
 
+
 GoodData.with_connection do |c|
   GoodData.with_project('project_id') do |project|
     blueprint = GoodData::Model::ProjectBlueprint.from_json(BLUEPRINT_FILE)
@@ -19,5 +20,14 @@ GoodData.with_connection do |c|
     end
     project.update_from_blueprint(new_blueprint)
     new_blueprint.store_to_file(BLUEPRINT_FILE))
+
+    blueprint = GoodData::Model::ProjectBlueprint.from_json(BLUEPRINT_FILE)
+
+    update = GoodData::Model::ProjectBlueprint.build('update') do |p|
+      p.add_dataset("dataset.commits") do |d|
+        d.add_attribute("attr.commits.repo")
+        d.add_label('label.commits.repo', reference: 'attr.commits.repo')
+      end
+    end
   end
 end
