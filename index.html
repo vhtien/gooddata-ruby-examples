@@ -1719,13 +1719,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
       }
       users &lt;&lt; user
     <span class="keyword">end</span>
-    project.create_users(users, <span class="key">domain</span>: domain, <span class="key">whitelists</span>: [<span class="string"><span class="delimiter">'</span><span class="content">svarovsky@goodata.com</span><span class="delimiter">'</span></span>])
+    project.import_users(users, <span class="key">domain</span>: domain, <span class="key">whitelists</span>: [<span class="string"><span class="delimiter">'</span><span class="content">svarovsky@goodata.com</span><span class="delimiter">'</span></span>])
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The main workhorse here is the method <code>project.create_users</code>. What it takes is the list of users along with the roles. It also has to know which domain it is supposed to take these users from.</p>
+<p>The main workhorse here is the method <code>project.import_users</code>. What it takes is the list of users along with the roles. It also has to know which domain it is supposed to take these users from.</p>
 </div>
 <div class="paragraph">
 <p>Warning
@@ -4968,7 +4968,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-07-03 13:16:45 CEST
+Last updated 2015-07-14 10:12:54 CEST
 </div>
 </div>
 </body>
