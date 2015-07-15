@@ -6,10 +6,13 @@ require 'gooddata'
 GoodData.with_connection do |c|
   GoodData.with_project('project_id') do |project|
     CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
-    metrics = project.metrics
-    metrics.peach do |metric|
-        csv << [metric.title, metric.pretty_expression]
+      data = project.metrics.pmap do |metric|
+        [metric.title, metric.pretty_expression]
+      end
+      data.each do |m|
+        csv << m
+      end
+      puts 'The CSV is ready!'
     end
-    puts 'The CSV is ready!'
   end
 end
