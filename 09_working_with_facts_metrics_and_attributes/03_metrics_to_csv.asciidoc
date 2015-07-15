@@ -19,13 +19,17 @@ require 'gooddata'
 GoodData.with_connection do |c|
   GoodData.with_project('project_id') do |project|
     CSV.open(project.pid + "_metrics.csv", 'wb') do |csv|
-    metrics = project.metrics
-    metrics.peach do |metric|
-        csv << [metric.title, metric.pretty_expression]
+      data = project.metrics.pmap do |metric|
+        [metric.title, metric.pretty_expression]
+      end
+      data.each do |m|
+        csv << m
+      end
+      puts 'The CSV is ready!'
     end
-    puts 'The CSV is ready!'
   end
 end
+
 ----
 
 It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and pretty printed metric's MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.
