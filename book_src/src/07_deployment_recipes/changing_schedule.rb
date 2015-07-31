@@ -58,7 +58,7 @@ GoodData.with_connection do |client|
   s.cron = "1 1 1 1 *"
 
   # "run after" schedule
-  after_schedule = project.schedule('some_id')
+  after_schedule = project.schedules('some_id')
   s.after = after_schedule
 
   # Do not foreget to save it
