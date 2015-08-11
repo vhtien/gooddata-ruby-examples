@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'gooddata'
+require 'activesupport/all'
 
 client = GoodData.connect
 

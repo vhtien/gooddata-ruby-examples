@@ -23,6 +23,7 @@ First let's have a look how to implement an addition with having the file as in 
 # encoding: utf-8
 
 require 'gooddata'
+require 'activesupport/all'
 
 client = GoodData.connect
 

@@ -23,4 +23,5 @@ GoodData.with_connection do |client|
     users_to_add.each { |u| project.add_user(u, 'Viewer', domain: domain) }
   end
 end
+
 ----

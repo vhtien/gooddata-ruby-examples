@@ -16,38 +16,6 @@ The headers we used are defaults. If you have different ones you will have to do
 
 ==== Solution
 
-First let's have a look how to implement an addition with having the file as in the example above.
-
-[source,ruby]
-----
-# encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-  GoodData.with_project('project_pid') do |project|
-    domain = client.domain('domain-name')
-    users = []
-    CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
-      user = {
-        :user => row['login'],
-        :role => row['role']
-      }
-      users << user
-    end
-    project.import_users(users, domain: domain, whitelists: ['svarovsky@goodata.com'])
-  end
-end
-----
-
-
-The main workhorse here is the method `project.import_users`. What it takes is the list of users along with the roles. It also has to know which domain it is supposed to take these users from. 
-
-Warning
-The last parameter is `whitelists` and that deserves a deeper explanation. Adding users to a project is declarative not additive. What this means is the list of the users that you past into this method is a declaration how you would like the project to look. The SDK will do everything in its power to try to match the project with this declaration. What it means in practice is that it removes users from the project if they are not stated in the list you provided. For most cases this is exactly what you want but sometimes there are additional service users that you do not want to touch and that do not come from the data (like ETL admins, support users etc). You can specify such exceptions in the `whitelists` param and they will be ignored. The parameter takes both regular expressions and strings.
-
-===== Adding users to multiple projects
-
 Sometimes the case might be that you would like to add users to a slew of projects in one go. Let's illustrate this on one example. Let's imagine that you have a file like this
 
     pid,login,role
@@ -57,24 +25,6 @@ Note that it contains one more piece of information and that is which project th
 
 We now rewrite the example to use this information.
 
-[source,ruby]
-----
-# encoding: utf-8
-
-require 'gooddata'
-
-GoodData.with_connection('user', 'password') do |client|
-  domain = client.domain('domain-name')
-  users = []
-  CSV.foreach('data.csv', :headers => true, :return_headers => false) do |row|
-    users << row.to_hash.symbolize_keys.slice(:login, :role)
-  end
-  users.group_by {|u| u[:pid]}.map do |project_id, users|
-    GoodData.with_project(project_id) do |project|
-      project.import_users(users, domain: domain, whitelists: ["svarovsky@gooddata.com"])
-    end
-  end
-end
-----
+<%= render_ruby 'src/02_working_with_users/users_to_multiple_projects.rb' %>
 
 What this does is to reads the users groups them according to a project and then adds them to the project. It reads all the users into memory but this should be ok for typical situations of thousands users. Note that we are not getting a project dynamically for each group of users. All the notes for whitelist apply as well.

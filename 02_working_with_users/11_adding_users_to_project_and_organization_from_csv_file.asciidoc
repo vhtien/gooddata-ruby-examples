@@ -29,6 +29,7 @@ SDK has a method import_users that takes care of all the details and does exactl
 # encoding: utf-8
 
 require 'gooddata'
+require 'active_support/all'
 
 GoodData.with_connection('user', 'password') do |client|
   GoodData.with_project('project_pid') do |project|
