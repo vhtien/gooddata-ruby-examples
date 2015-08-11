@@ -7,12 +7,7 @@ You would like to add a users to project programmatically. You already have all 
 ==== Prerequisites
 You have to have a user who is an admin of an organization. If you don't have the organization admin account, please contact your primary GoodData contact person or GoodData support (e-mail support@gooddata.com). You have an organization populated with user. If you don't take a look at the recipe above (Adding user to organization)
 
-We assume that you have a file with details which users should be added to a project. The file has to contain three pieces of information. Who you would like to add to a project, role that the user should take on in that project and which project he should be added to. In the first example we will assume all the users should be added to a single project so we will have only 2 columns.
-
-    login,role
-    john@example.com,admin
-
-The headers we used are defaults. If you have different ones you will have to do some mangling. Example of how to do that can be found in recipe adding_users_to_domain.
+We assume that you have a file with details which users should be added to a project. The file has to contain three pieces of information. Who you would like to add to a project, role that the user should take on in that project and which project he should be added to. The headers we used are defaults. If you have different ones you will have to do some mangling. Example of how to do that can be found in recipe adding_users_to_domain.
 
 ==== Solution
 
@@ -20,10 +15,6 @@ Sometimes the case might be that you would like to add users to a slew of projec
 
     pid,login,role
     asl50ejow6bzp97i9pxlbcm3vkuvzQ72,john@example.com,admin
-
-Note that it contains one more piece of information and that is which project the user should be added into.
-
-We now rewrite the example to use this information.
 
 [source,ruby]
 ----
