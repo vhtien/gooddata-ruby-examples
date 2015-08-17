@@ -1,0 +1,13 @@
+=== List Variable Values
+
+by Tomas Svarovsky
+
+==== Problem
+You have variable in your project and you would like to see the values in a readable fashion.
+
+==== Solution
+SDK tries to hide the differences from Data Permissions so this recipe is analogy to <<List Data Permissions>> recipe.
+
+<%= render_ruby 'src/11_working_with_data_filters/list_user_variable_values.rb' %>
+
+Unlike the Data Permissions Variables has a concept of default value for the project. If a specific values is not provided for a user the project default is used. You can noticed these users to have "TRUE" as a value. The project value is marked as [PROJECT DEFAULT] in the output.
