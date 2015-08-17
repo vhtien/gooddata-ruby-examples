@@ -1,0 +1,28 @@
+=== Investigating Executions
+by Tomas Svarovsky
+
+==== Problem
+You have large amount of projects and would like to investigate the execution. The administration UI is not necessarilly helpful since its overview UI can hide some failures etc.
+
+==== Solution
+
+Let's have a look at couple of scenarios. First let's investigate a executions inside one project regardless of which schedule it was triggered by. Let's assume first that we are just looking for any executions that failed for that particular project. We will print the date when it happend sorted in a ascending fashion.
+
+<%= render_ruby 'src/07_deployment_recipes/schedule_investigation_1.rb' %>
+
+Now imagine that you are looking for executions executed by a particular schedule.
+
+<%= render_ruby 'src/07_deployment_recipes/schedule_investigation_2.rb' %>
+
+Lets' make it even more specific and let's look for a specific term in the error message/ Let's say that "unsynchronized" is the word we are looking for
+
+<%= render_ruby 'src/07_deployment_recipes/schedule_investigation_3.rb' %>
+
+Sometimes the error does not manfiest itself in the error message directly and you need to look into logs. Take not that in last both cases we are getting the log and the error message as a string so you have full power of ruby to process it. Here we are using regular expressions which by itself give you siginificant power but you can go even deeper if you need.
+
+<%= render_ruby 'src/07_deployment_recipes/schedule_investigation_4.rb' %>
+
+Last example we will show is just a small extension. Imagine you would like to perform the same analysis on all projects in your account. This is usually the case since this type of analysing executions get exponentially more useful with growing number of executions or projects you need to investigate.
+
+<%= render_ruby 'src/07_deployment_recipes/schedule_investigation_5.rb' %>
+
