@@ -9,3 +9,11 @@ You have metadata objects (reports/metrics/dashboards) you would like to transfe
 <%= render_ruby 'src/06_working_with_projects/metadata_transfer.rb' %>
 
 ==== Discussion
+
+Occassionally you need to transfer objects to multiple projects. To make it easier SDK provides a convenience method for this.
+
+<%= render_ruby 'src/06_working_with_projects/metadata_transfer_to_multiple.rb' %>
+
+Objects import happen in two stages. First you export the objects with an API call. This creates a package on our servers and provides you with a token. You can then use the token to initiate an import. In most cases you do not care about these details and 2 above methods is what you need. In some cases though you want the low level control so here is a quick example how to use those lower level methods.
+
+<%= render_ruby 'src/06_working_with_projects/metadata_transfer_low_level.rb' %>

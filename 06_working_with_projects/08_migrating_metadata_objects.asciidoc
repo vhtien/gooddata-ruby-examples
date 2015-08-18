@@ -20,10 +20,78 @@ GoodData.with_connection do |c|
     # find objects you would like to transfer
     # here we transfer all reports containing word "sales" in the title
     reports = master_project.reports.select { |r| r.title =~ /title/ }
-    master_project.transfer_objects(reports, project: target_project)
+    begin
+      master_project.transfer_objects(reports, project: target_project)
+    rescue ObjectsMigrationError
+      puts 'Object transfer failed'
+    end
   end
 end
 
 ----
 
 ==== Discussion
+
+Occassionally you need to transfer objects to multiple projects. To make it easier SDK provides a convenience method for this.
+
+[source,ruby]
+----
+# encoding: UTF-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  target_project_1 = c.projects('target_project_id_1')
+  target_project_2 = c.projects('target_project_id_2')
+
+  # Lets log into project you would like to transfer from  
+  GoodData.with_project('master_project_id') do |master_project|
+    # find objects you would like to transfer
+    # here we transfer all reports containing word "sales" in the title
+    reports = master_project.reports.select { |r| r.title =~ /title/ }
+    result = master_project.transfer_objects(reports, project: [target_project_1, target_project_2])
+    
+    # If you provided an array of projects the method will not throw an exception on failed
+    # imports. It returns an array of results an you have to investigate to know what is up.
+    # The shape of results is in shape
+    # {
+    #   project: target_project,
+    #   result: true
+    # }
+    puts "#{result.select {|r| r[:result] }.count} projects succeeded"
+    puts "#{result.reject {|r| r[:result] }.count} projects failed"
+  end
+end
+
+----
+
+Objects import happen in two stages. First you export the objects with an API call. This creates a package on our servers and provides you with a token. You can then use the token to initiate an import. In most cases you do not care about these details and 2 above methods is what you need. In some cases though you want the low level control so here is a quick example how to use those lower level methods.
+
+[source,ruby]
+----
+# encoding: UTF-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  target_project = c.projects('target_project_id')
+
+  # Lets log into project you would like to transfer from  
+  GoodData.with_project('master_project_id') do |master_project|
+    # find objects you would like to transfer
+    # here we transfer all reports containing word "sales" in the title
+    reports = master_project.reports.select { |r| r.title =~ /title/ }
+    begin
+      token = master_project.objects_export(reports)
+    rescue ObjectsExportError
+      puts "Export failed"
+    end
+    begin
+      target_project.objects_import(token)
+    rescue ObjectsImportError
+      puts "Import failed"
+    end    
+  end
+end
+
+----

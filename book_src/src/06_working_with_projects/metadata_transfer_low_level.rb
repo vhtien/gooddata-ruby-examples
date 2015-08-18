@@ -11,9 +11,14 @@ GoodData.with_connection do |c|
     # here we transfer all reports containing word "sales" in the title
     reports = master_project.reports.select { |r| r.title =~ /title/ }
     begin
-      master_project.transfer_objects(reports, project: target_project)
-    rescue ObjectsMigrationError
-      puts 'Object transfer failed'
+      token = master_project.objects_export(reports)
+    rescue ObjectsExportError
+      puts "Export failed"
     end
+    begin
+      target_project.objects_import(token)
+    rescue ObjectsImportError
+      puts "Import failed"
+    end    
   end
 end
