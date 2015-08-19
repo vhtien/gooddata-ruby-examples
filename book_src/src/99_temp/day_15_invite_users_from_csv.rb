@@ -7,7 +7,7 @@ PROJECT_ID = 'we1vvh4il93r0927r809i3agif50d7iz'
 
 GoodData.with_connection do |c|
   GoodData.with_project(PROJECT_ID) do |project|
-    path = File.join(File.dirname(__FILE__), '..', '..', 'data', 'users.csv')
+    path = File.join(File.dirname(__FILE__), '..', 'data', 'users.csv')
     puts "Loading #{path}"
     CSV.foreach(path, :headers => true, :return_headers => false) do |user|
       email = user[0]

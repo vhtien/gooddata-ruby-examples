@@ -1,7 +1,7 @@
+require 'gooddata'
+
 client.get("/gdc/md/")
 
-client.post("/gdc/projects/", {a: 'b'})
+project_id = 'YOUR_PROJECT_ID'
 
 client.delete("/gdc/projects/#{project_id}")
-
-client.put("/gdc/projects/#{project_id}", {a: 'b'})

@@ -2,17 +2,17 @@
 by Tomas Korcak
 
 ==== Problem
-You have report and you want to update report definition in easy way.
+You have report and you want to update report definition in easy way. Perhaps you need to modify multiple reports in one or more projects. 
 
 ==== Solution
 
-The easiest way is to use Report#update_definition with block argument.
+Use the Report#update_definition with block argument in following way.
 
 
 <%= render_ruby 'src/08_working_with_reports/update_report_definition_immutable.rb' %>
 
 ==== Discussion
 
-Specify :immutable => false if you do want to update latest report definition instead of creating new one. Immutable flag default is true.
+Specify :immutable => false if you do want to update the latest report definition instead of creating new one. Immutable flag is true by default.
 
 <%= render_ruby 'src/08_working_with_reports/update_report_definition.rb' %>
