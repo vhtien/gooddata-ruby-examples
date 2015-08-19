@@ -2894,8 +2894,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_solution_41">Solution</h4>
 <div class="paragraph">
-<p>SDK allows you to deploy a process. Just point it to a file, directory or a zipped archive and that will be deployed.
-Below is an example of CloudConnect process deployment. When deploying CloudConnect processes you typically want to take the whole folder structure of a CloudConnect project and deploy it. So you will want to pass either path to the root folder of the structure or you can zip it first and pass just a path to the zip archive. The below example points to the root folder of a CloudConnect project.</p>
+<p>SDK allows you to deploy a process. Just point it to a directory or a zipped archive that you want to deploy. Below is an example of CloudConnect process deployment. When deploying CloudConnect processes you typically want to take the whole folder structure of a CloudConnect project and deploy it. So you will want to pass either path to the root folder of the structure or you can zip it first and pass just a path to the zip archive. The below example points to the root folder of a CloudConnect project.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2910,27 +2909,6 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>By default the process is deployed as a CloudConnect process. You can deploy as other types by providing specific type (CloudConnect or Ruby).</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
-
-require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
-
-<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
-  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_cloud_connect_process.rb</span><span class="delimiter">'</span></span>,
-      <span class="key">type</span>: <span class="symbol">:ruby</span>,
-      <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Test ETL Process</span><span class="delimiter">'</span></span>)
-    <span class="keyword">end</span>
-<span class="keyword">end</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This also shows you how to deploy a single file.</p>
 </div>
 </div>
 </div>
@@ -2948,7 +2926,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_solution_42">Solution</h4>
 <div class="paragraph">
-<p>SDK provides means for redeploying a process (with a new updated content). All you have to do is to get a handle on the process. Here we are using a process id to identify the process that we want to redeploy. You can use any other way to identify the process to redeploy. Take note that the same deployment rules as in <code>project.deploy_process</code> apply. You can deploy a directory, file or a compressed package.</p>
+<p>SDK provides means for redeploying a process (with a new updated content). All you have to do is to get a handle on the process. Here we are using a process id to identify the process that we want to redeploy. You can use any other way to identify the process to redeploy. Take note that the same deployment rules as in <code>project.deploy_process</code> apply.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2959,7 +2937,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     process = project.processes(<span class="string"><span class="delimiter">'</span><span class="content">process_id</span><span class="delimiter">'</span></span>)
-    process.deploy(<span class="string"><span class="delimiter">'</span><span class="content">path_to_your_process</span><span class="delimiter">'</span></span>)
+    process.deploy(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_cloud_connect_directory</span><span class="delimiter">'</span></span>)
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -2990,10 +2968,8 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./hello_world.rb</span><span class="delimiter">'</span></span>,
-      <span class="key">type</span>: <span class="symbol">:ruby</span>,
-      <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">example_process</span><span class="delimiter">&quot;</span></span>)
-    process.create_schedule(<span class="string"><span class="delimiter">'</span><span class="content">0 15 * * *</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">hello_world.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_cloud_connect_directory</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Test ETL Process</span><span class="delimiter">'</span></span>)
+    process.create_schedule(<span class="string"><span class="delimiter">'</span><span class="content">0 15 * * *</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">graph/my_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3085,10 +3061,8 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./hello_world.rb</span><span class="delimiter">'</span></span>,
-      <span class="key">type</span>: <span class="symbol">:ruby</span>,
-      <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">example_process</span><span class="delimiter">&quot;</span></span>)
-    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">hello_world.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_cloud_connect_directory</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Test ETL Process</span><span class="delimiter">'</span></span>)
+    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">graph/my_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3108,7 +3082,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     process = project.processes(<span class="string"><span class="delimiter">'</span><span class="content">6a75759f-2a76-49c8-af18-ad3bc58fc65e</span><span class="delimiter">'</span></span>)
-    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">hello_world.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">graph/my_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3125,8 +3099,8 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     project = <span class="constant">GoodData</span>.use(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>)
-    process = project.processes.find { |p| p.name == <span class="string"><span class="delimiter">'</span><span class="content">hello_world</span><span class="delimiter">'</span></span> }
-    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">hello_world.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process = project.processes.find { |p| p.name == <span class="string"><span class="delimiter">'</span><span class="content">Test ETL Process</span><span class="delimiter">'</span></span> }
+    process.execute(<span class="string"><span class="delimiter">'</span><span class="content">graph/my_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3160,16 +3134,12 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./parent_process.rb</span><span class="delimiter">'</span></span>,
-      <span class="key">type</span>: <span class="symbol">:ruby</span>,
-      <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">parent_process</span><span class="delimiter">&quot;</span></span>)
-    parent_schedule = process.create_schedule(<span class="string"><span class="delimiter">'</span><span class="content">0 15 * * *</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">parent_process.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_parent_cloud_connect_directory</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Parent Process</span><span class="delimiter">'</span></span>)
+    parent_schedule = process.create_schedule(<span class="string"><span class="delimiter">'</span><span class="content">0 15 * * *</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">graph/parent_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
         <span class="comment"># The after_process will run after the parent_schedule successfully finishes</span>
-    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./after_process.rb</span><span class="delimiter">'</span></span>,
-      <span class="key">type</span>: <span class="symbol">:ruby</span>,
-      <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">after_process</span><span class="delimiter">&quot;</span></span>)
+    process = project.deploy_process(<span class="string"><span class="delimiter">'</span><span class="content">./path/to_after_cloud_connect_directory</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">After Process</span><span class="delimiter">'</span></span>)
         <span class="comment"># Note passing the parent_schedule instead of a cron expression</span>
-    process.create_schedule(parent_schedule, <span class="string"><span class="delimiter">'</span><span class="content">after_process.rb</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
+    process.create_schedule(parent_schedule, <span class="string"><span class="delimiter">'</span><span class="content">graph/after_graph.grf</span><span class="delimiter">'</span></span>, <span class="key">params</span>: { <span class="key">param1</span>: <span class="string"><span class="delimiter">'</span><span class="content">a</span><span class="delimiter">'</span></span>, <span class="key">param2</span>: <span class="string"><span class="delimiter">'</span><span class="content">b</span><span class="delimiter">'</span></span> })
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3206,7 +3176,7 @@ schedule_id = <span class="string"><span class="delimiter">'</span><span class="
   <span class="comment"># you can change pretty much anything</span>
 
   <span class="comment"># executable</span>
-  schedule.executable = <span class="string"><span class="delimiter">'</span><span class="content">entry_point.rb</span><span class="delimiter">'</span></span>
+  schedule.executable = <span class="string"><span class="delimiter">'</span><span class="content">graph/new_graph.grf</span><span class="delimiter">'</span></span>
 
   <span class="comment"># params</span>
   schedule.params
@@ -5634,7 +5604,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-19 11:21:11 CEST
+Last updated 2015-08-19 14:33:27 CEST
 </div>
 </div>
 </body>
