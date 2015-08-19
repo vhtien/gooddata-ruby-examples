@@ -3206,27 +3206,27 @@ schedule_id = <span class="string"><span class="delimiter">'</span><span class="
   <span class="comment"># you can change pretty much anything</span>
 
   <span class="comment"># executable</span>
-  s.executable = <span class="string"><span class="delimiter">'</span><span class="content">entry_point.rb</span><span class="delimiter">'</span></span>
+  schedule.executable = <span class="string"><span class="delimiter">'</span><span class="content">entry_point.rb</span><span class="delimiter">'</span></span>
 
   <span class="comment"># params</span>
-  s.params
+  schedule.params
   <span class="comment"># {</span>
   <span class="comment">#   &quot;PROCESS_ID&quot;=&gt;&quot;c42c1b82-7d6f-433a-b008-9cdb1d454e01&quot;,</span>
   <span class="comment">#   &quot;EXECUTABLE&quot;=&gt;&quot;new_main.rb&quot;,</span>
   <span class="comment">#   :a=&gt;:b</span>
   <span class="comment"># }</span>
-  s.set_param(<span class="symbol">:a</span>, <span class="symbol">:c</span>)
-  s.params
+  schedule.set_param(<span class="symbol">:a</span>, <span class="symbol">:c</span>)
+  schedule.params
   <span class="comment"># {</span>
   <span class="comment">#   &quot;PROCESS_ID&quot;=&gt;&quot;c42c1b82-7d6f-433a-b008-9cdb1d454e01&quot;,</span>
   <span class="comment">#   &quot;EXECUTABLE&quot;=&gt;&quot;new_main.rb&quot;,</span>
   <span class="comment">#   :a=&gt;:c</span>
   <span class="comment"># }</span>
-  s.update_params({
+  schedule.update_params({
     <span class="symbol">:a</span> =&gt; <span class="integer">42</span>,
     <span class="symbol">:b</span> =&gt; [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>]
   })
-  s.params
+  schedule.params
   <span class="comment"># {</span>
   <span class="comment">#   &quot;PROCESS_ID&quot;=&gt;&quot;c42c1b82-7d6f-433a-b008-9cdb1d454e01&quot;,</span>
   <span class="comment">#   &quot;EXECUTABLE&quot;=&gt;&quot;new_main.rb&quot;,</span>
@@ -3235,30 +3235,30 @@ schedule_id = <span class="string"><span class="delimiter">'</span><span class="
   <span class="comment"># }</span>
 
   <span class="comment"># reschedule</span>
-  s.reschedule <span class="comment"># =&gt; 0</span>
-  s.reschedule = <span class="integer">15</span>
+  schedule.reschedule <span class="comment"># =&gt; 0</span>
+  schedule.reschedule = <span class="integer">15</span>
 
   <span class="comment"># name</span>
-  s.name <span class="comment"># =&gt; &quot;Some Name&quot;</span>
-  s.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Better Name</span><span class="delimiter">&quot;</span></span>
+  schedule.name <span class="comment"># =&gt; &quot;Some Name&quot;</span>
+  schedule.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Better Name</span><span class="delimiter">&quot;</span></span>
 
   <span class="comment"># enable/disable</span>
-  s.state <span class="comment"># =&gt; &quot;ENABLED&quot;</span>
-  s.disable
-  s.state <span class="comment"># =&gt; &quot;DISABLED&quot;</span>
-  s.enable
-  s.state <span class="comment"># =&gt; &quot;ENABLED&quot;</span>
+  schedule.state <span class="comment"># =&gt; &quot;ENABLED&quot;</span>
+  schedule.disable
+  schedule.state <span class="comment"># =&gt; &quot;DISABLED&quot;</span>
+  schedule.enable
+  schedule.state <span class="comment"># =&gt; &quot;ENABLED&quot;</span>
 
   <span class="comment"># cron expression</span>
-  s.cron <span class="comment"># =&gt; &quot;1 1 1 * *&quot;</span>
-  s.cron = <span class="string"><span class="delimiter">&quot;</span><span class="content">1 1 1 1 *</span><span class="delimiter">&quot;</span></span>
+  schedule.cron <span class="comment"># =&gt; &quot;1 1 1 * *&quot;</span>
+  schedule.cron = <span class="string"><span class="delimiter">&quot;</span><span class="content">1 1 1 1 *</span><span class="delimiter">&quot;</span></span>
 
   <span class="comment"># &quot;run after&quot; schedule</span>
   after_schedule = project.schedules(<span class="string"><span class="delimiter">'</span><span class="content">some_id</span><span class="delimiter">'</span></span>)
-  s.after = after_schedule
+  schedule.after = after_schedule
 
   <span class="comment"># Do not foreget to save it</span>
-  s.save
+  schedule.save
 <span class="keyword">end</span></code></pre>
 </div>
 </div>
@@ -5634,7 +5634,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-19 10:00:15 CEST
+Last updated 2015-08-19 11:21:11 CEST
 </div>
 </div>
 </body>
