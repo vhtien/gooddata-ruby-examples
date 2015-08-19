@@ -10,7 +10,7 @@ GoodData.with_connection do |client|
   # you can change pretty much anything
 
   # executable
-  schedule.executable = 'entry_point.rb'
+  schedule.executable = 'graph/new_graph.grf'
 
   # params
   schedule.params
