@@ -3,11 +3,6 @@
 # require 'rake/notes/rake_task'
 # require 'rspec/core/rake_task'
 
-desc 'Generates the book'
-task :book do
-  system 'cd lib && rake book'
-end
-
 desc 'Build book'
 task :build do
   system 'cd lib && rake build'
