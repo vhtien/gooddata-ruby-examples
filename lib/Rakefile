@@ -31,7 +31,7 @@ task :add_asciidoc_structure do
               f.puts
           end
 
-          (FileList.new('*.asciidoc') - ['chapter.asciidoc']).each do |article|
+          (FileList.new('*.asciidoc') - ['chapter.asciidoc', 'header.asciidoc']).each do |article|
             f.puts ""
             f.puts "include::#{article}[]"
           end
