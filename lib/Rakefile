@@ -25,6 +25,13 @@ task :add_asciidoc_structure do
       FileUtils.cd(chapter) do |dir|
         File.open('chapter.asciidoc', 'w') do |f|
           f.puts "== #{chapter.titleize}"
+
+          if File.exist?('header.asciidoc')
+              f.puts
+              f.puts "include::header.asciidoc[]"
+              f.puts
+          end
+
           (FileList.new('*.asciidoc') - ['chapter.asciidoc']).each do |article|
             f.puts ""
             f.puts "include::#{article}[]"
