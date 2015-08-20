@@ -1,0 +1,12 @@
+All methods including word 'metric' in their name have alias method with 'measure' in their name.
+ 
+Sample list of project methods related to metrics/measures. 
+
+- Project#add_metric <==> Project#add_measure
+- Project#create_metric <==> Project#create_measure
+- Project#compute_metric <==> Project#compute_measure
+- Project#metrics <==> Project#measures
+- Project#metric_by_title <==> Project#measure_by_title
+- Project#metrics_by_title <==> Project#measures_by_title
+
+For full list see from source code generated documentation.
