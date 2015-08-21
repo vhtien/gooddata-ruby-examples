@@ -3751,6 +3751,34 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect1">
 <h2 id="_09_working_with_facts_metrics_and_attributes">09 Working With Facts Metrics And Attributes</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><strong>NOTE:</strong> All 'metric' related methods have their 'measure' counterpart alias. Here are few examples.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Project#add_metric &#8656;&#8658; Project#add_measure</p>
+</li>
+<li>
+<p>Project#create_metric &#8656;&#8658; Project#create_measure</p>
+</li>
+<li>
+<p>Project#compute_metric &#8656;&#8658; Project#compute_measure</p>
+</li>
+<li>
+<p>Project#metrics &#8656;&#8658; Project#measures</p>
+</li>
+<li>
+<p>Project#metric_by_title &#8656;&#8658; Project#measure_by_title</p>
+</li>
+<li>
+<p>Project#metrics_by_title &#8656;&#8658; Project#measures_by_title</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See the gooddata gem&#8217;s Ruby reference documentation for the complete list of aliases.</p>
+</div>
 <div class="sect2">
 <h3 id="_creating_metrics_from_attributes">Creating Metrics from Attributes</h3>
 <div class="paragraph">
@@ -5604,7 +5632,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-19 14:33:27 CEST
+Last updated 2015-08-21 08:50:24 CEST
 </div>
 </div>
 </body>
