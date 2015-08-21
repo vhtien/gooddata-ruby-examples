@@ -1,6 +1,4 @@
-All methods including word 'metric' in their name have alias method with 'measure' in their name.
- 
-Sample list of project methods related to metrics/measures. 
+*NOTE:* All 'metric' related methods have their 'measure' counterpart alias. Here are few examples. 
 
 - Project#add_metric <==> Project#add_measure
 - Project#create_metric <==> Project#create_measure
@@ -9,4 +7,4 @@ Sample list of project methods related to metrics/measures.
 - Project#metric_by_title <==> Project#measure_by_title
 - Project#metrics_by_title <==> Project#measures_by_title
 
-For full list see from source code generated documentation.
+See the gooddata gem's Ruby reference documentation for the complete list of aliases. 
