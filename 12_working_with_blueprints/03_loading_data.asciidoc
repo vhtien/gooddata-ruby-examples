@@ -83,10 +83,15 @@ by Tomas Korcak
 ==== Problem
 You would like to load multiple data sets into project at once.
 
-For more info see http://developer.gooddata.com/article/multiload-of-csv-data[GoodData Article]
-
-
 ==== Solution
+
+The GoodData platform supports loading multiple datasets from a set of CSV files in a single task.
+In addition to loading a single CSV at a time, you can now upload your CSV files,
+provide a JSON manifest file, and then execute the data load through a single API call.
+This method is particularly useful if your project contains many datasets,
+uses incremental data loading, or requires a long time to synchronize data.
+
+For more info see http://developer.gooddata.com/article/multiload-of-csv-data[GoodData Article].
 
 [source,ruby]
 ----
