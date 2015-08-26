@@ -622,6 +622,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_creating_project_from_blueprint">Creating Project from Blueprint</a></li>
 <li><a href="#_getting_blueprint_from_existing_project">Getting Blueprint from Existing Project</a></li>
 <li><a href="#_loading_data_to_project">Loading Data to Project</a></li>
+<li><a href="#_loading_multiple_data_sets_to_project">Loading Multiple Data Sets to Project</a></li>
 <li><a href="#_loading_data_with_specific_date_format">Loading Data with Specific Date Format</a></li>
 <li><a href="#_adding_new_ldm_fields_to_project">Adding New LDM Fields to Project</a></li>
 <li><a href="#_specifying_fields_data_type">Specifying Fields Data Type</a></li>
@@ -4752,18 +4753,84 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect2">
+<h3 id="_loading_multiple_data_sets_to_project">Loading Multiple Data Sets to Project</h3>
+<div class="paragraph">
+<p>by Tomas Korcak</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_70">Problem</h4>
+<div class="paragraph">
+<p>You would like to load multiple data sets into project at once.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_70">Solution</h4>
+<div class="paragraph">
+<p>The GoodData platform supports loading multiple datasets from a set of CSV files in a single task.
+In addition to loading a single CSV at a time, you can now upload your CSV files,
+provide a JSON manifest file, and then execute the data load through a single API call.
+This method is particularly useful if your project contains many datasets, or if you are loading multiple datasets with larger data volumes. The multiple datasets processing is significantly faster in these situations.</p>
+</div>
+<div class="paragraph">
+<p>For more info see <a href="http://developer.gooddata.com/article/multiload-of-csv-data">GoodData Article</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+require <span class="string"><span class="delimiter">'</span><span class="content">csv</span><span class="delimiter">'</span></span>
+
+<span class="constant">USERNAME</span> = <span class="string"><span class="delimiter">'</span><span class="content">YOUR_USERNAME</span><span class="delimiter">'</span></span>
+<span class="constant">PASSWORD</span> = <span class="string"><span class="delimiter">'</span><span class="content">YOUR_PASSWORD</span><span class="delimiter">'</span></span>
+<span class="constant">TOKEN</span> = <span class="string"><span class="delimiter">'</span><span class="content">YOUR_TOKEN</span><span class="delimiter">'</span></span>
+
+<span class="constant">GoodData</span>.with_connection(<span class="constant">USERNAME</span>, <span class="constant">PASSWORD</span>) <span class="keyword">do</span> |client|
+  <span class="comment"># Create LDM blueprint</span>
+  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.from_json(<span class="string"><span class="delimiter">'</span><span class="content">data/hr_manifest.json</span><span class="delimiter">'</span></span>)
+
+  <span class="comment"># Create new project (datamart)</span>
+  project = <span class="constant">GoodData</span>::<span class="constant">Project</span>.create_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="constant">TOKEN</span>)
+  puts <span class="string"><span class="delimiter">&quot;</span><span class="content">Created project </span><span class="inline"><span class="inline-delimiter">#{</span>project.pid<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+
+  data = [
+    {
+      <span class="key">data</span>: <span class="string"><span class="delimiter">'</span><span class="content">data/hr_departments.csv</span><span class="delimiter">'</span></span>,
+      <span class="key">dataset</span>: <span class="string"><span class="delimiter">'</span><span class="content">dataset.department</span><span class="delimiter">'</span></span>,
+    },
+    {
+      <span class="key">data</span>: <span class="string"><span class="delimiter">'</span><span class="content">data/hr_employees.csv</span><span class="delimiter">'</span></span>,
+      <span class="key">dataset</span>: <span class="string"><span class="delimiter">'</span><span class="content">dataset.employee</span><span class="delimiter">'</span></span>
+    },
+    {
+      <span class="key">data</span>: <span class="string"><span class="delimiter">'</span><span class="content">data/hr_salaries.csv</span><span class="delimiter">'</span></span>,
+      <span class="key">dataset</span>: <span class="string"><span class="delimiter">'</span><span class="content">dataset.salary</span><span class="delimiter">'</span></span>,
+      <span class="key">options</span>: {<span class="symbol">:mode</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">INCREMENTAL</span><span class="delimiter">'</span></span>}
+    }
+  ]
+  res = project.upload_multiple(data, blueprint)
+
+  puts <span class="constant">JSON</span>.pretty_generate(res)
+
+  puts <span class="string"><span class="delimiter">'</span><span class="content">Done!</span><span class="delimiter">'</span></span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_loading_data_with_specific_date_format">Loading Data with Specific Date Format</h3>
 <div class="paragraph">
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_70">Problem</h4>
+<h4 id="_problem_71">Problem</h4>
 <div class="paragraph">
 <p>You need to upload dates but you have a nonstandard formatting</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_70">Solution</h4>
+<h4 id="_solution_71">Solution</h4>
 <div class="paragraph">
 <p>You can specify a date loading format in your blueprint. If you do not specify any format then the default <em>MM/dd/yyyy</em> format is used</p>
 </div>
@@ -4847,13 +4914,13 @@ We did not have to update the project to be able to load dates in a different fo
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_71">Problem</h4>
+<h4 id="_problem_72">Problem</h4>
 <div class="paragraph">
 <p>You would like to update a project with additional fields</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_71">Solution</h4>
+<h4 id="_solution_72">Solution</h4>
 <div class="paragraph">
 <p>Blueprints are easy to create programmatically and even to merge them together. In this example we will create a simple blueprint with one dataset and then add an additional field into blueprint and update the model.</p>
 </div>
@@ -4951,13 +5018,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_72">Problem</h4>
+<h4 id="_problem_73">Problem</h4>
 <div class="paragraph">
 <p>You would like to specify a different data type for attribute or fact in a blueprint</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_72">Solution</h4>
+<h4 id="_solution_73">Solution</h4>
 <div class="paragraph">
 <p>Each column in blueprint is eventually translated into a physical column in a database. While the defaults are typically what you want sometimes it might be useful to override them. You can specify the data type with gd_data_type clause.</p>
 </div>
@@ -5036,13 +5103,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_73">Problem</h4>
+<h4 id="_problem_74">Problem</h4>
 <div class="paragraph">
 <p>You would like to use folders for organizing your project&#8217;s model</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_73">Solution</h4>
+<h4 id="_solution_74">Solution</h4>
 <div class="paragraph">
 <p>By default all the attributes and facts are automatically assigned a folder based on it&#8217;s dataset name. This name is either generated from the dataset&#8217;s name or title (if defined). You can override this default and specify your own folder for any field.</p>
 </div>
@@ -5100,7 +5167,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_74">Problem</h4>
+<h4 id="_problem_75">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -5112,7 +5179,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_74">Solution</h4>
+<h4 id="_solution_75">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -5171,7 +5238,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_75">Problem</h4>
+<h4 id="_problem_76">Problem</h4>
 <div class="paragraph">
 <p>You want to specify certain label&#8217;s data type see <a href="http://developer.gooddata.com/article/setting-up-data-for-geo-charts">this document</a> for more details.</p>
 </div>
@@ -5183,7 +5250,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_75">Solution</h4>
+<h4 id="_solution_76">Solution</h4>
 <div class="paragraph">
 <p>We&#8217;ll create a simple project&#8217;s blueprint that contains a label with the 'GDC.link' (hyperlink) datatype in the code snippet below.</p>
 </div>
@@ -5295,13 +5362,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_76">Problem</h4>
+<h4 id="_problem_77">Problem</h4>
 <div class="paragraph">
 <p>I created a model and now found out that I would like to move a field to different dataset.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_76">Solution</h4>
+<h4 id="_solution_77">Solution</h4>
 <div class="paragraph">
 <p>We will use variation of our hr demo model. If you look at that model you can see that we have an attribute <strong>region</strong> defined on departments dataset. This is how you (hypothetically) originally created the project and everything was fine but you realized that you would like to assign the region to people dataset not departments dataset.</p>
 </div>
@@ -5345,13 +5412,13 @@ project.upload(employee_data_with_dep, blueprint, <span class="string"><span cla
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_77">Problem</h4>
+<h4 id="_problem_78">Problem</h4>
 <div class="paragraph">
 <p>I would like to play with blueprints but I cannot come up with some data and model of a ptoy project. Can you give me any?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_77">Solution</h4>
+<h4 id="_solution_78">Solution</h4>
 <div class="paragraph">
 <p>Yes. Use our HR example which models a small company and people inside it. We tried to use majority of the features that the blueprint builder supports so you can take it as a starting point when you are creating yours.</p>
 </div>
@@ -5452,7 +5519,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_78">Problem</h4>
+<h4 id="_problem_79">Problem</h4>
 <div class="paragraph">
 <p>You created a quick protoype but you found out that it needs some touch ups.</p>
 </div>
@@ -5464,7 +5531,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_78">Solution</h4>
+<h4 id="_solution_79">Solution</h4>
 <div class="paragraph">
 <p>Use SDK refactoring features.</p>
 </div>
@@ -5632,7 +5699,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-21 08:50:24 CEST
+Last updated 2015-08-26 10:11:25 +02:00
 </div>
 </div>
 </body>
