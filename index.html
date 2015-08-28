@@ -600,6 +600,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_creating_metrics_from_facts">Creating Metrics from Facts</a></li>
 <li><a href="#_write_information_about_project_s_metrics_to_csv">Write Information about Project&#8217;s Metrics to CSV</a></li>
 <li><a href="#_changing_metric_s_number_formatting">Changing Metric&#8217;s Number Formatting</a></li>
+<li><a href="#_creating_metrics">Creating Metrics</a></li>
 </ul>
 </li>
 <li><a href="#_10_working_with_dashboards">10 Working With Dashboards</a>
@@ -3937,6 +3938,74 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_creating_metrics">Creating Metrics</h3>
+<div class="paragraph">
+<p>by Zdenek Svoboda</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_61">Problem</h4>
+<div class="paragraph">
+<p>You want to create advanced MAQL metric.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites_16">Prerequisites</h4>
+<div class="paragraph">
+<p>You have to have existing project with model and data loaded.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_61">Solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+
+<span class="comment"># Connect to GoodData platform</span>
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
+  <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
+    metric = project.add_measure <span class="string"><span class="delimiter">'</span><span class="content">SELECT PERCENTILE(#&quot;Amount&quot;,0.9)</span><span class="delimiter">'</span></span>,
+     <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Salary Amount [90th Pct]</span><span class="delimiter">'</span></span>
+    metric.save
+    metric.execute
+
+    metric = project.add_measure <span class="string"><span class="delimiter">'</span><span class="content">SELECT PERCENTILE(![fact.salary.amount],0.9)</span><span class="delimiter">'</span></span>,
+     <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Salary Amount [90th Pct] V2</span><span class="delimiter">'</span></span>
+    metric.save
+    metric.execute
+
+    metric = project.add_measure <span class="string"><span class="delimiter">'</span><span class="content">SELECT PERCENTILE([/gdc/md/ptbedvc1841r4obgptywd2mzhbwjsfyr/obj/223],0.9)</span><span class="delimiter">'</span></span>,
+     <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Salary Amount [90th Pct] V3</span><span class="delimiter">'</span></span>
+    metric.save
+    metric.execute
+
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_discussion_20">Discussion</h4>
+<div class="paragraph">
+<p>Please note that the MAQL statement uses three ways how to reference the underlying objects (e.g. facts or metrics that are part of the MAQL statement)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>#"Amount"</em> for referencing the fact (or metric) via its name (title)</p>
+</li>
+<li>
+<p><em>![fact.salary.amount]</em> for referencing the fact (or metric) via its identifier</p>
+</li>
+<li>
+<p><em>[/gdc/md/ptbedvc1841r4obgptywd2mzhbwjsfyr/obj/223]</em> for referencing the fact (or metric) via its uri</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3948,19 +4017,19 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_61">Problem</h4>
+<h4 id="_problem_62">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_16">Prerequisites</h4>
+<h4 id="_prerequisites_17">Prerequisites</h4>
 <div class="paragraph">
 <p>You have to have existing project with dashboard(s).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_61">Solution</h4>
+<h4 id="_solution_62">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3988,13 +4057,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_62">Problem</h4>
+<h4 id="_problem_63">Problem</h4>
 <div class="paragraph">
 <p>You would like to set a data permission (user filter or MUF filter) for one or two users.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_62">Solution</h4>
+<h4 id="_solution_63">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a data permission filter. We&#8217;ll be setting a simple filter along these lines</p>
 </div>
@@ -4057,13 +4126,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_63">Problem</h4>
+<h4 id="_problem_64">Problem</h4>
 <div class="paragraph">
 <p>You have a project that has the data permissions set up. You would like to review them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_63">Solution</h4>
+<h4 id="_solution_64">Solution</h4>
 <div class="paragraph">
 <p>There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.</p>
 </div>
@@ -4088,13 +4157,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_64">Problem</h4>
+<h4 id="_problem_65">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_64">Solution</h4>
+<h4 id="_solution_65">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -4188,13 +4257,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_65">Problem</h4>
+<h4 id="_problem_66">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_65">Solution</h4>
+<h4 id="_solution_66">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -4288,13 +4357,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_66">Problem</h4>
+<h4 id="_problem_67">Problem</h4>
 <div class="paragraph">
 <p>You have variable in your project and you would like to see the values in a readable fashion.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_66">Solution</h4>
+<h4 id="_solution_67">Solution</h4>
 <div class="paragraph">
 <p>SDK tries to hide the differences from Data Permissions so this recipe is analogy to <a href="#_list_data_permissions">List Data Permissions</a> recipe.</p>
 </div>
@@ -4353,13 +4422,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_67">Problem</h4>
+<h4 id="_problem_68">Problem</h4>
 <div class="paragraph">
 <p>You would like to create a new project with a data model programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_67">Solution</h4>
+<h4 id="_solution_68">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -4393,7 +4462,7 @@ project.facts(<span class="string"><span class="delimiter">'</span><span class="
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_20">Discussion</h4>
+<h4 id="_discussion_21">Discussion</h4>
 <div class="paragraph">
 <p>Let&#8217;s have a look at couple of other variations and more complex examples.</p>
 </div>
@@ -4635,13 +4704,13 @@ project.facts(<span class="string"><span class="delimiter">'</span><span class="
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_68">Problem</h4>
+<h4 id="_problem_69">Problem</h4>
 <div class="paragraph">
 <p>You have an existing project and would like to reverse engineer it&#8217;s blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_68">Solution</h4>
+<h4 id="_solution_69">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -4671,13 +4740,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_69">Problem</h4>
+<h4 id="_problem_70">Problem</h4>
 <div class="paragraph">
 <p>You would like to load data into project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_69">Solution</h4>
+<h4 id="_solution_70">Solution</h4>
 <div class="paragraph">
 <p>To load data you have to have 3 things. Blueprint, project and data.</p>
 </div>
@@ -4758,13 +4827,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_70">Problem</h4>
+<h4 id="_problem_71">Problem</h4>
 <div class="paragraph">
 <p>You would like to load multiple data sets into project at once.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_70">Solution</h4>
+<h4 id="_solution_71">Solution</h4>
 <div class="paragraph">
 <p>The GoodData platform supports loading multiple datasets from a set of CSV files in a single task.
 In addition to loading a single CSV at a time, you can now upload your CSV files,
@@ -4824,13 +4893,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_71">Problem</h4>
+<h4 id="_problem_72">Problem</h4>
 <div class="paragraph">
 <p>You need to upload dates but you have a nonstandard formatting</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_71">Solution</h4>
+<h4 id="_solution_72">Solution</h4>
 <div class="paragraph">
 <p>You can specify a date loading format in your blueprint. If you do not specify any format then the default <em>MM/dd/yyyy</em> format is used</p>
 </div>
@@ -4914,13 +4983,13 @@ We did not have to update the project to be able to load dates in a different fo
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_72">Problem</h4>
+<h4 id="_problem_73">Problem</h4>
 <div class="paragraph">
 <p>You would like to update a project with additional fields</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_72">Solution</h4>
+<h4 id="_solution_73">Solution</h4>
 <div class="paragraph">
 <p>Blueprints are easy to create programmatically and even to merge them together. In this example we will create a simple blueprint with one dataset and then add an additional field into blueprint and update the model.</p>
 </div>
@@ -4966,7 +5035,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_21">Discussion</h4>
+<h4 id="_discussion_22">Discussion</h4>
 <div class="paragraph">
 <p>In the example above we have created a new model and updated it right away. This is not a typical situation however and there are couple of things that you need to be aware of.</p>
 </div>
@@ -5018,13 +5087,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_73">Problem</h4>
+<h4 id="_problem_74">Problem</h4>
 <div class="paragraph">
 <p>You would like to specify a different data type for attribute or fact in a blueprint</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_73">Solution</h4>
+<h4 id="_solution_74">Solution</h4>
 <div class="paragraph">
 <p>Each column in blueprint is eventually translated into a physical column in a database. While the defaults are typically what you want sometimes it might be useful to override them. You can specify the data type with gd_data_type clause.</p>
 </div>
@@ -5062,7 +5131,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_22">Discussion</h4>
+<h4 id="_discussion_23">Discussion</h4>
 <div class="paragraph">
 <p>These data types are currently supported on the platform</p>
 </div>
@@ -5103,13 +5172,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_74">Problem</h4>
+<h4 id="_problem_75">Problem</h4>
 <div class="paragraph">
 <p>You would like to use folders for organizing your project&#8217;s model</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_74">Solution</h4>
+<h4 id="_solution_75">Solution</h4>
 <div class="paragraph">
 <p>By default all the attributes and facts are automatically assigned a folder based on it&#8217;s dataset name. This name is either generated from the dataset&#8217;s name or title (if defined). You can override this default and specify your own folder for any field.</p>
 </div>
@@ -5155,7 +5224,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_discussion_23">Discussion</h4>
+<h4 id="_discussion_24">Discussion</h4>
 <div class="paragraph">
 <p>Folders are not removed. If you would publish a model that doesn&#8217;t contain an existing folder, the folder isn&#8217;t automatically removed (it is empty).</p>
 </div>
@@ -5167,19 +5236,19 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_75">Problem</h4>
+<h4 id="_problem_76">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_17">Prerequisites</h4>
+<h4 id="_prerequisites_18">Prerequisites</h4>
 <div class="paragraph">
 <p>You have a provisioning token for project creation</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_75">Solution</h4>
+<h4 id="_solution_76">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -5238,19 +5307,19 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_76">Problem</h4>
+<h4 id="_problem_77">Problem</h4>
 <div class="paragraph">
 <p>You want to specify certain label&#8217;s data type see <a href="http://developer.gooddata.com/article/setting-up-data-for-geo-charts">this document</a> for more details.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prerequisites_18">Prerequisites</h4>
+<h4 id="_prerequisites_19">Prerequisites</h4>
 <div class="paragraph">
 <p>You have a provisioning token for project creation.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_76">Solution</h4>
+<h4 id="_solution_77">Solution</h4>
 <div class="paragraph">
 <p>We&#8217;ll create a simple project&#8217;s blueprint that contains a label with the 'GDC.link' (hyperlink) datatype in the code snippet below.</p>
 </div>
@@ -5362,13 +5431,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_77">Problem</h4>
+<h4 id="_problem_78">Problem</h4>
 <div class="paragraph">
 <p>I created a model and now found out that I would like to move a field to different dataset.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_77">Solution</h4>
+<h4 id="_solution_78">Solution</h4>
 <div class="paragraph">
 <p>We will use variation of our hr demo model. If you look at that model you can see that we have an attribute <strong>region</strong> defined on departments dataset. This is how you (hypothetically) originally created the project and everything was fine but you realized that you would like to assign the region to people dataset not departments dataset.</p>
 </div>
@@ -5412,13 +5481,13 @@ project.upload(employee_data_with_dep, blueprint, <span class="string"><span cla
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_78">Problem</h4>
+<h4 id="_problem_79">Problem</h4>
 <div class="paragraph">
 <p>I would like to play with blueprints but I cannot come up with some data and model of a ptoy project. Can you give me any?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_78">Solution</h4>
+<h4 id="_solution_79">Solution</h4>
 <div class="paragraph">
 <p>Yes. Use our HR example which models a small company and people inside it. We tried to use majority of the features that the blueprint builder supports so you can take it as a starting point when you are creating yours.</p>
 </div>
@@ -5519,7 +5588,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_79">Problem</h4>
+<h4 id="_problem_80">Problem</h4>
 <div class="paragraph">
 <p>You created a quick protoype but you found out that it needs some touch ups.</p>
 </div>
@@ -5531,7 +5600,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_79">Solution</h4>
+<h4 id="_solution_80">Solution</h4>
 <div class="paragraph">
 <p>Use SDK refactoring features.</p>
 </div>
@@ -5699,7 +5768,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-26 10:11:25 +02:00
+Last updated 2015-08-28 14:58:24 CEST
 </div>
 </div>
 </body>
