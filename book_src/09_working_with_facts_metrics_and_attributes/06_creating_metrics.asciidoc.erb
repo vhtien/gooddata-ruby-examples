@@ -1,0 +1,21 @@
+=== Creating Metrics
+
+by Zdenek Svoboda
+
+==== Problem
+You want to create advanced MAQL metric.
+
+==== Prerequisites
+You have to have existing project with model and data loaded.
+
+==== Solution
+
+<%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/metric_from_maql.rb' %>
+
+==== Discussion
+Please note that the MAQL statement uses three ways how to reference the underlying objects (e.g. facts or metrics that are part of the MAQL statement)
+
+* _#"Amount"_ for referencing the fact (or metric) via its name (title)
+* _![fact.salary.amount]_ for referencing the fact (or metric) via its identifier
+* _[/gdc/md/ptbedvc1841r4obgptywd2mzhbwjsfyr/obj/223]_ for referencing the fact (or metric) via its uri
+
