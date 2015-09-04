@@ -2,11 +2,12 @@
 by Tomas Svarovsky
 
 ==== Problem
-We've shown how to compute records in all project's datasets already in a separate recipe. Here we are going to use the same scenario to demonstrate on fly report creation and execution
+Occasionally you need to know how many rows there are in each dataset.
 
 ==== Solution
+
+This is surprisingly difficult to do in GoodData UI but it is simple with SDK. Here we are going to create the necessary metrics on the fly through inspection of a blueprint. Then we will create a report that will contain those metrics and compute it.
 
 <%= render_ruby 'src/08_working_with_reports/report_lines_count.rb' %>
 
 ==== Discussion
-Currently the API is not ideal and the recipe depends on user not messing with identifiers of anchors (connection_points) in case they are without labels.
