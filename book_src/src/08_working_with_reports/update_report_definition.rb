@@ -8,7 +8,7 @@ GoodData.with_connection do |c|
   GoodData.with_project(PID) do |project|
     report = project.reports(REPORT)
 
-    new_def = report.update_definition(:immutable => false) do |rdef|
+    new_def = report.update_definition(:new_definition => false) do |rdef|
       rdef.title = "Test TITLE: #{DateTime.now.strftime}"
     end
 
