@@ -1,0 +1,44 @@
+=== Visualizing executions
+by Tomas Svarovsky
+
+==== Problem
+You successfully mudularized your ETL into several modules you orchestrated. The problem is that it is hard to visualize the order of execution from the Data Administration console.
+
+==== Solution
+
+There are plethora of very useful libraries that you can use in conjunction with GoodData SDK. One of those is Graphviz that is a C library but it has bindings to almost every language including Ruby. Graphviz is a visualization library and one of the features is visualizing Direct Acycclic Graphs which is exactly what an execution of several schedules bascially is.
+
+As a prerequisite you have to install both http://www.graphviz.org/[Graphviz] and https://github.com/glejeune/Ruby-Graphviz[Graphviz ruby bindings]. I leave this as a exercise for the reader because this might be a little bit difficult and unfortuntely is different for every platform. If you encounter any errors try googling them or shoot us a message on github or support
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+require 'graphviz'
+
+PROJECT_ID = 'sp4vmjei1hh22cjw4u78ans9c7i8apqi' # fill_in
+
+GoodData.with_connection do |client|
+  GoodData.with_project(PROJECT_ID) do |project|
+    schedules = project.schedules
+
+    nodes = project.processes.pmapcat { |p| p.schedules.map { |s| [s, "#{p.name}-#{s.name}"] } }
+    edges = schedules.reject(&:time_based?).pmap {|s| ["#{s.after.process.name}-#{s.after.name}", "#{s.process.name}-#{s.name}"]}
+
+
+    g = GraphViz.new(:G, :type => :digraph , :rankdir => 'TB')
+    nodes.each { |s, n|
+      node = g.add_nodes(n)
+      node[:shape] = 'box'
+      node[:label] = n + "\n#{s.cron}"
+    }
+
+    edges.each { |a, b| g.add_edges(a, b) }
+    g.output(:png => "run_dag.png")
+
+    # Now you can open it for example on mac by running this on terminal
+    # open -a Preview run_dag.png
+  end
+end
+----
