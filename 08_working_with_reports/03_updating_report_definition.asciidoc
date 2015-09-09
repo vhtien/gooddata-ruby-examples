@@ -33,7 +33,7 @@ end
 
 ==== Discussion
 
-Specify :immutable => false if you do want to update the latest report definition instead of creating new one. Immutable flag is true by default.
+Specify :new_definition => false if you do want to update the latest report definition instead of creating new one. New definition flag is true by default.
 
 [source,ruby]
 ----
@@ -47,7 +47,7 @@ GoodData.with_connection do |c|
   GoodData.with_project(PID) do |project|
     report = project.reports(REPORT)
 
-    new_def = report.update_definition(:immutable => false) do |rdef|
+    new_def = report.update_definition(:new_definition => false) do |rdef|
       rdef.title = "Test TITLE: #{DateTime.now.strftime}"
     end
 
