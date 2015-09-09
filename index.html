@@ -3526,11 +3526,14 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_problem_53">Problem</h4>
 <div class="paragraph">
-<p>We&#8217;ve shown how to compute records in all project&#8217;s datasets already in a separate recipe. Here we are going to use the same scenario to demonstrate on fly report creation and execution</p>
+<p>Occasionally you need to know how many rows there are in each dataset.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_solution_53">Solution</h4>
+<div class="paragraph">
+<p>This is surprisingly difficult to do in GoodData UI but it is simple with SDK. Here we are going to create the necessary metrics on the fly through inspection of a blueprint. Then we will create a report that will contain those metrics and compute it.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3539,13 +3542,28 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |c|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    bp = project.blueprint
-    anchors = bp.datasets.map {|d| [d, d.anchor]}
-    ids = anchors.map <span class="keyword">do</span> |d, a|
-      a.nil? ? <span class="constant">GoodData</span>::<span class="constant">Model</span>.identifier_for(d.to_hash, <span class="key">type</span>: <span class="symbol">:anchor_no_label</span>) : <span class="constant">GoodData</span>::<span class="constant">Model</span>.identifier_for(d.to_hash, a)
-    <span class="keyword">end</span>
-    attributes = ids.pmap {|id| project.attributes(id)}
+    blueprint = project.blueprint
+
+    <span class="comment"># let's grab anchor on each dataset. Anchor is a special attribute on each dataset</span>
+    <span class="comment"># this attribute defines the grain of the dataset if we &quot;count&quot; it we will get the number of lines</span>
+    <span class="comment"># in the dataset</span>
+    anchors = blueprint.datasets.map(&amp;<span class="symbol">:anchor</span>)
+
+    <span class="comment"># As is explained in Blueprint section. Objects in blueprint are project agnostic.</span>
+    <span class="comment"># Let's find corresponding attribute object in specific project</span>
+    attributes = anchors.pmap { |anchor| anchor.in_project(project) }
+
+    <span class="comment"># Lets create a report on the fly that is going to have the metrics in the rows</span>
+    <span class="comment"># Take note that this is a real report on the platform that could be saved and alter reused</span>
     puts project.compute_report(<span class="key">left</span>: attributes.map(&amp;<span class="symbol">:create_metric</span>))
+
+    <span class="comment"># This might result into something like this</span>
+    <span class="comment">#</span>
+    <span class="comment"># [                                                            |   Values   ]</span>
+    <span class="comment"># [count of Records of timeline                                | 0.7306E4   ]</span>
+    <span class="comment"># [count of Activity                                           | 0.61496E6  ]</span>
+    <span class="comment"># [count of Opportunity                                        | 0.85171E6  ]</span>
+    <span class="comment"># [count of Product                                            | 0.5E1      ]</span>
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -3553,9 +3571,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 <div class="sect3">
 <h4 id="_discussion_19">Discussion</h4>
-<div class="paragraph">
-<p>Currently the API is not ideal and the recipe depends on user not messing with identifiers of anchors (connection_points) in case they are without labels.</p>
-</div>
+
 </div>
 </div>
 <div class="sect2">
@@ -3849,12 +3865,14 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
     fact = project.facts(<span class="string"><span class="delimiter">'</span><span class="content">fact.commits.lines_changed</span><span class="delimiter">'</span></span>)
     metric = fact.create_metric(<span class="symbol">:title</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Sum of [</span><span class="inline"><span class="inline-delimiter">#{</span>fact.identifier<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>)
-    metric.save
     res = metric.execute
     puts res
 
+    <span class="comment"># if you like the metric you can save it of course for later usage</span>
+    metric.save
+
     <span class="comment"># Default aggregation is SUM but you can also specify a different one</span>
-    metric = fact.create_metric(<span class="symbol">:title</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Sum of [</span><span class="inline"><span class="inline-delimiter">#{</span>fact.identifier<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>, <span class="key">type</span>: <span class="symbol">:min</span>)
+    metric = fact.create_metric(<span class="symbol">:title</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Min of [</span><span class="inline"><span class="inline-delimiter">#{</span>fact.identifier<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>, <span class="key">type</span>: <span class="symbol">:min</span>)
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -4719,7 +4737,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
   <span class="constant">GoodData</span>.with_project(<span class="string"><span class="delimiter">'</span><span class="content">project_id</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |project|
-    bp = project.blueprint
+    blueprint = project.blueprint
 
     <span class="comment"># now you can start working with it</span>
     blueprint.datasets.count <span class="comment"># =&gt; 3</span>
@@ -4727,7 +4745,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     blueprint.attributes.map(&amp;<span class="symbol">:title</span>)
 
     <span class="comment"># You can also store it into file as json</span>
-    bp.store_to_file(<span class="string"><span class="delimiter">'</span><span class="content">model.json</span><span class="delimiter">'</span></span>)
+    blueprint.store_to_file(<span class="string"><span class="delimiter">'</span><span class="content">model.json</span><span class="delimiter">'</span></span>)
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -4922,7 +4940,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     <span class="keyword">end</span>
   <span class="keyword">end</span>
 
-  project = client.create_project_from_blueprint(bp, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
+  project = client.create_project_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
 
   <span class="comment"># By default the dates are expected in format MM/dd/yyyy</span>
   data = [
@@ -5012,7 +5030,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     <span class="keyword">end</span>
   <span class="keyword">end</span>
 
-  project = client.create_project_from_blueprint(bp, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
+  project = client.create_project_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
 
   update = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">&quot;</span><span class="content">update</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |p|
     p.add_dataset(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset.commits</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |d|
@@ -5113,19 +5131,20 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
             d.add_attribute(<span class="string"><span class="delimiter">'</span><span class="content">attr.commits.name</span><span class="delimiter">'</span></span>)
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.commits.name</span><span class="delimiter">'</span></span>, <span class="key">reference</span>: <span class="string"><span class="delimiter">'</span><span class="content">attr.commits.name</span><span class="delimiter">'</span></span>)
       d.add_date(<span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>, <span class="symbol">:format</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">dd/MM/yyyy</span><span class="delimiter">'</span></span>)
-  <span class="keyword">end</span>
+    <span class="keyword">end</span>
 
-  project = client.create_project_from_blueprint(bp, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
+    project = client.create_project_from_blueprint(blueprint, <span class="key">auth_token</span>: <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>)
 
-  <span class="comment"># This is going to fail since we are trying to upload 1.2 into INT numeric type</span>
-  data = [[<span class="string"><span class="delimiter">'</span><span class="content">fact.commtis.lines_changed</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">label.commits.name</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>],
+    <span class="comment"># This is going to fail since we are trying to upload 1.2 into INT numeric type</span>
+    data = [[<span class="string"><span class="delimiter">'</span><span class="content">fact.commtis.lines_changed</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">label.commits.name</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>],
           [<span class="float">1.2</span>, <span class="string"><span class="delimiter">'</span><span class="content">tomas</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">01/01/2001</span><span class="delimiter">'</span></span>]]
-  project.upload(data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">dataset.commits</span><span class="delimiter">'</span></span>)
+    project.upload(data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">dataset.commits</span><span class="delimiter">'</span></span>)
 
-  <span class="comment"># This is going to pass since we are trying to upload 1 into INT numeric type</span>
-  data = [[<span class="string"><span class="delimiter">'</span><span class="content">fact.commtis.lines_changed</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">label.commits.name</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>],
+    <span class="comment"># This is going to pass since we are trying to upload 1 into INT numeric type</span>
+    data = [[<span class="string"><span class="delimiter">'</span><span class="content">fact.commtis.lines_changed</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">label.commits.name</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>],
           [<span class="integer">1</span>, <span class="string"><span class="delimiter">'</span><span class="content">tomas</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">01/01/2001</span><span class="delimiter">'</span></span>]]
-  project.upload(data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">dataset.commits</span><span class="delimiter">'</span></span>)
+    project.upload(data, blueprint, <span class="string"><span class="delimiter">'</span><span class="content">dataset.commits</span><span class="delimiter">'</span></span>)
+  <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
 </div>
@@ -5189,7 +5208,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
 
 <span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
-  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">&quot;</span><span class="content">my_bp</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |p|
+  blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">&quot;</span><span class="content">my_blueprint</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |p|
     p.add_dataset(<span class="string"><span class="delimiter">'</span><span class="content">dataset.reps</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Awesome Sales Reps</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |d|
       d.add_anchor(<span class="string"><span class="delimiter">'</span><span class="content">attr.reps.id</span><span class="delimiter">'</span></span>)
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.reps.id</span><span class="delimiter">'</span></span>, <span class="key">reference</span>: <span class="string"><span class="delimiter">'</span><span class="content">attr.reps.id</span><span class="delimiter">'</span></span>)
@@ -5266,6 +5285,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">email</span><span class="delimiter">'</span></span>, <span class="symbol">:reference</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">dev_id</span><span class="delimiter">'</span></span>)
     <span class="keyword">end</span>
     p.add_dataset(<span class="string"><span class="delimiter">'</span><span class="content">commits</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |d|
+      d.add_anchor(<span class="string"><span class="delimiter">'</span><span class="content">commits_id</span><span class="delimiter">'</span></span>)
       d.add_fact(<span class="string"><span class="delimiter">'</span><span class="content">lines_changed</span><span class="delimiter">'</span></span>)
       d.add_date(<span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>, <span class="symbol">:dataset</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">committed_on</span><span class="delimiter">'</span></span>)
       d.add_reference(<span class="string"><span class="delimiter">'</span><span class="content">dev_id</span><span class="delimiter">'</span></span>, <span class="symbol">:dataset</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">devs</span><span class="delimiter">'</span></span>)
@@ -5397,7 +5417,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
     <span class="comment"># Add Breweries Dataset</span>
     p.add_dataset(<span class="string"><span class="delimiter">'</span><span class="content">dataset.breweries</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Breweries</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |d|
       d.add_anchor(<span class="string"><span class="delimiter">'</span><span class="content">attr.breweries.brewery_id</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Brewery ID</span><span class="delimiter">'</span></span>)
-          d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.breweries.brewery_id.brewery_id</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Brewery ID</span><span class="delimiter">'</span></span>)
+      d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.breweries.brewery_id.brewery_id</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Brewery ID</span><span class="delimiter">'</span></span>, <span class="symbol">:reference</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">attr.breweries.brewery_id</span><span class="delimiter">'</span></span>)
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.breweries.brewery_id.name</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Brewery Name</span><span class="delimiter">'</span></span>, <span class="symbol">:reference</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">attr.breweries.brewery_id</span><span class="delimiter">'</span></span>)
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.breweries.brewery_id.link</span><span class="delimiter">'</span></span>, <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Brewery URL</span><span class="delimiter">'</span></span>, <span class="symbol">:reference</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">attr.breweries.brewery_id</span><span class="delimiter">'</span></span>, <span class="symbol">:gd_type</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">GDC.link</span><span class="delimiter">'</span></span>) <span class="comment"># &lt;--- Notice this!</span>
       d.add_date(<span class="string"><span class="delimiter">'</span><span class="content">created_at</span><span class="delimiter">'</span></span>, <span class="symbol">:dataset</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">created_at</span><span class="delimiter">'</span></span>)
@@ -5768,7 +5788,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-08-28 14:58:24 CEST
+Last updated 2015-09-09 14:06:53 CEST
 </div>
 </div>
 </body>
