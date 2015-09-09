@@ -3,7 +3,7 @@
 require 'gooddata'
 require 'graphviz'
 
-PROJECT_ID = 'sp4vmjei1hh22cjw4u78ans9c7i8apqi' # fill_in
+PROJECT_ID = 'PROJECT_ID' # fill_in
 
 GoodData.with_connection do |client|
   GoodData.with_project(PROJECT_ID) do |project|
