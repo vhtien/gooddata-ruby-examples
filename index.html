@@ -3537,7 +3537,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <div class="sect3">
 <h4 id="_discussion_18">Discussion</h4>
 <div class="paragraph">
-<p>Specify :immutable &#8658; false if you do want to update the latest report definition instead of creating new one. Immutable flag is true by default.</p>
+<p>Specify :new_definition &#8658; false if you do want to update the latest report definition instead of creating new one. New definition flag is true by default.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3551,7 +3551,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
   <span class="constant">GoodData</span>.with_project(<span class="constant">PID</span>) <span class="keyword">do</span> |project|
     report = project.reports(<span class="constant">REPORT</span>)
 
-    new_def = report.update_definition(<span class="symbol">:immutable</span> =&gt; <span class="predefined-constant">false</span>) <span class="keyword">do</span> |rdef|
+    new_def = report.update_definition(<span class="symbol">:new_definition</span> =&gt; <span class="predefined-constant">false</span>) <span class="keyword">do</span> |rdef|
       rdef.title = <span class="string"><span class="delimiter">&quot;</span><span class="content">Test TITLE: </span><span class="inline"><span class="inline-delimiter">#{</span><span class="constant">DateTime</span>.now.strftime<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
     <span class="keyword">end</span>
 
@@ -5832,7 +5832,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-09 14:47:04 CEST
+Last updated 2015-09-09 14:48:09 CEST
 </div>
 </div>
 </body>
