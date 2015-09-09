@@ -44,7 +44,7 @@ GoodData.with_connection do |client|
     # Add Breweries Dataset
     p.add_dataset('dataset.breweries', title: 'Breweries') do |d|
       d.add_anchor('attr.breweries.brewery_id', title: 'Brewery ID')
-	  d.add_label('label.breweries.brewery_id.brewery_id', title: 'Brewery ID')
+      d.add_label('label.breweries.brewery_id.brewery_id', title: 'Brewery ID', :reference => 'attr.breweries.brewery_id')
       d.add_label('label.breweries.brewery_id.name', title: 'Brewery Name', :reference => 'attr.breweries.brewery_id')
       d.add_label('label.breweries.brewery_id.link', title: 'Brewery URL', :reference => 'attr.breweries.brewery_id', :gd_type => 'GDC.link') # <--- Notice this!
       d.add_date('created_at', :dataset => 'created_at')

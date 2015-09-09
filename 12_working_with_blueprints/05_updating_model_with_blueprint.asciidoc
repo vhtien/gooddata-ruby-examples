@@ -26,7 +26,7 @@ GoodData.with_connection do |client|
     end
   end
 
-  project = client.create_project_from_blueprint(bp, auth_token: 'token')
+  project = client.create_project_from_blueprint(blueprint, auth_token: 'token')
 
   update = GoodData::Model::ProjectBlueprint.build("update") do |p|
     p.add_dataset("dataset.commits") do |d|

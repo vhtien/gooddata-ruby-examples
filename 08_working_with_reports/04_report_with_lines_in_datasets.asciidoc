@@ -16,12 +16,12 @@ require 'gooddata'
 
 GoodData.with_connection do |c|
   GoodData.with_project('project_id') do |project|
-    bp = project.blueprint
+    blueprint = project.blueprint
 
     # let's grab anchor on each dataset. Anchor is a special attribute on each dataset
     # this attribute defines the grain of the dataset if we "count" it we will get the number of lines
     # in the dataset
-    anchors = bp.datasets.map(&:anchor)
+    anchors = blueprint.datasets.map(&:anchor)
 
     # As is explained in Blueprint section. Objects in blueprint are project agnostic.
     # Let's find corresponding attribute object in specific project

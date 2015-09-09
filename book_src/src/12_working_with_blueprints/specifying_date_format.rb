@@ -15,7 +15,7 @@ GoodData.with_connection do |client|
     end
   end
 
-  project = client.create_project_from_blueprint(bp, auth_token: 'token')
+  project = client.create_project_from_blueprint(blueprint, auth_token: 'token')
 
   # By default the dates are expected in format MM/dd/yyyy
   data = [

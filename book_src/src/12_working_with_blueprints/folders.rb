@@ -3,7 +3,7 @@
 require 'gooddata'
 
 GoodData.with_connection do |client|
-  blueprint = GoodData::Model::ProjectBlueprint.build("my_bp") do |p|
+  blueprint = GoodData::Model::ProjectBlueprint.build("my_blueprint") do |p|
     p.add_dataset('dataset.reps', title: 'Awesome Sales Reps') do |d|
       d.add_anchor('attr.reps.id')
       d.add_label('label.reps.id', reference: 'attr.reps.id')

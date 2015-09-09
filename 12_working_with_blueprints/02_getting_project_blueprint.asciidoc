@@ -14,7 +14,7 @@ require 'gooddata'
 
 GoodData.with_connection do |client|
   GoodData.with_project('project_id') do |project|
-    bp = project.blueprint
+    blueprint = project.blueprint
 
     # now you can start working with it
     blueprint.datasets.count # => 3
@@ -22,7 +22,7 @@ GoodData.with_connection do |client|
     blueprint.attributes.map(&:title)
 
     # You can also store it into file as json
-    bp.store_to_file('model.json')
+    blueprint.store_to_file('model.json')
   end
 end
 

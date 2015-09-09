@@ -10,6 +10,7 @@ GoodData.with_connection('user', 'password') do |client|
       d.add_label('email', :reference => 'dev_id')
     end
     p.add_dataset('commits') do |d|
+      d.add_anchor('commits_id')
       d.add_fact('lines_changed')
       d.add_date('committed_on', :dataset => 'committed_on')
       d.add_reference('dev_id', :dataset => 'devs')
