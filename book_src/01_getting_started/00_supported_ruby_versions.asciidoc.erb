@@ -1,0 +1,20 @@
+=== Supported Ruby Versions
+by Tomas Korcak
+
+==== Problem
+You want to know which Ruby versions are supported by SDK.
+
+==== Solution
+
+Here is a list of supported ruby versions.
+
+- Ruby 1.9.3
+- Ruby 2.0
+- Ruby 2.1
+- Ruby 2.2
+- JRuby with Oracle Java 1.8.0.51
+- JRuby with OpenJDK 1.8.0.51
+
+JRuby with latest version of Java (1.8.0.60) is not supported because of breaking changes in SSL.
+Using latest JRuby with Java higher than 1.8.0.51 will cause failing uploads to WebDav.
+We will support latest Java as soon as these breaking changes will get fixed or workaround will be found.
