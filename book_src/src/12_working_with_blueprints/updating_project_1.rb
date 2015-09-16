@@ -22,10 +22,6 @@ GoodData.with_connection do |client|
       d.add_attribute("attr.commits.repo")
       d.add_label('label.commits.repo', reference: 'attr.commits.repo')
     end
-    # update the model in the project
-    project.update_from_blueprint(blueprint.merge(update))
-    # now you can look at the model and verify there is new attribute present
-    project.attributes.find {|a| a.title == 'Region'}
   end
 
   # update the model in the project

@@ -19,15 +19,9 @@ GoodData.with_connection do |c|
 	    fail "New blueprint is not valid"
     end
     project.update_from_blueprint(new_blueprint)
-    new_blueprint.store_to_file(BLUEPRINT_FILE))
+    # now you can look at the model and verify there is new attribute present
+    project.attributes.find {|a| a.title == 'Region'}
+    new_blueprint.store_to_file(BLUEPRINT_FILE)
 
-    blueprint = GoodData::Model::ProjectBlueprint.from_json(BLUEPRINT_FILE)
-
-    update = GoodData::Model::ProjectBlueprint.build('update') do |p|
-      p.add_dataset("dataset.commits") do |d|
-        d.add_attribute("attr.commits.repo")
-        d.add_label('label.commits.repo', reference: 'attr.commits.repo')
-      end
-    end
   end
 end
