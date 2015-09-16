@@ -582,6 +582,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_run_after_scheduling">Run-After Scheduling</a></li>
 <li><a href="#_changing_an_existing_schedule">Changing an existing schedule</a></li>
 <li><a href="#_investigating_executions">Investigating Executions</a></li>
+<li><a href="#_visualizing_executions">Visualizing executions</a></li>
 </ul>
 </li>
 <li><a href="#_08_working_with_reports">08 Working With Reports</a>
@@ -1914,7 +1915,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
   domain = client.domain(<span class="string"><span class="delimiter">'</span><span class="content">domain-name</span><span class="delimiter">'</span></span>)
   users = []
   <span class="constant">CSV</span>.foreach(<span class="string"><span class="delimiter">'</span><span class="content">data.csv</span><span class="delimiter">'</span></span>, <span class="symbol">:headers</span> =&gt; <span class="predefined-constant">true</span>, <span class="symbol">:return_headers</span> =&gt; <span class="predefined-constant">false</span>) <span class="keyword">do</span> |row|
-    users &lt;&lt; row.to_hash.symbolize_keys.slice(<span class="symbol">:login</span>, <span class="symbol">:role</span>)
+    users &lt;&lt; row.to_hash.symbolize_keys.slice(<span class="symbol">:pid</span>, <span class="symbol">:login</span>, <span class="symbol">:role</span>)
   <span class="keyword">end</span>
   users.group_by {|u| u[<span class="symbol">:pid</span>]}.map <span class="keyword">do</span> |project_id, users|
     <span class="constant">GoodData</span>.with_project(project_id) <span class="keyword">do</span> |project|
@@ -3396,6 +3397,60 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_visualizing_executions">Visualizing executions</h3>
+<div class="paragraph">
+<p>by Tomas Svarovsky</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_51">Problem</h4>
+<div class="paragraph">
+<p>You successfully mudularized your ETL into several modules you orchestrated. The problem is that it is hard to visualize the order of execution from the Data Administration console.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_51">Solution</h4>
+<div class="paragraph">
+<p>There are plethora of very useful libraries that you can use in conjunction with GoodData SDK. One of those is Graphviz that is a C library but it has bindings to almost every language including Ruby. Graphviz is a visualization library and one of the features is visualizing Direct Acycclic Graphs which is exactly what an execution of several schedules bascially is.</p>
+</div>
+<div class="paragraph">
+<p>As a prerequisite you have to install both <a href="http://www.graphviz.org/">Graphviz</a> and <a href="https://github.com/glejeune/Ruby-Graphviz">Graphviz ruby bindings</a>. I leave this as a exercise for the reader because this might be a little bit difficult and unfortuntely is different for every platform. If you encounter any errors try googling them or shoot us a message on github or support</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
+
+require <span class="string"><span class="delimiter">'</span><span class="content">gooddata</span><span class="delimiter">'</span></span>
+require <span class="string"><span class="delimiter">'</span><span class="content">graphviz</span><span class="delimiter">'</span></span>
+
+<span class="constant">PROJECT_ID</span> = <span class="string"><span class="delimiter">'</span><span class="content">PROJECT_ID</span><span class="delimiter">'</span></span> <span class="comment"># fill_in</span>
+
+<span class="constant">GoodData</span>.with_connection <span class="keyword">do</span> |client|
+  <span class="constant">GoodData</span>.with_project(<span class="constant">PROJECT_ID</span>) <span class="keyword">do</span> |project|
+    schedules = project.schedules
+
+    nodes = project.processes.pmapcat { |p| p.schedules.map { |s| [s, <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>p.name<span class="inline-delimiter">}</span></span><span class="content">-</span><span class="inline"><span class="inline-delimiter">#{</span>s.name<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>] } }
+    edges = schedules.reject(&amp;<span class="symbol">:time_based?</span>).pmap {|s| [<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>s.after.process.name<span class="inline-delimiter">}</span></span><span class="content">-</span><span class="inline"><span class="inline-delimiter">#{</span>s.after.name<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span>s.process.name<span class="inline-delimiter">}</span></span><span class="content">-</span><span class="inline"><span class="inline-delimiter">#{</span>s.name<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>]}
+
+
+    g = <span class="constant">GraphViz</span>.new(<span class="symbol">:G</span>, <span class="symbol">:type</span> =&gt; <span class="symbol">:digraph</span> , <span class="symbol">:rankdir</span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">TB</span><span class="delimiter">'</span></span>)
+    nodes.each { |s, n|
+      node = g.add_nodes(n)
+      node[<span class="symbol">:shape</span>] = <span class="string"><span class="delimiter">'</span><span class="content">box</span><span class="delimiter">'</span></span>
+      node[<span class="symbol">:label</span>] = n + <span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="inline"><span class="inline-delimiter">#{</span>s.cron<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+    }
+
+    edges.each { |a, b| g.add_edges(a, b) }
+    g.output(<span class="symbol">:png</span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">run_dag.png</span><span class="delimiter">&quot;</span></span>)
+
+    <span class="comment"># Now you can open it for example on mac by running this on terminal</span>
+    <span class="comment"># open -a Preview run_dag.png</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3407,13 +3462,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_51">Problem</h4>
+<h4 id="_problem_52">Problem</h4>
 <div class="paragraph">
 <p>You have an existing report and you would like to execute it programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_51">Solution</h4>
+<h4 id="_solution_52">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3435,13 +3490,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_52">Problem</h4>
+<h4 id="_problem_53">Problem</h4>
 <div class="paragraph">
 <p>You created a new version of a project. You made some changes to the reports and you would like to verify that the report is still computing the same numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_52">Solution</h4>
+<h4 id="_solution_53">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3502,13 +3557,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_53">Problem</h4>
+<h4 id="_problem_54">Problem</h4>
 <div class="paragraph">
 <p>You have report and you want to update report definition in easy way. Perhaps you need to modify multiple reports in one or more projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_53">Solution</h4>
+<h4 id="_solution_54">Solution</h4>
 <div class="paragraph">
 <p>Use the Report#update_definition with block argument in following way.</p>
 </div>
@@ -3568,13 +3623,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_54">Problem</h4>
+<h4 id="_problem_55">Problem</h4>
 <div class="paragraph">
 <p>Occasionally you need to know how many rows there are in each dataset.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_54">Solution</h4>
+<h4 id="_solution_55">Solution</h4>
 <div class="paragraph">
 <p>This is surprisingly difficult to do in GoodData UI but it is simple with SDK. Here we are going to create the necessary metrics on the fly through inspection of a blueprint. Then we will create a report that will contain those metrics and compute it.</p>
 </div>
@@ -3624,13 +3679,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_55">Problem</h4>
+<h4 id="_problem_56">Problem</h4>
 <div class="paragraph">
 <p>You have a report somebody set up a colormapping with. You would like to remove it.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_55">Solution</h4>
+<h4 id="_solution_56">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3656,13 +3711,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_56">Problem</h4>
+<h4 id="_problem_57">Problem</h4>
 <div class="paragraph">
 <p>You would like to make some ad hoc computation</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_56">Solution</h4>
+<h4 id="_solution_57">Solution</h4>
 <div class="paragraph">
 <p>We are using the recipe <a href="#_working_with_hr_demo_project">Working with HR Demo project</a> here so spin it up if you want to follow the code.</p>
 </div>
@@ -3716,13 +3771,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_57">Problem</h4>
+<h4 id="_problem_58">Problem</h4>
 <div class="paragraph">
 <p>You have computed a report now you would like to get dirty with the data</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_57">Solution</h4>
+<h4 id="_solution_58">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -3847,7 +3902,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_58">Problem</h4>
+<h4 id="_problem_59">Problem</h4>
 <div class="paragraph">
 <p>You have several attributes in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3859,7 +3914,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_58">Solution</h4>
+<h4 id="_solution_59">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3885,7 +3940,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Patrick McConlogue, Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_59">Problem</h4>
+<h4 id="_problem_60">Problem</h4>
 <div class="paragraph">
 <p>You have several facts in a project. You would like to create some basic metric out of them.</p>
 </div>
@@ -3897,7 +3952,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_59">Solution</h4>
+<h4 id="_solution_60">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3929,7 +3984,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_60">Problem</h4>
+<h4 id="_problem_61">Problem</h4>
 <div class="paragraph">
 <p>You would like to store information about all project metrics in CSV.</p>
 </div>
@@ -3941,7 +3996,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_60">Solution</h4>
+<h4 id="_solution_61">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -3975,13 +4030,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_61">Problem</h4>
+<h4 id="_problem_62">Problem</h4>
 <div class="paragraph">
 <p>You have a project and you would like to update formatting of all metrics programatically. They are currently formatted for dollar values but you would like to change the all formats to Euro.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_61">Solution</h4>
+<h4 id="_solution_62">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -4006,7 +4061,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Zdenek Svoboda</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_62">Problem</h4>
+<h4 id="_problem_63">Problem</h4>
 <div class="paragraph">
 <p>You want to create advanced MAQL metric.</p>
 </div>
@@ -4018,7 +4073,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_62">Solution</h4>
+<h4 id="_solution_63">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -4079,7 +4134,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_63">Problem</h4>
+<h4 id="_problem_64">Problem</h4>
 <div class="paragraph">
 <p>You would like to list dashboards programmatically.</p>
 </div>
@@ -4091,7 +4146,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_63">Solution</h4>
+<h4 id="_solution_64">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: UTF-8</span>
@@ -4119,13 +4174,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_64">Problem</h4>
+<h4 id="_problem_65">Problem</h4>
 <div class="paragraph">
 <p>You would like to set a data permission (user filter or MUF filter) for one or two users.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_64">Solution</h4>
+<h4 id="_solution_65">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a data permission filter. We&#8217;ll be setting a simple filter along these lines</p>
 </div>
@@ -4188,13 +4243,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_65">Problem</h4>
+<h4 id="_problem_66">Problem</h4>
 <div class="paragraph">
 <p>You have a project that has the data permissions set up. You would like to review them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_65">Solution</h4>
+<h4 id="_solution_66">Solution</h4>
 <div class="paragraph">
 <p>There is no UI that would provide a good overview and API is a little crude but with help of SDK you can get around that.</p>
 </div>
@@ -4219,13 +4274,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_66">Problem</h4>
+<h4 id="_problem_67">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_66">Solution</h4>
+<h4 id="_solution_67">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -4319,13 +4374,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_67">Problem</h4>
+<h4 id="_problem_68">Problem</h4>
 <div class="paragraph">
 <p>You would like to set adata permissions for multiple users. You have a CSV with two columns that associate user with a single data permssion&#8217;s value. We&#8217;ll use the same city example from the examples above.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_67">Solution</h4>
+<h4 id="_solution_68">Solution</h4>
 <div class="paragraph">
 <p>SDK offers couple of convenience features for doing this. Let&#8217;s first recap what we need to set up a filter.</p>
 </div>
@@ -4419,13 +4474,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_68">Problem</h4>
+<h4 id="_problem_69">Problem</h4>
 <div class="paragraph">
 <p>You have variable in your project and you would like to see the values in a readable fashion.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_68">Solution</h4>
+<h4 id="_solution_69">Solution</h4>
 <div class="paragraph">
 <p>SDK tries to hide the differences from Data Permissions so this recipe is analogy to <a href="#_list_data_permissions">List Data Permissions</a> recipe.</p>
 </div>
@@ -4484,13 +4539,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_69">Problem</h4>
+<h4 id="_problem_70">Problem</h4>
 <div class="paragraph">
 <p>You would like to create a new project with a data model programatically.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_69">Solution</h4>
+<h4 id="_solution_70">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -4766,13 +4821,13 @@ project.facts(<span class="string"><span class="delimiter">'</span><span class="
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_70">Problem</h4>
+<h4 id="_problem_71">Problem</h4>
 <div class="paragraph">
 <p>You have an existing project and would like to reverse engineer it&#8217;s blueprint.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_70">Solution</h4>
+<h4 id="_solution_71">Solution</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="ruby"><span class="comment"># encoding: utf-8</span>
@@ -4802,13 +4857,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_71">Problem</h4>
+<h4 id="_problem_72">Problem</h4>
 <div class="paragraph">
 <p>You would like to load data into project.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_71">Solution</h4>
+<h4 id="_solution_72">Solution</h4>
 <div class="paragraph">
 <p>To load data you have to have 3 things. Blueprint, project and data.</p>
 </div>
@@ -4889,13 +4944,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_72">Problem</h4>
+<h4 id="_problem_73">Problem</h4>
 <div class="paragraph">
 <p>You would like to load multiple data sets into project at once.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_72">Solution</h4>
+<h4 id="_solution_73">Solution</h4>
 <div class="paragraph">
 <p>The GoodData platform supports loading multiple datasets from a set of CSV files in a single task.
 In addition to loading a single CSV at a time, you can now upload your CSV files,
@@ -4955,13 +5010,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_73">Problem</h4>
+<h4 id="_problem_74">Problem</h4>
 <div class="paragraph">
 <p>You need to upload dates but you have a nonstandard formatting</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_73">Solution</h4>
+<h4 id="_solution_74">Solution</h4>
 <div class="paragraph">
 <p>You can specify a date loading format in your blueprint. If you do not specify any format then the default <em>MM/dd/yyyy</em> format is used</p>
 </div>
@@ -5045,13 +5100,13 @@ We did not have to update the project to be able to load dates in a different fo
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_74">Problem</h4>
+<h4 id="_problem_75">Problem</h4>
 <div class="paragraph">
 <p>You would like to update a project with additional fields</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_74">Solution</h4>
+<h4 id="_solution_75">Solution</h4>
 <div class="paragraph">
 <p>Blueprints are easy to create programmatically and even to merge them together. In this example we will create a simple blueprint with one dataset and then add an additional field into blueprint and update the model.</p>
 </div>
@@ -5081,10 +5136,6 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
       d.add_attribute(<span class="string"><span class="delimiter">&quot;</span><span class="content">attr.commits.repo</span><span class="delimiter">&quot;</span></span>)
       d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.commits.repo</span><span class="delimiter">'</span></span>, <span class="key">reference</span>: <span class="string"><span class="delimiter">'</span><span class="content">attr.commits.repo</span><span class="delimiter">'</span></span>)
     <span class="keyword">end</span>
-    <span class="comment"># update the model in the project</span>
-    project.update_from_blueprint(blueprint.merge(update))
-    <span class="comment"># now you can look at the model and verify there is new attribute present</span>
-    project.attributes.find {|a| a.title == <span class="string"><span class="delimiter">'</span><span class="content">Region</span><span class="delimiter">'</span></span>}
   <span class="keyword">end</span>
 
   <span class="comment"># update the model in the project</span>
@@ -5127,16 +5178,10 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
             fail <span class="string"><span class="delimiter">&quot;</span><span class="content">New blueprint is not valid</span><span class="delimiter">&quot;</span></span>
     <span class="keyword">end</span>
     project.update_from_blueprint(new_blueprint)
-    new_blueprint.store_to_file(<span class="constant">BLUEPRINT_FILE</span>))
+    <span class="comment"># now you can look at the model and verify there is new attribute present</span>
+    project.attributes.find {|a| a.title == <span class="string"><span class="delimiter">'</span><span class="content">Region</span><span class="delimiter">'</span></span>}
+    new_blueprint.store_to_file(<span class="constant">BLUEPRINT_FILE</span>)
 
-    blueprint = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.from_json(<span class="constant">BLUEPRINT_FILE</span>)
-
-    update = <span class="constant">GoodData</span>::<span class="constant">Model</span>::<span class="constant">ProjectBlueprint</span>.build(<span class="string"><span class="delimiter">'</span><span class="content">update</span><span class="delimiter">'</span></span>) <span class="keyword">do</span> |p|
-      p.add_dataset(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset.commits</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |d|
-        d.add_attribute(<span class="string"><span class="delimiter">&quot;</span><span class="content">attr.commits.repo</span><span class="delimiter">&quot;</span></span>)
-        d.add_label(<span class="string"><span class="delimiter">'</span><span class="content">label.commits.repo</span><span class="delimiter">'</span></span>, <span class="key">reference</span>: <span class="string"><span class="delimiter">'</span><span class="content">attr.commits.repo</span><span class="delimiter">'</span></span>)
-      <span class="keyword">end</span>
-    <span class="keyword">end</span>
   <span class="keyword">end</span>
 <span class="keyword">end</span></code></pre>
 </div>
@@ -5149,13 +5194,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_75">Problem</h4>
+<h4 id="_problem_76">Problem</h4>
 <div class="paragraph">
 <p>You would like to specify a different data type for attribute or fact in a blueprint</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_75">Solution</h4>
+<h4 id="_solution_76">Solution</h4>
 <div class="paragraph">
 <p>Each column in blueprint is eventually translated into a physical column in a database. While the defaults are typically what you want sometimes it might be useful to override them. You can specify the data type with gd_data_type clause.</p>
 </div>
@@ -5235,13 +5280,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_76">Problem</h4>
+<h4 id="_problem_77">Problem</h4>
 <div class="paragraph">
 <p>You would like to use folders for organizing your project&#8217;s model</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_76">Solution</h4>
+<h4 id="_solution_77">Solution</h4>
 <div class="paragraph">
 <p>By default all the attributes and facts are automatically assigned a folder based on it&#8217;s dataset name. This name is either generated from the dataset&#8217;s name or title (if defined). You can override this default and specify your own folder for any field.</p>
 </div>
@@ -5299,7 +5344,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_77">Problem</h4>
+<h4 id="_problem_78">Problem</h4>
 <div class="paragraph">
 <p>You would like to create the whole project from code for whatever reason.</p>
 </div>
@@ -5311,7 +5356,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_77">Solution</h4>
+<h4 id="_solution_78">Solution</h4>
 <div class="paragraph">
 <p>What we will do is to create a simple project with 4 datasets. Load couple of line of data create a simple report and invite 2 other people to it. All this will fit on one page of code. Let&#8217;s get to it.</p>
 </div>
@@ -5371,7 +5416,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Korcak</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_78">Problem</h4>
+<h4 id="_problem_79">Problem</h4>
 <div class="paragraph">
 <p>You want to specify certain label&#8217;s data type see <a href="http://developer.gooddata.com/article/setting-up-data-for-geo-charts">this document</a> for more details.</p>
 </div>
@@ -5383,7 +5428,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_78">Solution</h4>
+<h4 id="_solution_79">Solution</h4>
 <div class="paragraph">
 <p>We&#8217;ll create a simple project&#8217;s blueprint that contains a label with the 'GDC.link' (hyperlink) datatype in the code snippet below.</p>
 </div>
@@ -5495,13 +5540,13 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_79">Problem</h4>
+<h4 id="_problem_80">Problem</h4>
 <div class="paragraph">
 <p>I created a model and now found out that I would like to move a field to different dataset.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_79">Solution</h4>
+<h4 id="_solution_80">Solution</h4>
 <div class="paragraph">
 <p>We will use variation of our hr demo model. If you look at that model you can see that we have an attribute <strong>region</strong> defined on departments dataset. This is how you (hypothetically) originally created the project and everything was fine but you realized that you would like to assign the region to people dataset not departments dataset.</p>
 </div>
@@ -5545,13 +5590,13 @@ project.upload(employee_data_with_dep, blueprint, <span class="string"><span cla
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_80">Problem</h4>
+<h4 id="_problem_81">Problem</h4>
 <div class="paragraph">
 <p>I would like to play with blueprints but I cannot come up with some data and model of a ptoy project. Can you give me any?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_80">Solution</h4>
+<h4 id="_solution_81">Solution</h4>
 <div class="paragraph">
 <p>Yes. Use our HR example which models a small company and people inside it. We tried to use majority of the features that the blueprint builder supports so you can take it as a starting point when you are creating yours.</p>
 </div>
@@ -5652,7 +5697,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 <p>by Tomas Svarovsky</p>
 </div>
 <div class="sect3">
-<h4 id="_problem_81">Problem</h4>
+<h4 id="_problem_82">Problem</h4>
 <div class="paragraph">
 <p>You created a quick protoype but you found out that it needs some touch ups.</p>
 </div>
@@ -5664,7 +5709,7 @@ require <span class="string"><span class="delimiter">'</span><span class="conten
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_81">Solution</h4>
+<h4 id="_solution_82">Solution</h4>
 <div class="paragraph">
 <p>Use SDK refactoring features.</p>
 </div>
@@ -5832,7 +5877,7 @@ refactored_blueprint.datasets(<span class="string"><span class="delimiter">'</sp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-09 14:54:30 CEST
+Last updated 2015-09-16 16:28:37 +02:00
 </div>
 </div>
 </body>
