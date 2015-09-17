@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'gooddata'
-require 'activesupport/all'
+require 'active_support/all'
 
 GoodData.with_connection('user', 'password') do |client|
   domain = client.domain('domain-name')
