@@ -1,0 +1,20 @@
+=== Delete a project
+by Tomas Svarovsky
+
+==== Problem
+You need to delete a project programatically.
+
+==== Solution
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  GoodData.with_project('project_pid') do |project|
+    project.delete
+  end
+end
+----
