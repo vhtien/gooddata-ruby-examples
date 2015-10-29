@@ -1,0 +1,45 @@
+=== Exporting report results
+by Tomas Svarovsky
+
+==== Problem
+You would like to export the report from GoodData into one of the typical formats for further processing or presetnation
+
+==== Solution
+
+There are a simple way how to export a report from gooddata
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    result = project.reports.export(:csv)
+    puts result
+  end
+end
+
+----
+
+===== Discussion
+
+There are more formats supported and either of `:csv, :xls, :xlsx or :pdf` should work.
+
+The export returns the actual data so if you would like to have them stored into a file the responsibility is on you.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    report = project.reports('report_identifier')
+    File.open('export.csv', 'wb') { |f| f.write(report.export(:csv)) }
+  end
+end
+
+----

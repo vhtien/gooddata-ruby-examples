@@ -1,0 +1,19 @@
+=== Exporting report results
+by Tomas Svarovsky
+
+==== Problem
+You would like to export the report from GoodData into one of the typical formats for further processing or presetnation
+
+==== Solution
+
+There are a simple way how to export a report from gooddata
+
+<%= render_ruby 'src/08_working_with_reports/exporting_a_report.rb' %>
+
+===== Discussion
+
+There are more formats supported and either of `:csv, :xls, :xlsx or :pdf` should work.
+
+The export returns the actual data so if you would like to have them stored into a file the responsibility is on you.
+
+<%= render_ruby 'src/08_working_with_reports/exporting_a_report_to_file.rb' %>
