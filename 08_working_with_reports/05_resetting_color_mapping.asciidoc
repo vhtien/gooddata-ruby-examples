@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You have a report somebody set up a colormapping with. You would like to remove it.
+You have a report somebody set up a colormapping on. You would like to remove it.
 
 ==== Solution
 
