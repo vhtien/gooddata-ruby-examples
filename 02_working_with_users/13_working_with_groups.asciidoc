@@ -1,0 +1,34 @@
+=== Creating a group
+by Tomas Svarovsky
+
+==== Problem
+You would like to organize users in groups
+
+==== Solution
+
+There is a concept of group in GoodData. Member of a group can be either another group or directly a user. Here we are going to create a group and assign it some users.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  client.with_project('project') do |p|
+    group_1 = p.add_group(name: 'east')
+    group_1.add_memebers(project.member('john.doe@gooddata.com'))
+
+    group_2 = p.add_group(name: 'us')
+    group_2.add_memebers(group_1)
+
+    pp group_2.members.map(&:uri)
+
+    group_2.member?(g1)
+    # => true
+    group_2.member?('john.doe@gooddata.com')
+    # => true
+  end
+end
+
+----
