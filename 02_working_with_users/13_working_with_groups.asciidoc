@@ -21,7 +21,9 @@ GoodData.with_connection do |client|
 
     group_2 = p.add_group(name: 'us')
     pp group_2.members.map(&:uri)
-    group_2.member?('john.doe@gooddata.com')
+    # ['/gdc/account/profile/4e1e8cacc4989228e0ae531b30853248']
+
+    group_2.member?('/gdc/account/profile/4e1e8cacc4989228e0ae531b30853248')
     # => true
   end
 end
