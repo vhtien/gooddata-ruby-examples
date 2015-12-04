@@ -1,0 +1,21 @@
+=== Working with segments
+by Tomas Svarovsky
+
+This is WIP. It should not be released publicly until we are ready
+
+==== Problem
+You would like to spin up a segment and project with livecycle menagement support.
+
+==== Solution
+
+You can use Lifecycle management API to conveniently spin up projects and distribute reports and ETL for large number of customers. First let's define some terminology.
+
+Organization - Organization is an object that represents your organiation at gooddata. It contains information about your users, your whitelabeling data etc. All created projects are assigned to this particular organization.
+
+Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience.
+
+Client - Is referring to a combination of a project assigned to a certain segment identified by an id provided by your customer. Usually is synonym to a customer's project but in rare circumstances one customer can have multiple projects (thus having several clients).
+
+Having defined some terminology we present code that will set up a segment with master project and create a client with a clone
+
+<%= render_ruby 'src/13_working_with_lifecycle/example.rb' %>
