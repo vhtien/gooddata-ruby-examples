@@ -1,0 +1,14 @@
+=== Deleting users from all projects
+by Eliot Towb, Tomas Svarovsky
+
+==== Problem
+You would like to remove one user from all projects.
+
+==== Solution
+
+This script should remove user from all projects. There are couple of things you need to keep in mind though.
+
+- This deletes user only from projects where you have access to
+- If you are not admin in particular project the user will not be deleted from that particular project
+
+<%= render_ruby 'src/02_working_with_users/delete_users_from_projects.rb' %>
