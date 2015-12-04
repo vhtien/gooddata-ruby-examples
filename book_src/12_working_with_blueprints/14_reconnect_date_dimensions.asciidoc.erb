@@ -1,0 +1,13 @@
+=== Reconnect date dimension
+by Tomas Svarovsky
+
+==== Problem
+Occasionally you need to reconnect date dimensions. You did all the work on reports and last thing you are missing is to change all references in the model from one date dimension to another.
+
+==== Solution
+
+With SDK you can use swap_date_dimension! method on blueprint. I will give you two examples one will be with a sample blueprint created on the fly the second will show you how to do the same on an existing project.
+
+<%= render_ruby 'src/12_working_with_blueprints/date_dim_ref_swap_1.rb' %>
+
+The change in operating on an existing project is the same. The only difference is how you acquire the blueprint.
