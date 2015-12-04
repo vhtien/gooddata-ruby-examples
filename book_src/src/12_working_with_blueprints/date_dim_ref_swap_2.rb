@@ -8,7 +8,7 @@ GoodData.with_connection do |client|
 
     blueprint.swap_date_dimension!('committed_on', 'signed_on')
 
-    project.update_from_blueprint
-
+    # Update the project with the new blueprint
+    project.update_from_blueprint(blueprint)
   end
 end
