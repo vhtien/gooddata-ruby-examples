@@ -1,12 +1,12 @@
-=== Write Information about Project's Metrics to CSV
+=== Write Information about project's metrics and attributes to CSV
 
-by Tomas Korcak
+by Tomas Korcak, Tomas Svarovsky
 
 ==== Problem
-You would like to store information about all project metrics in CSV.
+You would like to store information about all project metrics and attributes in CSV.
 
 ==== Prerequisites
-You have to have existing project with metric(s).
+You have to have existing project with metric(s) and attribute(s).
 
 ==== Solution
 [source,ruby]
@@ -33,3 +33,28 @@ end
 ----
 
 It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and pretty printed metric's MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.
+
+You also might like to export attributes. The script itself is very similar.
+
+[source,ruby]
+----
+# encoding: UTF-8
+
+require 'gooddata'
+
+# Connect to GoodData platform
+GoodData.with_connection do |c|
+  GoodData.with_project('project_id') do |project|
+    CSV.open(project.pid + "_attributes.csv", 'wb') do |csv|
+      data = project.attributes.pmap do |attribute|
+        [attribute.title, attribute.identifier]
+      end
+      data.each do |m|
+        csv << m
+      end
+      puts 'The CSV is ready!'
+    end
+  end
+end
+
+----
