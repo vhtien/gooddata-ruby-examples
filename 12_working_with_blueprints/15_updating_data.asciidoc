@@ -1,0 +1,158 @@
+=== Updating data in datasets
+by Tomas Svarovsky
+
+==== Problem
+You are loading data repeatadly. You would like to leverage the fact that GoodData platform can upsert the data when loading the incremantal updates.
+
+==== Solution
+
+There are 2 ways you can leverage for upserting. Let's walk through some examples to cover all of them and discuss the differences.
+
+===== Just add data
+
+The simplest case that we are going to start with is that you are just adding data every day. There is no upsert. Whenever you load new data they are just added to the dataset. This obviously does not solve the problem of updating the data but it is a good place to start to realize how the two additional solutions differ.
+
+Let's imagine a usecase where we are collecting measurements of some station which measures say a level of a river flow. What we measure cannot be changed and we are just adding new measurements every day. Let's use this very simple model
+
+[source,ruby]
+----
+blueprint = GoodData::Model::ProjectBlueprint.build('Measurements project') do |p|
+  p.add_date_dimension('measured_on')
+  p.add_dataset('dataset.measurements') do |d|
+    d.add_anchor('attr.measurement')
+    d.add_attribute('attr.river')
+    d.add_label('label.river_name', :reference => 'attr.river')
+    d.add_fact('fact.level')
+    d.add_date('measured_on')
+  end
+end
+
+project = GoodData::Project.create_from_blueprint(blueprint, auth_token: 'octocat')
+
+# and upload these data
+
+data = [
+  ['measured_on','label.river_name','fact.level'],
+  ['1/1/2011', 'Colorado River', 10],
+  ['1/1/2011', 'Amazon River', 20],
+  ['1/2/2011', 'Colorado River', 20],
+  ['1/2/2011', 'Amazon River', 30]
+]
+
+project.upload(data, blueprint, 'dataset.measurements')
+
+# You can easily verify that there are 4 lines.
+
+  blueprint.datasets('dataset.measurements').count(project)
+=> 4
+
+# Now let's upload additional rows. Take note that the first one is the same as line x from the first batch
+
+data = [
+  ['measured_on','label.river_name','fact.level'],
+  ['1/1/2011', 'Colorado River', 10],
+  ['1/3/2011', 'Amazon River', 40]
+]
+
+project.upload(data, blueprint, 'dataset.measurements', :mode => 'INCREMENTAL')
+
+# If you recount the lines there are now 6 lines.
+
+blueprint.datasets('dataset.measurements').count(project)
+=> 6
+----
+
+Depending on your system of collecting data and reports this might be what you want.
+
+===== Updating data using anchor with label
+
+Now let's cosider the situation that you occassionally want to update already uploaded measurement (faulty measurement, adjustment for various reasons). For this to be possible you have to define a way how to identify a particular measurement so you can identify it for an update. We will do thad by adding a label to the anchor. What anchor is telling the system is that there is identity. When we add a label to it we are telling the system than now we are providing that identity with a value in the data (compare this with the previous example). As a side effect if you provide a new line with value that is already in the data the older datum will be superseded with the new one. If there is no such line it will be simply added.
+
+Let's repeat the same exercise as in last example to see how the result changes.
+
+[source,ruby]
+----
+blueprint = GoodData::Model::ProjectBlueprint.build('Measurements project') do |p|
+  p.add_date_dimension('measured_on')
+  p.add_dataset('dataset.measurements') do |d|
+    d.add_anchor('attr.measurement')
+    d.add_label('label.measurement_id', :reference => 'attr.measurement')
+    d.add_attribute('attr.river')
+    d.add_label('label.river_name', :reference => 'attr.river')
+    d.add_fact('fact.level')
+    d.add_date('measured_on')
+  end
+end
+
+project = GoodData::Project.create_from_blueprint(blueprint, auth_token: 'octocat')
+
+data = [
+  ['label.measurement_id','measured_on','label.river_name','fact.level'],
+  [1,'1/1/2011', 'Colorado River', 10],
+  [2,'1/1/2011', 'Amazon River', 20],
+  [3,'1/2/2011', 'Colorado River', 20],
+  [4,'1/2/2011', 'Amazon River', 30]
+]
+
+project.upload(data, blueprint, 'dataset.measurements')
+blueprint.datasets('dataset.measurements').count(project)
+=> 4
+
+  data = [
+    ['label.measurement_id','measured_on','label.river_name','fact.level'],
+    [1,'1/1/2011', 'Colorado River', 10],
+    [5,'1/3/2011', 'Amazon River', 40]
+  ]
+
+  project.upload(data, blueprint, 'dataset.measurements', :mode => 'INCREMENTAL')
+
+  blueprint.datasets('dataset.measurements').count(project)
+  => 5
+----
+
+You can now see that there are only 5 lines after update.
+
+===== Updating data using grain
+
+Let's once again reconsider the first example and try to achieve the upsert in a different way. You still would like to allow data loads to correct old data but they do not necessarily have the ID associated with each measurement. There is another way how to specify such a constraint. You can say "There can be only one line for each combination of river and date". This is called grain of the table and you can provide a grain definition when defining a model.
+
+[source,ruby]
+----
+blueprint = GoodData::Model::ProjectBlueprint.build('Measurements project') do |p|
+  p.add_date_dimension('measured_on')
+  p.add_dataset('dataset.measurements') do |d|
+    d.add_anchor('attr.measurement', :grain => [{date: 'measured_on'}, {attribute: 'attr.river'}])
+    d.add_attribute('attr.river')
+    d.add_label('label.river_name', :reference => 'attr.river')
+    d.add_fact('fact.level')
+    d.add_date('measured_on')
+  end
+end
+
+project = GoodData::Project.create_from_blueprint(blueprint, auth_token: 'octocat')
+
+data = [
+  ['measured_on','label.river_name','fact.level'],
+  ['1/1/2011', 'Colorado River', 10],
+  ['1/1/2011', 'Amazon River', 20],
+  ['1/2/2011', 'Colorado River', 20],
+  ['1/2/2011', 'Amazon River', 30]
+]
+
+project.upload(data, blueprint, 'dataset.measurements')
+blueprint.datasets('dataset.measurements').count(project)
+=> 4
+
+data = [
+  ['measured_on','label.river_name','fact.level'],
+  ['1/1/2011', 'Colorado River', 10],
+  ['1/3/2011', 'Amazon River', 40]
+]
+
+project.upload(data, blueprint, 'dataset.measurements', :mode => 'INCREMENTAL')
+
+blueprint.datasets('dataset.measurements').count(project)
+=> 5
+----
+
+As you can see in the examples the same effect was possible to achieve in two different ways. Which one suits your needs might depend on other variables like the way you are collecting the data and if there are some natural keys that could be used for identifiation defined.

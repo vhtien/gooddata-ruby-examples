@@ -1,0 +1,37 @@
+=== Updating data in datasets
+by Tomas Svarovsky
+
+==== Problem
+You are loading data repeatadly. You would like to leverage the fact that GoodData platform can upsert the data when loading the incremantal updates.
+
+==== Solution
+
+There are 2 ways you can leverage for upserting. Let's walk through some examples to cover all of them and discuss the differences.
+
+===== Just add data
+
+The simplest case that we are going to start with is that you are just adding data every day. There is no upsert. Whenever you load new data they are just added to the dataset. This obviously does not solve the problem of updating the data but it is a good place to start to realize how the two additional solutions differ.
+
+Let's imagine a usecase where we are collecting measurements of some station which measures say a level of a river flow. What we measure cannot be changed and we are just adding new measurements every day. Let's use this very simple model
+
+<%= render_ruby 'src/12_working_with_blueprints/upsert_with_nothing.rb' %>
+
+Depending on your system of collecting data and reports this might be what you want.
+
+===== Updating data using anchor with label
+
+Now let's cosider the situation that you occassionally want to update already uploaded measurement (faulty measurement, adjustment for various reasons). For this to be possible you have to define a way how to identify a particular measurement so you can identify it for an update. We will do thad by adding a label to the anchor. What anchor is telling the system is that there is identity. When we add a label to it we are telling the system than now we are providing that identity with a value in the data (compare this with the previous example). As a side effect if you provide a new line with value that is already in the data the older datum will be superseded with the new one. If there is no such line it will be simply added.
+
+Let's repeat the same exercise as in last example to see how the result changes.
+
+<%= render_ruby 'src/12_working_with_blueprints/upsert_with_anchor.rb' %>
+
+You can now see that there are only 5 lines after update.
+
+===== Updating data using grain
+
+Let's once again reconsider the first example and try to achieve the upsert in a different way. You still would like to allow data loads to correct old data but they do not necessarily have the ID associated with each measurement. There is another way how to specify such a constraint. You can say "There can be only one line for each combination of river and date". This is called grain of the table and you can provide a grain definition when defining a model.
+
+<%= render_ruby 'src/12_working_with_blueprints/upsert_with_grain.rb' %>
+
+As you can see in the examples the same effect was possible to achieve in two different ways. Which one suits your needs might depend on other variables like the way you are collecting the data and if there are some natural keys that could be used for identifiation defined.
