@@ -39,4 +39,10 @@ task :deploy do
    git checkout master`
 end
 
+desc 'Clean generated files'
+task :clean do
+   system 'git clean -f'
+end
+
+
 task :default => [:usage]
