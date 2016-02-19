@@ -8,7 +8,9 @@ domain = client.domain('mustangs')
 
 seq_number = 8
 
-# Prepare master
+# Prepare master project 
+# ======================
+
 # Create LDM blueprint
 blueprint = GoodData::Model::ProjectBlueprint.build('HR Demo Project') do |p|
   p.add_date_dimension('dataset.payment', title: 'Payment')
@@ -92,15 +94,74 @@ item.position_y = 300
 dashboard.lock
 dashboard.save
 
-segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
-client_project = project.clone(auth_token: TOKEN)
-segment_client = segment.create_client(id: "client_#{seq_number}", project: client_project)
+# Prepare segment
+# ===============
 
-# The client is spun up
-# Now let's change a title in master and transfer to the clients
-dashboard.title = 'Changed Title'
-dashboard.save
+segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
+
+# Make a Release
+# ==============
 segment.synchronize_clients
 
-# this should be true
-puts dashboard.title == client_project.dashboards.first.title
+
+# Prepare client
+# ==============
+segment_client = segment.create_client(id: "client_#{seq_number}")
+
+
+# Spin up project for the client
+# ==============================
+# 
+# This way we do not think about it ourselves
+domain.provision_client_projects
+
+# Let's check that it worked
+segment.clients.first.project.pid
+# => aerkc6562oiauaof9mxtowcc4fl5vwb4
+segment.clients.first.project.metrics.count
+# => 1
+segment.clients.first.project.dashboards.first.title
+# => 'Test Dashboard'
+
+# The client project should not have data from master
+segment.master_project.metrics.first.execute
+# => 0.366E6
+segment.clients.first.project.metrics.first.execute
+# => nil
+
+# Update master and propagate changes
+# ===================================
+
+# Now let's pretend we want to change something in our master.
+# Let's change a title in master and transfer to the clients
+dashboard.title = 'Better Test Dashboard'
+dashboard.save
+
+# Make a release and synchronize clients
+segment.synchronize_clients
+
+# Check the results
+segment.clients.first.project.dashboards.first.title
+# => "Better Test Dashboard"
+
+# Add additional clients
+# ======================
+# 
+# This is it. Just for illustration let's create another client. This basically just means repeating the flow.
+# We already have our master prepared so let's just create a new client.
+another_segment_client = segment.create_client(id: "client_#{seq_number + 1}")
+
+# currently there should be only one proejct for the first client
+segment.clients.map { |c| [c.id, c.project_uri]}
+# => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", nil]]
+
+# Let's provision project. This will provision it with project from last call of 'domain.synchronize_clients'
+domain.provision_client_projects
+
+# Let's check we have a project
+segment.clients.map { |c| [c.id, c.project_uri]}
+# => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", "/gdc/projects/yxpp45hf39bigezp3ug8pm6kc9h6tihv"]]
+
+# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we already made a release by using 'synchonize_clients' 
+segment.clients("client_#{seq_number + 1}").project.dashboards.first.title
+# => "Better Test Dashboard"

@@ -12,11 +12,19 @@ You can use Lifecycle management API to conveniently spin up projects and distri
 
 Organization - Organization is an object that represents your organiation at gooddata. It contains information about your users, your whitelabeling data etc. All created projects are assigned to this particular organization.
 
-Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience.
+Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience. These tiers are called segments on API and each segment can have many clients assigned.
 
-Client - Is referring to a combination of a project assigned to a certain segment identified by an id provided by your customer. Usually is synonym to a customer's project but in rare circumstances one customer can have multiple projects (thus having several clients).
+Client - Is referring to a project assigned to a certain segment identified by an id provided by your customer. Client is assigned to particular segment.
 
-Having defined some terminology we present code that will set up a segment with master project and create a client with a clone
+Having defined some terminology we present code that will do several things.
+
+- set up a segment with master project (along with some data and dashboard)
+- create a client (without a project) and assigns it to the project
+- "release new master project"
+- spin up project for client (this will ensure it has the same model, dashboard but no data )
+- change the dashboard in master
+- make another release
+- synchronize the dashboard
 
 [source,ruby]
 ----
@@ -30,7 +38,9 @@ domain = client.domain('mustangs')
 
 seq_number = 8
 
-# Prepare master
+# Prepare master project 
+# ======================
+
 # Create LDM blueprint
 blueprint = GoodData::Model::ProjectBlueprint.build('HR Demo Project') do |p|
   p.add_date_dimension('dataset.payment', title: 'Payment')
@@ -114,17 +124,75 @@ item.position_y = 300
 dashboard.lock
 dashboard.save
 
-segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
-client_project = project.clone(auth_token: TOKEN)
-segment_client = segment.create_client(id: "client_#{seq_number}", project: client_project)
+# Prepare segment
+# ===============
 
-# The client is spun up
-# Now let's change a title in master and transfer to the clients
-dashboard.title = 'Changed Title'
-dashboard.save
+segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
+
+# Make a Release
+# ==============
 segment.synchronize_clients
 
-# this should be true
-puts dashboard.title == client_project.dashboards.first.title
 
+# Prepare client
+# ==============
+segment_client = segment.create_client(id: "client_#{seq_number}")
+
+
+# Spin up project for the client
+# ==============================
+# 
+# This way we do not think about it ourselves
+domain.provision_client_projects
+
+# Let's check that it worked
+segment.clients.first.project.pid
+# => aerkc6562oiauaof9mxtowcc4fl5vwb4
+segment.clients.first.project.metrics.count
+# => 1
+segment.clients.first.project.dashboards.first.title
+# => 'Test Dashboard'
+
+# The client project should not have data from master
+segment.master_project.metrics.first.execute
+# => 0.366E6
+segment.clients.first.project.metrics.first.execute
+# => nil
+
+# Update master and propagate changes
+# ===================================
+
+# Now let's pretend we want to change something in our master.
+# Let's change a title in master and transfer to the clients
+dashboard.title = 'Better Test Dashboard'
+dashboard.save
+
+# Make a release and synchronize clients
+segment.synchronize_clients
+
+# Check the results
+segment.clients.first.project.dashboards.first.title
+# => "Better Test Dashboard"
+
+# Add additional clients
+# ======================
+# 
+# This is it. Just for illustration let's create another client. This basically just means repeating the flow.
+# We already have our master prepared so let's just create a new client.
+another_segment_client = segment.create_client(id: "client_#{seq_number + 1}")
+
+# currently there should be only one proejct for the first client
+segment.clients.map { |c| [c.id, c.project_uri]}
+# => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", nil]]
+
+# Let's provision project. This will provision it with project from last call of 'domain.synchronize_clients'
+domain.provision_client_projects
+
+# Let's check we have a project
+segment.clients.map { |c| [c.id, c.project_uri]}
+# => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", "/gdc/projects/yxpp45hf39bigezp3ug8pm6kc9h6tihv"]]
+
+# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we already made a release by using 'synchonize_clients' 
+segment.clients("client_#{seq_number + 1}").project.dashboards.first.title
+# => "Better Test Dashboard"
 ----

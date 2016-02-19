@@ -12,10 +12,18 @@ You can use Lifecycle management API to conveniently spin up projects and distri
 
 Organization - Organization is an object that represents your organiation at gooddata. It contains information about your users, your whitelabeling data etc. All created projects are assigned to this particular organization.
 
-Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience.
+Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience. These tiers are called segments on API and each segment can have many clients assigned.
 
-Client - Is referring to a combination of a project assigned to a certain segment identified by an id provided by your customer. Usually is synonym to a customer's project but in rare circumstances one customer can have multiple projects (thus having several clients).
+Client - Is referring to a project assigned to a certain segment identified by an id provided by your customer. Client is assigned to particular segment.
 
-Having defined some terminology we present code that will set up a segment with master project and create a client with a clone
+Having defined some terminology we present code that will do several things.
+
+- set up a segment with master project (along with some data and dashboard)
+- create a client (without a project) and assigns it to the project
+- "release new master project"
+- spin up project for client (this will ensure it has the same model, dashboard but no data )
+- change the dashboard in master
+- make another release
+- synchronize the dashboard
 
 <%= render_ruby 'src/13_working_with_lifecycle/example.rb' %>
