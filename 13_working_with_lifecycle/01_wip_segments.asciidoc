@@ -18,13 +18,15 @@ Client - Is referring to a project assigned to a certain segment identified by a
 
 Having defined some terminology we present code that will do several things.
 
-- set up a segment with master project (along with some data and dashboard)
-- create a client (without a project) and assigns it to the project
-- "release new master project"
-- spin up project for client (this will ensure it has the same model, dashboard but no data )
-- change the dashboard in master
+- sets up a segment with master project (along with some data and dashboard)
+- creates a client (without a project) and assigns it to the project
+- releases new master project
+- spins up project for client (this will ensure client's project has the same model, dashboard but no data )
+- changes the dashboard in master
 - make another release
-- synchronize the dashboard
+- synchronize the clients with updated version
+- adds a client
+- creates a project for it as well
 
 [source,ruby]
 ----
