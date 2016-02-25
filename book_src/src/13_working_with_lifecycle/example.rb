@@ -3,7 +3,9 @@ require 'gooddata'
 TOKEN = 'token'
 PASSWORD = 'pass'
 
+# Connect to GoodData a specific organization's (aka domain's) URL  
 client = GoodData.connect('mustang@gooddata.com', PASSWORD, server: 'https://mustangs.intgdc.com', verify_ssl: false )
+# Organization (aka domain)
 domain = client.domain('mustangs')
 
 seq_number = 8
@@ -40,9 +42,9 @@ blueprint = GoodData::Model::ProjectBlueprint.build('HR Demo Project') do |p|
   end
 end
 
-# Create new project (datamart)
+# Create the master template project 
 project = client.create_project_from_blueprint(blueprint, auth_token: TOKEN)
-puts "Created project #{project.pid}"
+puts "Created master template project #{project.pid}"
 
 # Load data
 department_data = [
@@ -80,11 +82,12 @@ salary_data = [
 ]
 project.upload(salary_data, blueprint, 'dataset.salary')
 
-# Report
+# Create a report within the master template project
 metric = project.facts('fact.salary.amount').create_metric
 metric.save
 report = project.create_report(title: 'My report', left: ['label.department.name'], top: [metric])
 
+# Create a dashboard within the master template project
 dashboard = project.create_dashboard(:title => 'Test Dashboard')
 tab = dashboard.create_tab(:title => 'Tab Title #1')
 tab.title = 'Test #42'
@@ -94,28 +97,26 @@ item.position_y = 300
 dashboard.lock
 dashboard.save
 
-# Prepare segment
-# ===============
+# Create new lifecycle segment
+# ============================
 
 segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
 
-# Make a Release
-# ==============
+# Release the segment
+# ===================
 segment.synchronize_clients
 
 
-# Prepare client
-# ==============
+# Create new client
+# =================
 segment_client = segment.create_client(id: "client_#{seq_number}")
 
 
-# Spin up project for the client
-# ==============================
-# 
-# This way we do not think about it ourselves
+# Provision new project for the client
+# ====================================
 domain.provision_client_projects
 
-# Let's check that it worked
+# The new project contains all the objects from the master template 
 segment.clients.first.project.pid
 # => aerkc6562oiauaof9mxtowcc4fl5vwb4
 segment.clients.first.project.metrics.count
@@ -123,7 +124,7 @@ segment.clients.first.project.metrics.count
 segment.clients.first.project.dashboards.first.title
 # => 'Test Dashboard'
 
-# The client project should not have data from master
+# The client project should not have any data from master
 segment.master_project.metrics.first.execute
 # => 0.366E6
 segment.clients.first.project.metrics.first.execute
@@ -132,15 +133,15 @@ segment.clients.first.project.metrics.first.execute
 # Update master and propagate changes
 # ===================================
 
-# Now let's pretend we want to change something in our master.
+# Now let's change something in our master.
 # Let's change a title in master and transfer to the clients
 dashboard.title = 'Better Test Dashboard'
 dashboard.save
 
-# Make a release and synchronize clients
+# Release the segment and synchronize clients
 segment.synchronize_clients
 
-# Check the results
+# Check the results in the client's project
 segment.clients.first.project.dashboards.first.title
 # => "Better Test Dashboard"
 
@@ -151,7 +152,7 @@ segment.clients.first.project.dashboards.first.title
 # We already have our master prepared so let's just create a new client.
 another_segment_client = segment.create_client(id: "client_#{seq_number + 1}")
 
-# currently there should be only one proejct for the first client
+# currently there should be only one project for the first client
 segment.clients.map { |c| [c.id, c.project_uri]}
 # => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", nil]]
 
@@ -162,6 +163,6 @@ domain.provision_client_projects
 segment.clients.map { |c| [c.id, c.project_uri]}
 # => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", "/gdc/projects/yxpp45hf39bigezp3ug8pm6kc9h6tihv"]]
 
-# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we already made a release by using 'synchonize_clients' 
+# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we've already released it via 'synchonize_clients' 
 segment.clients("client_#{seq_number + 1}").project.dashboards.first.title
 # => "Better Test Dashboard"
