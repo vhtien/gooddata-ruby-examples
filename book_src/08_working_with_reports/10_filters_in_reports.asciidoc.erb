@@ -1,0 +1,33 @@
+=== Computing/creating reports with filters
+by Tomas Svarovsky
+
+==== Problem
+Computing report is great but without filter it is not that great.
+
+==== Solution
+
+While SDK does not provide full support for all types of filters. There are couple of useful wrappers that make it easier. If you need something special you can always go to the raw APIs. Currently there are two types of filters supported directly.
+
+The general shape of the solution looks like this
+
+  project.compute_report(:left => project.metrics.first, :filters => [])
+
+for project computation on the fly (no report is saved) or like this
+
+  project.create_report(title: 'best report ever with filter',
+                        left: project.metrics.first,
+                        filters: [])
+
+For creating and persisting a report.
+
+===== Variable filter
+
+Variable filter is very simple. You just provide the variable into the filter.
+
+<%= render_ruby 'src/08_working_with_reports/filters_in_reports.rb' %>
+
+===== Attribute value filter
+
+This is probably the most commonly used filter type and it filters certain attribute on certain values. Imagine "WHERE City IN [San Francisco, Prague]". You can set it up easily like this.
+
+<%= render_ruby 'src/08_working_with_reports/filters_in_reports.rb' %>
