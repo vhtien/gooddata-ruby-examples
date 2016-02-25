@@ -1,32 +1,32 @@
 === Working with segments
 by Tomas Svarovsky
 
-This is WIP. It should not be released publicly until we are ready
-
 ==== Problem
-You would like to spin up a segment and project with livecycle menagement support.
+You would like to setup amd execute a lifecycle management configuration to distribute new versions of dashboards, reports, and metrics from a master template to multiple target projects.
 
 ==== Solution
 
-You can use Lifecycle management API to conveniently spin up projects and distribute reports and ETL for large number of customers. First let's define some terminology.
+You can use lifecycle management API to create lifecycle segment, associate it with its master template project, and populate the segment with target projects that are going to receive the new versions of objects from the master template. First let's align on the terminology.
 
-Organization - Organization is an object that represents your organiation at gooddata. It contains information about your users, your whitelabeling data etc. All created projects are assigned to this particular organization.
+Organization - Organization is an object that contains all users and projects that you or your company have provisoned to the GoodData platform. Organization can also contain whitelabeling configuration (your custom colors, logos, URLs etc.). Lifecycle management segments and projects are always set up within an organization. 
 
-Segment - When you are working with larger number of projects (each project for a customer) it is common to provide different tiers of customers different user experience. These tiers are called segments on API and each segment can have many clients assigned.
+Lifecycle segment represents a group of projects that contain the same analytical objects. New versions of these objects can be distributed from so called master template project to the segment's projects. The segment's projects can also contain ad-hoc objects (e.g. reports or metrics) that are not touched (not updated nor deleted) by the lifecycle processes. Lifecycle segments are usually used to represent a different tiers (e.g. bronze/silver/gold) tiers of an analytical solution.
 
-Client - Is referring to a project assigned to a certain segment identified by an id provided by your customer. Client is assigned to particular segment.
+Master template is a project that contains the latest and greatest versions of objects that are distributed to the segment's projects. We recommend to keep the master's project immutable once it gets associated with a segment. So a new master template project should be cloned from the previous master and associated with the segment for each new version of your solution. Lifecycle segment can be associated with just one master at any given time.  
+
+Client - is user-assigned ID of a segment's project. The client ID is associated with a GoodData generated project ID during segment provisioning operation. The client ID is stable identification of certain tenant's project. It can be associated with different project IDs during it's lifecycle. 
 
 Having defined some terminology we present code that will do several things.
 
 - sets up a segment with master project (along with some data and dashboard)
-- creates a client (without a project) and assigns it to the project
+- creates a client within a segment. The client is not yet associated with a project at this time.  
 - releases new master project
-- spins up project for client (this will ensure client's project has the same model, dashboard but no data )
+- provisions new project for the client (this will ensure client's project has the same model, dashboard but no data )
 - changes the dashboard in master
-- make another release
-- synchronize the clients with updated version
+- makes another release
+- synchronizes the clients with updated version
 - adds a client
-- creates a project for it as well
+- provisions new project for the second client too
 
 [source,ruby]
 ----
@@ -35,7 +35,9 @@ require 'gooddata'
 TOKEN = 'token'
 PASSWORD = 'pass'
 
+# Connect to GoodData a specific organization's (aka domain's) URL  
 client = GoodData.connect('mustang@gooddata.com', PASSWORD, server: 'https://mustangs.intgdc.com', verify_ssl: false )
+# Organization (aka domain)
 domain = client.domain('mustangs')
 
 seq_number = 8
@@ -72,9 +74,9 @@ blueprint = GoodData::Model::ProjectBlueprint.build('HR Demo Project') do |p|
   end
 end
 
-# Create new project (datamart)
+# Create the master template project 
 project = client.create_project_from_blueprint(blueprint, auth_token: TOKEN)
-puts "Created project #{project.pid}"
+puts "Created master template project #{project.pid}"
 
 # Load data
 department_data = [
@@ -112,11 +114,12 @@ salary_data = [
 ]
 project.upload(salary_data, blueprint, 'dataset.salary')
 
-# Report
+# Create a report within the master template project
 metric = project.facts('fact.salary.amount').create_metric
 metric.save
 report = project.create_report(title: 'My report', left: ['label.department.name'], top: [metric])
 
+# Create a dashboard within the master template project
 dashboard = project.create_dashboard(:title => 'Test Dashboard')
 tab = dashboard.create_tab(:title => 'Tab Title #1')
 tab.title = 'Test #42'
@@ -126,28 +129,26 @@ item.position_y = 300
 dashboard.lock
 dashboard.save
 
-# Prepare segment
-# ===============
+# Create new lifecycle segment
+# ============================
 
 segment = domain.create_segment(segment_id: "segment_#{seq_number}", master_project: project)
 
-# Make a Release
-# ==============
+# Release the segment
+# ===================
 segment.synchronize_clients
 
 
-# Prepare client
-# ==============
+# Create new client
+# =================
 segment_client = segment.create_client(id: "client_#{seq_number}")
 
 
-# Spin up project for the client
-# ==============================
-# 
-# This way we do not think about it ourselves
+# Provision new project for the client
+# ====================================
 domain.provision_client_projects
 
-# Let's check that it worked
+# The new project contains all the objects from the master template 
 segment.clients.first.project.pid
 # => aerkc6562oiauaof9mxtowcc4fl5vwb4
 segment.clients.first.project.metrics.count
@@ -155,7 +156,7 @@ segment.clients.first.project.metrics.count
 segment.clients.first.project.dashboards.first.title
 # => 'Test Dashboard'
 
-# The client project should not have data from master
+# The client project should not have any data from master
 segment.master_project.metrics.first.execute
 # => 0.366E6
 segment.clients.first.project.metrics.first.execute
@@ -164,15 +165,15 @@ segment.clients.first.project.metrics.first.execute
 # Update master and propagate changes
 # ===================================
 
-# Now let's pretend we want to change something in our master.
+# Now let's change something in our master.
 # Let's change a title in master and transfer to the clients
 dashboard.title = 'Better Test Dashboard'
 dashboard.save
 
-# Make a release and synchronize clients
+# Release the segment and synchronize clients
 segment.synchronize_clients
 
-# Check the results
+# Check the results in the client's project
 segment.clients.first.project.dashboards.first.title
 # => "Better Test Dashboard"
 
@@ -183,7 +184,7 @@ segment.clients.first.project.dashboards.first.title
 # We already have our master prepared so let's just create a new client.
 another_segment_client = segment.create_client(id: "client_#{seq_number + 1}")
 
-# currently there should be only one proejct for the first client
+# currently there should be only one project for the first client
 segment.clients.map { |c| [c.id, c.project_uri]}
 # => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", nil]]
 
@@ -194,7 +195,7 @@ domain.provision_client_projects
 segment.clients.map { |c| [c.id, c.project_uri]}
 # => [["client_8", "/gdc/projects/aerkc6562oiauaof9mxtowcc4fl5vwb4"], ["client_9", "/gdc/projects/yxpp45hf39bigezp3ug8pm6kc9h6tihv"]]
 
-# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we already made a release by using 'synchonize_clients' 
+# Let's also verify that we have a latest version. The new project should contain the updated version of the dashboard beacuse we've already released it via 'synchonize_clients' 
 segment.clients("client_#{seq_number + 1}").project.dashboards.first.title
 # => "Better Test Dashboard"
 ----
