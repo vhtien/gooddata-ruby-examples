@@ -26,16 +26,9 @@ Variable filter is very simple. You just provide the variable into the filter.
 
 [source,ruby]
 ----
-label = project.labels('label.regions.city.name')
+var = project.variables('my_variable_identifier')
 puts project.compute_report(left: project.metrics.first,
-                            filters: [[label, 'San Francisco', 'Prague']])
-
-# You can also use a variation of NOT equal
-
-label = project.labels('label.regions.city.name')
-puts project.compute_report(left: project.metrics.first,
-                            filters: [[label, :not, 'San Francisco', 'Prague']])
-
+                            filters: [var])
 
 ----
 
