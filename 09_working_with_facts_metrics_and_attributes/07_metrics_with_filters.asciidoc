@@ -34,9 +34,9 @@ GoodData.with_connection do |c|
 
     # Let's find the continent label - here we assume identifer label.cities.continent.name
     continent_label = project.labels('label.cities.continent.name')
-    filter_expression = GoodData::SmallGoodZilla.create_category_filter([continent_label, 'Europe', 'Africa'], project)
+    filter_values = ['Europe', 'Africa'].map { |val| "[#{continent_label.find_value_uri(val)}]" }.join(', ')
 
-    m = project.create_metric("SELECT COUNT([#{city_attribute.uri}]) WHERE #{filter_expression[:expression]}", extended_notation: false)
+    m = project.create_metric("SELECT COUNT([#{city_attribute.uri}]) WHERE #{continent_label.uri} IN #{filter_values}", extended_notation: false)
     puts m.execute
   end
 end
