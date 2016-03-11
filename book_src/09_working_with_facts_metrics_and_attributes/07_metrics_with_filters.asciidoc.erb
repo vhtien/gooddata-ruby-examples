@@ -1,0 +1,23 @@
+=== Creating Metric with filter
+
+by Tomas Svarovsky
+
+==== Problem
+You want to create a more complicated metric that has filter on values included
+
+==== Solution
+
+In this case we will actually create the raw MAQL metric along with the filter values. The main problem is that you have to find out the URLs of all the objects and values. This is generally tricky but SDK can simplify this a bit.
+
+We will try to create a metric that looks like this in "human readable" MAQL.
+
+    SELECT COUNT(City) WHERE Continent IN ('Europe', 'Africa')
+
+This is actually not a MAQL that would be possible to post to the API. You have to translate all the objects into theire valid URLs. The MAQL then might look like this (obviously the URLs will look different in your particular case)
+
+    SELECT COUNT([/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/23]) WHERE [/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72] IN ([/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72/elements?id=0], [/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72/elements?id=1])
+
+Let's have a look how we might write a code that does this
+
+<%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/metric_with_filter.rb' %>
+

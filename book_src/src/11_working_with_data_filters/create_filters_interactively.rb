@@ -14,7 +14,7 @@ GoodData.with_connection do |c|
     # Let's construct filters we are going to set up
     # We will do it for two hypothetical users
     filters = [
-      ['john.doe@example.com', label.uri, 'San Francisco', 'Amsterdam']
+      ['john.doe@example.com', label.uri, 'San Francisco', 'Amsterdam'],
       ['jane.doe@example.com', label.uri, 'San Francisco', 'Prague']
     ]
     # Obvious question might be how do you know that the values are correct

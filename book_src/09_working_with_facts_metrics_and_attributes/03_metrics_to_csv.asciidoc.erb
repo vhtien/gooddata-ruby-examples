@@ -9,10 +9,26 @@ You would like to store information about all project metrics and attributes in 
 You have to have existing project with metric(s) and attribute(s).
 
 ==== Solution
+
+===== Metrics
 <%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/metrics_to_csv.rb' %>
 
 It is a simple script that iterates over metrics (remember report specific metrics are not included in the list) and collects some fields. In our case it is title and pretty printed metric's MAQL expression. If you would like to get more information, just add them to the list. In the end this list is formatted as a valid CSV so any reasonable CSV parser should be able to load it.
 
+===== Attributes
 You also might like to export attributes. The script itself is very similar.
 
 <%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/attributes_to_csv.rb' %>
+
+==== Discussion
+
+===== Folders
+
+Many times people want to also include the information about the folder the metric/attribute is in. While SDK does not provide direct support for it here is a little workaround to make it possible.
+
+====== Attributes
+<%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/attributes_with_folder_to_csv.rb' %>
+
+====== Metrics
+
+<%= render_ruby 'src/09_working_with_facts_metrics_and_attributes/metrics_with_folder_to_csv.rb' %>
