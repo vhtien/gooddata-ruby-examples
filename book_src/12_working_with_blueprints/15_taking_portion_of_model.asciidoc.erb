@@ -1,0 +1,11 @@
+=== Taking portion of a project model
+by Tomas Svarovsky
+
+==== Problem
+You have a project and you would like to create a new on with the same model but only portion of it.
+
+==== Solution
+Blueprints can be easily manipulated because undernaeth they are just hashes of data. Worst case you can always manipulate the hash and create the blueprint out of that. In some cases there are helper methods to make the code a little bit cleaner. In this example we will show an example where we will have a blueprint with 2 datasets and we will remove one of them so the new project will have just portion of the model.
+
+<%= render_ruby 'src/12_working_with_blueprints/removing_dataset_from_blueprint.rb' %>
+
