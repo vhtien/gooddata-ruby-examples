@@ -8,3 +8,22 @@ You have a process deployed and you would like to add a schedule to it so the pr
 You can easily add a time based schedule to any process. Scheduled process execution has couple advantages over the ad-hoc process executions. Scheduled executions are logged and logs are kept around for some time (~10 days). Also schedule keeps list of parameters so you create it once and you do not need to care about them anymore.
 
 <%= render_ruby 'src/07_deployment_recipes/adding_schedule.rb' %>
+
+==== Working with JSON
+
+In many examples in the appstore the parameters are specified in JSON. JSON is language agnostic that is very similar to Ruby format of representing data but it is not exaclty the same. Since here we are working in Ruby we present a short example how to convert JSON to Ruby automatically.
+
+Let's assume we have some JSON parameters that look like this
+
+    {
+      "param_1" : {
+        "deeper_key" : "value_1"
+      },
+      "param_2" : "value_2"
+    }
+
+We first need to store this in a string a and then use one of the ruby libraries to convert this to a equivalent on Ruby language. Typically there are problems with the quotes since in many language a string literal is defined with " and thus the JSON need to be escaped. Another probelm might be caused with the fact that JSON is typically on multiple lines (as in our example). We use one of the lessser know features of ruby called HEREDOC which will help us. It is basically a way how to define a string that is potentially on multiple lines without worrying about escaping.
+
+<%= render_ruby 'src/07_deployment_recipes/json_params_conversion.rb' %>
+
+Then we can use it as in the example above 
