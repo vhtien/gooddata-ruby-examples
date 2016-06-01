@@ -1,8 +1,9 @@
 data = <<JSON_DATA
 {
-  "a" : {
-    "b" : "c"
-  }
+  "param_1" : {
+    "deeper_key" : "value_1"
+  },
+  "param_2" : "value_2"
 }
 JSON_DATA
 
