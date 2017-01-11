@@ -10,7 +10,7 @@ GoodData.with_connection do |c|
   GoodData.with_project('master_project_id') do |master_project|
     # find objects you would like to transfer
     # here we transfer all reports containing word "sales" in the title
-    reports = master_project.reports.select { |r| r.title =~ /title/ }
+    reports = master_project.reports.select { |r| r.title =~ /sales/ }
     result = master_project.transfer_objects(reports, project: [target_project_1, target_project_2])
     
     # If you provided an array of projects the method will not throw an exception on failed
