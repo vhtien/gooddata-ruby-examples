@@ -2,7 +2,6 @@
 
 require 'erb'
 require 'pathname'
-require 'pry'
 
 class ErbHelper
   BASE_DIR = File.join(File.dirname(__FILE__), '..')
