@@ -1,0 +1,33 @@
+=== Registering a notification email
+by Vo Ha Tien
+
+==== Problem
+When executing a process, obtaining up-to-date information about the status is difficult.
+
+==== Solution
+
+Register a notification rule on a process. You can configure notification rules to send an email whenever the defined conditions are met.
+
+The basic events are: GoodData::Subscription::PROCESS_SUCCESS_EVENT, GoodData::Subscription::PROCESS_FAILED_EVENT, GoodData::Subscription::PROCESS_SCHEDULED_EVENT, GoodData::Subscription::PROCESS_STARTED_EVENT. If you need to define your own special event, visit https://developer.gooddata.com/article/creating-custom-notification-events[creating custom notification events]
+
+You can also add special variables to provide more information in the email. These can be used in the subject or email body.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  GoodData.with_project('project_id') do |project|
+    process = project.deploy_process('./path/to_cloud_connect_directory', name: 'Test ETL Process')
+
+    process.create_notification_rule(
+      email: 'email you need to get the info',
+      subject: 'Get info from project ${params.PROJECT}',
+      body: 'This is a log for process ${params.PROCESS_NAME} [${params.PROCESS_ID}]: ${params.LOG}',
+      events: GoodData::Subscription::PROCESS_FAILED_EVENT
+    )
+  end  
+end
+----
