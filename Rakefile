@@ -20,6 +20,17 @@ task :usage do
   puts 'No rake task specified, use rake -T to list them'
 end
 
+desc 'Run spell-checker'
+namespace :spelling do
+  task :check do
+    unknown_words = %x[find book_src/ -name '*asciidoc.erb' -exec cat '{}' \\; | aspell list -p ./.aspell.en.pws]
+    unless unknown_words.empty?
+      puts "Found the following unknown words:"
+      puts unknown_words
+    end
+  end
+end
+
 # deploy task is in the root, because we need to push stuff to gh-pages branch
 # where the lib directory doesn't exist
 desc 'Deploy the book to the web'
