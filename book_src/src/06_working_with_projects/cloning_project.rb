@@ -7,4 +7,5 @@ project = client.projects('project_pid')
 cloned_project = project.clone(title: 'New title',
                                auth_token: 'token',
                                users: false,
-                               data: true)
+                               data: true,
+                               exclude_schedules: true)
