@@ -11,5 +11,7 @@ client_to = GoodData.connect(user_to_login, 'password', server: 'https://custome
 from_project = client_from.projects('project_pid_1')
 to_project = client_to.create_project(:title => "project_title", :auth_token => "TOKEN")
 
-export_token = from_project.export_clone(authorized_users: [user_to_login], data: true, users: false)
+export_token = from_project.export_clone(authorized_users: [user_to_login],
+                                         data: true,
+                                         exclude_schedules: true)
 to_project.import_clone(export_token)
