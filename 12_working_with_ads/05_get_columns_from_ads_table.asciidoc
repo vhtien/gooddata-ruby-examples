@@ -1,0 +1,25 @@
+=== Get Columns ADS Table
+
+by Patrick McConlogue
+
+==== Problem
+Using Ruby, you would like to create a table in ADS.
+
+==== Solution
+With the GoodData DataWarehouse gem you are given many methods to work with tables. Note, interfacing with ADS requires the use of JRuby.
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata_datawarehouse'
+
+dwh = GoodData::Datawarehouse.new('you@gooddata.com', 'yourpass', 'your ADS instance id')
+
+# Get columns for table
+columns = dwh.get_columns('my_table') # [{column_name: 'col1', data_type: 'varchar(88)'}, {column_name: 'col2', data_type: 'int'}]
+
+# Add a new column
+dwh.execute('ALTER TABLE my_table ADD COLUMN col3 INTEGER')
+
+----
