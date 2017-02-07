@@ -13,3 +13,15 @@ The basic events are: GoodData::Subscription::PROCESS_SUCCESS_EVENT, GoodData::S
 You can also add special variables to provide more information in the email. These can be used in the subject or email body.
 
 <%= render_ruby 'src/07_deployment_recipes/add_notification_rule.rb' %>
+
+You can also list all notification rules of a process and re-configure or delete the existing notification rule
+
+<%= render_ruby 'src/07_deployment_recipes/modify_notification_rule.rb' %>
+
+When registering a notification rule, GoodData will automatically create a channel for each email target if it's not exist. You can manually create a channel
+
+<%= render_ruby 'src/07_deployment_recipes/channel_configuration_1.rb' %>
+
+You can list all channels, re-configure or delete the existing channel
+
+<%= render_ruby 'src/07_deployment_recipes/channel_configuration_2.rb' %>

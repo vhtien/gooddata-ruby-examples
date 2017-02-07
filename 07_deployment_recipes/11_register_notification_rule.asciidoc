@@ -31,3 +31,54 @@ GoodData.with_connection do |client|
   end  
 end
 ----
+
+You can also list all notification rules of a process and re-configure or delete the existing notification rule
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  GoodData.with_project('project_id') do |project|
+    project.processes.each do |process|
+      process.notification_rules.each do |rule|
+        rule.subject = 'Changed subject'
+        rule.save
+        rule.delete
+      end
+    end
+  end
+end
+----
+
+When registering a notification rule, GoodData will automatically create a channel for each email target if it's not exist. You can manually create a channel
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  client.user.create_channel
+end
+----
+
+You can list all channels, re-configure or delete the existing channel
+
+[source,ruby]
+----
+# encoding: utf-8
+
+require 'gooddata'
+
+GoodData.with_connection do |client|
+  client.user.channels.each do |channel|
+    channel.to = 'another email'
+    channel.save
+    channel.delete
+  end
+end
+----
