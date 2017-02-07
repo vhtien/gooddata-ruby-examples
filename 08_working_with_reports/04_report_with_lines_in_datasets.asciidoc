@@ -42,5 +42,3 @@ GoodData.with_connection do |c|
 end
 
 ----
-
-==== Discussion

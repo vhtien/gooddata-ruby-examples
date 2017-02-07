@@ -32,7 +32,7 @@ GoodData.with_connection do |c|
       # Or explicitly specify mapping using identifiers...
       :mapping => {
         'closedate.date' => 'abortdate.date',
-        'closedate.day.in.euweek' => 'abortdate.day.in.euweek',
+        'closedate.day.in.euweek' => 'abortdate.day.in.week',
         'closedate.month' => 'abortdate.month',
         'closedate.month.in.year' => 'abortdate.month.in.year',
         'closedate.euweek.in.year' => 'abortdate.week.in.year',
