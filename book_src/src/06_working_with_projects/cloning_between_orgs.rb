@@ -13,5 +13,6 @@ to_project = client_to.create_project(:title => "project_title", :auth_token => 
 
 export_token = from_project.export_clone(authorized_users: [user_to_login],
                                          data: true,
-                                         exclude_schedules: true)
+                                         exclude_schedules: true,
+                                         cross_data_center_export: true)
 to_project.import_clone(export_token)
