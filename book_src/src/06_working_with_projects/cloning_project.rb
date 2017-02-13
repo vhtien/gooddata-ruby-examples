@@ -8,4 +8,5 @@ cloned_project = project.clone(title: 'New title',
                                auth_token: 'token',
                                users: false,
                                data: true,
-                               exclude_schedules: true)
+                               exclude_schedules: true,
+                               cross_data_center_export: true)

@@ -34,12 +34,13 @@ to_project = client_to.create_project(:title => "project_title", :auth_token => 
 
 export_token = from_project.export_clone(authorized_users: [user_to_login],
                                          data: true,
-                                         exclude_schedules: true)
+                                         exclude_schedules: true,
+                                         cross_data_center_export: true)
 to_project.import_clone(export_token)
 
 ----
 
 ==== Discussion
-The options for `Project#export_clone` are the same as for `Project#clone`. Additionally, you can specify which users will be able to import the package using the `authorized_users` option.
+The options for `Project#export_clone` are the same as for `Project#clone` with a couple additions. You can specify which users will be able to import the package using the `authorized_users` option. If you want to use the export in another data-center, set `cross_data_center_export` to true.
 
 You can also leverage this more granular interface when you need to clone one project to multiple target projects.
