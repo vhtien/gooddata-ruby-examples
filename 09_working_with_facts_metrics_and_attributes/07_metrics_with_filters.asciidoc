@@ -13,7 +13,7 @@ We will try to create a metric that looks like this in "human readable" MAQL.
 
     SELECT COUNT(City) WHERE Continent IN ('Europe', 'Africa')
 
-This is actually not a MAQL that would be possible to post to the API. You have to translate all the objects into theire valid URLs. The MAQL then might look like this (obviously the URLs will look different in your particular case)
+This is actually not a MAQL that would be possible to post to the API. You have to translate all the objects into their valid URLs. The MAQL then might look like this (obviously the URLs will look different in your particular case)
 
     SELECT COUNT([/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/23]) WHERE [/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72] IN ([/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72/elements?id=0], [/gdc/md/e8pid3efwftbc3pc13nnnau4xymb0198/obj/72/elements?id=1])
 

@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-I would like to play with blueprints but I cannot come up with some data and model of a ptoy project. Can you give me any?
+I would like to play with blueprints but I cannot come up with some data and model of a toy project. Can you give me any?
 
 ==== Solution
 

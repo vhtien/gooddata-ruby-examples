@@ -13,9 +13,9 @@ You first need to install gooddata gem using
 There are several methods by which you can work with the GoodData Ruby SDK. Let’s look at the major ones.
 
 ===== IRB
-irb is an interactive console that is provided with your Ruby installation. You may use gooddata sdk inside your irb. Below are some of the basic steps.
+IRB is an interactive console that is provided with your Ruby installation. You may use gooddata SDK inside your IRB. Below are some of the basic steps.
 
-First, launch irb. In your terminal, execute the following:
+First, launch IRB. In your terminal, execute the following:
 
   irb
   
@@ -36,7 +36,7 @@ This error message indicates that irb does not know about the gooddata SDK. So, 
   > require 'gooddata'
     => true
 
-Ok. Now, repeat the previous command:
+OK. Now, repeat the previous command:
 
   > GoodData
     => GoodData
@@ -57,7 +57,7 @@ To list the reports in this project:
 
   project.reports
   
-Ok. To exit irb, enter: 
+OK. To exit irb, enter: 
 
   exit
   
