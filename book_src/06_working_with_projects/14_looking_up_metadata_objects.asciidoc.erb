@@ -1,0 +1,11 @@
+=== Looking up metadata objects
+by Jan Zdrahal
+
+==== Problem
+You would like to retrieve metadata objects (e.g. metrics, facts, labels) by numeric ID, string identifier or URI.
+
+==== Solution
+
+Use `GoodData::MdObject#[]` to look up your metadata objects. This method is aliased `#get_by_id`.
+
+<%= render_ruby 'src/06_working_with_projects/looking_up_metadata_objects.rb' %>

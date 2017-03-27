@@ -2,11 +2,11 @@
 by Tomas Svarovsky
 
 ==== Problem
-You have large amount of projects and would like to investigate their execution. The administration UI is not necessarilly helpful since its overview UI can hide some failures, there is too much too go through by hand etc.
+You have large amount of projects and would like to investigate their execution. The administration UI is not necessarily helpful since its overview UI can hide some failures, there is too much too go through by hand etc.
 
 ==== Solution
 
-Let's have a look at couple of scenarios. First let's investigate executions inside one project regardless of which schedule it was triggered by. Let's assume first that we are just looking for any executions that failed for that particular project. We will print the date when it happend sorted in a ascending fashion.
+Let's have a look at couple of scenarios. First let's investigate executions inside one project regardless of which schedule it was triggered by. Let's assume first that we are just looking for any executions that failed for that particular project. We will print the date when it happened sorted in a ascending fashion.
 
 [source,ruby]
 ----
@@ -66,7 +66,7 @@ end
 
 ----
 
-Sometimes the error does not manfiest itself in the error message directly and you need to look into logs. Take note that in both last cases we are getting the log and the error message as a string so you have full power of ruby to process it. Here we are using regular expressions which by itself gives you siginificant power but you can go even deeper if you need.
+Sometimes the error does not manifest itself in the error message directly and you need to look into logs. Take note that in both last cases we are getting the log and the error message as a string so you have full power of ruby to process it. Here we are using regular expressions which by itself gives you significant power but you can go even deeper if you need.
 
 [source,ruby]
 ----
@@ -87,7 +87,7 @@ end
 
 ----
 
-Last example we will show is just a small extension. Imagine you would like to perform the same analysis on all projects in your account. This is usually the case since this type of analysing executions get exponentially more useful with growing number of executions or projects you need to investigate.
+Last example we will show is just a small extension. Imagine you would like to perform the same analysis on all projects in your account. This is usually the case since this type of analyzing executions get exponentially more useful with growing number of executions or projects you need to investigate.
 
 [source,ruby]
 ----

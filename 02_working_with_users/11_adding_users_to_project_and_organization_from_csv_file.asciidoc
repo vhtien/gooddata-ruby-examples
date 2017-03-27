@@ -21,7 +21,7 @@ SDK has a method import_users that takes care of all the details and does exactl
 ===== Notes
 * Process of adding users is not additive but declarative. What you provide on the input is what SDK will strive to have in the project at the end. This has some constraints on data preparation but it is much more resilient approach.
 * Connected to previous point sometimes you have users that you do not want to be touched by this process. ETL developers, admins etc that usually do not come from data. You can provide list of whitelist expressions as either string or regular expressions. What this means is the user that would be added or removed based on the data will be ignored by the process. In our example we want to omit user under which you are logged in.
-* Be careful so you do not lock yourself (etl administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data.
+* Be careful so you do not lock yourself (ETL administrator) out of the project. Be sure to add him/her to whitelist if he is not intrinsically in the data.
 * Note that above data will not work. Currently there is a constraint that each user has to have unique login across all users in GoodData. It is likely that there already is a `john@example.com` somewhere so change the test data accordingly.
 
 [source,ruby]

@@ -2,13 +2,13 @@
 by Tomas Svarovsky
 
 ==== Problem
-You would like to setup amd execute a lifecycle management configuration to distribute new versions of dashboards, reports, and metrics from a master template to multiple target projects.
+You would like to setup and execute a life-cycle management configuration to distribute new versions of dashboards, reports, and metrics from a master template to multiple target projects.
 
 ==== Solution
 
-You can use lifecycle management API to create lifecycle segment, associate it with its master template project, and populate the segment with target projects that are going to receive the new versions of objects from the master template. First let's align on the terminology.
+You can use life-cycle management API to create life-cycle segment, associate it with its master template project, and populate the segment with target projects that are going to receive the new versions of objects from the master template. First let's align on the terminology.
 
-Organization - Organization is an object that contains all users and projects that you or your company have provisoned to the GoodData platform. Organization can also contain whitelabeling configuration (your custom colors, logos, URLs etc.). Lifecycle management segments and projects are always set up within an organization. 
+Organization - Organization is an object that contains all users and projects that you or your company have provisioned to the GoodData platform. Organization can also contain white-labeling configuration (your custom colors, logos, URLs etc.). Lifecycle management segments and projects are always set up within an organization. 
 
 Lifecycle segment represents a group of projects that contain the same analytical objects. New versions of these objects can be distributed from so called master template project to the segment's projects. The segment's projects can also contain ad-hoc objects (e.g. reports or metrics) that are not touched (not updated nor deleted) by the lifecycle processes. Lifecycle segments are usually used to represent a different tiers (e.g. bronze/silver/gold) tiers of an analytical solution.
 
