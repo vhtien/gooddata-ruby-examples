@@ -11,7 +11,7 @@ You can easily add a time based schedule to any process. Scheduled process execu
 
 ==== Working with JSON
 
-In many examples in the Appstore the parameters are specified in JSON. JSON is language agnostic that is very similar to Ruby format of representing data but it is not exactly the same. Since here we are working in Ruby we present a short example how to convert JSON to Ruby automatically.
+In many examples in the Appstore, the parameters are specified in JSON. JSON is language agnostic that is very similar to Ruby format of representing data but it is not exactly the same. Since here we are working in Ruby we present a short example how to convert JSON to Ruby automatically.
 
 Let's assume we have some JSON parameters that look like this
 
@@ -22,8 +22,8 @@ Let's assume we have some JSON parameters that look like this
       "param_2" : "value_2"
     }
 
-We first need to store this in a string a and then use one of the ruby libraries to convert this to a equivalent on Ruby language. Typically there are problems with the quotes since in many language a string literal is defined with " and thus the JSON need to be escaped. Another problem might be caused with the fact that JSON is typically on multiple lines (as in our example). We use one of the lesser know features of ruby called HEREDOC which will help us. It is basically a way how to define a string that is potentially on multiple lines without worrying about escaping.
+We first need to store this in a string and then use one of the ruby libraries to convert this to the equivalent on Ruby language. Typically there are problems with the quotes since in many language a string literal is defined with " and thus the JSON need to be escaped. Another problem might be caused with the fact that JSON is typically on multiple lines (as in our example). We use one of the lesser known features of ruby called HEREDOC to help us. It is basically a way to define a string that is potentially on multiple lines without worrying about escaping.
 
 <%= render_ruby 'src/07_deployment_recipes/json_params_conversion.rb' %>
 
-Then we can use it as in the example above 
+Then we can use it as in the example above

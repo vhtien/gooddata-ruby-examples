@@ -2,11 +2,11 @@
 by Tomas Svarovsky
 
 ==== Problem
-You have large amount of projects and would like to investigate their execution. The administration UI is not necessarily helpful since its overview UI can hide some failures, there is too much too go through by hand etc.
+You have large amount of projects and would like to investigate their execution. The administration UI is not necessarily helpful as it's overview UI can hide some failures, there is too much too go through by hand etc.
 
 ==== Solution
 
-Let's have a look at couple of scenarios. First let's investigate executions inside one project regardless of which schedule it was triggered by. Let's assume first that we are just looking for any executions that failed for that particular project. We will print the date when it happened sorted in a ascending fashion.
+Let's have a look at couple of scenarios. First let's investigate executions inside one project regardless of which schedule it was triggered by. Let's assume first that we are just looking for any executions that failed for that particular project. We will print the date when it happened sorted in ascending order.
 
 [source,ruby]
 ----
@@ -87,7 +87,7 @@ end
 
 ----
 
-Last example we will show is just a small extension. Imagine you would like to perform the same analysis on all projects in your account. This is usually the case since this type of analyzing executions get exponentially more useful with growing number of executions or projects you need to investigate.
+Last example we will show is just a small extension. Imagine you would like to perform the same analysis on all projects in your account. This is usually the case since these type of analysis executions become exponentially more useful with growing number of executions or projects you need to investigate.
 
 [source,ruby]
 ----

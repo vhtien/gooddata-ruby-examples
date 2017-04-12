@@ -32,7 +32,7 @@ end
 
 ==== Discussion
 
-Occasionally you need to transfer objects to multiple projects. To make it easier SDK provides a convenience method for this.
+Occasionally you need to transfer objects to multiple projects. To make it easier SDK provides a convenient method for this.
 
 [source,ruby]
 ----

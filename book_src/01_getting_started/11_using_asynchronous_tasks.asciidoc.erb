@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You would like to build on top of SDK but you would like to have more control over asynchronous tasks
+You would like to build on top of the SDK but you would like to have more control over asynchronous tasks.
 
 ==== Solution
 There are numerous tasks on GoodData API which potentially take more than just couple of seconds to execute. These include report executions, data loads, exports, clones and others.
@@ -14,4 +14,3 @@ Sometimes it is useful to be able to specify the time limit on the client side. 
 You can implement it like this
 
 <%= render_ruby 'src/01_getting_started/implement_time_outs_on_async.rb' %>
-
