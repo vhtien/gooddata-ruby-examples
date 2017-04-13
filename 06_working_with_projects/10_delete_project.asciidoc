@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You need to delete a project programmatically.
+You must delete a project programmatically.
 
 ==== Solution
 

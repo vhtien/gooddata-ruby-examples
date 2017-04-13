@@ -1,4 +1,4 @@
-=== Adding Users from Organization to Multiple Projects 
+=== Adding Users from Organization to Multiple Projects
 by Tomas Svarovsky
 
 ==== Problem
@@ -38,4 +38,4 @@ end
 
 ----
 
-What this does is to reads the users groups them according to a project and then adds them to the project. It reads all the users into memory but this should be OK for typical situations of thousands users. Note that we are not getting a project dynamically for each group of users. All the notes for whitelist apply as well.
+This reads the users, groups them according to a project and then adds them to the project. It reads all the users into memory. This should be OK for typical situations of thousands users. Note that we are not getting a project dynamically for each group of users. All the notes for whitelist apply as well.

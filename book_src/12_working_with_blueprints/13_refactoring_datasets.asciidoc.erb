@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You created a quick prototype but you found out that it needs some touch ups.
+You created a quick prototype but you found out that it needs some touching up.
 
 ==== Notes
 This is work in progress.
@@ -29,17 +29,17 @@ You can see that there is stage attribute right there. And it prepared an anchor
 
 <%= render_ruby 'src/12_working_with_blueprints/refactoring_part3.rb' %>
 
-You can see that the attribute is gone with labels. Only facts remained. New reference was added so the reports should still be working. This might seems just like a minor thing but once you start creating more complex models with multiple stars you find this technique a necessity so why not automate it. 
+You can see that the attribute has gone alongside the labels. Only facts remain. A new reference was added so the reports should still be working. This might seem just a minor issue but once you start creating more complex models with multiple stars you find this technique a necessity so why not automate it?
 
 ===== Multiple facts in one dataset
 
-Another problem we will look at is splitting fact tables because of facts. Consider this model
+Another problem we will look at is splitting fact tables because of facts. Consider this model:
 
 <%= render_ruby 'src/12_working_with_blueprints/refactoring_part4.rb' %>
 
 What you want to do is have a look at how many shipments were ordered and shipped on particular day. But if you keep the facts in one dataset you will have all kinds of trouble with nil values. Much better is to split the fact tables in two. Again we can try doing that with SDK
 
-Note: it seems it currently does not work with date references. We need to update that so I omitted it in the example so it works
+Note: it seems it currently does not work with date references. We need to update this so I omitted it in the example so it works.
 
 <%= render_ruby 'src/12_working_with_blueprints/refactoring_part5.rb' %>
 

@@ -2,12 +2,12 @@
 by Tomas Svarovsky
 
 ==== Problem
-You successfully modularized your ETL into several modules you orchestrated. The problem is that it is hard to visualize the order of execution from the Data Administration console.
+You successfully modularized your ETL into several orchestrated modules. The problem is that it is hard to visualize the order of execution from the Data Administration console.
 
 ==== Solution
 
-There are plethora of very useful libraries that you can use in conjunction with GoodData SDK. One of those is Graphviz that is a C library but it has bindings to almost every language including Ruby. Graphviz is a visualization library and one of the features is visualizing Direct Acyclic Graphs which is exactly what an execution of several schedules basically is.
+There are plethora of very useful libraries that you can use in conjunction with GoodData SDK. One of those is Graphviz that is a C library but it has bindings to almost every language including Ruby. Graphviz is a visualization library and one of the features allows visualization of Direct Acyclic Graphs which is exactly what an execution of several schedules basically is.
 
-As a prerequisite you have to install both http://www.graphviz.org/[Graphviz] and https://github.com/glejeune/Ruby-Graphviz[Graphviz ruby bindings]. I leave this as a exercise for the reader because this might be a little bit difficult and unfortunately is different for every platform. If you encounter any errors try googling them or shoot us a message on GitHub or support
+As a prerequisite you must install both http://www.graphviz.org/[Graphviz] and https://github.com/glejeune/Ruby-Graphviz[Graphviz ruby bindings]. This is user dependent as installation is different for every platform. If you encounter any errors try googling them or shoot us a message on GitHub or support.
 
 <%= render_ruby 'src/07_deployment_recipes/dag_creation.rb' %>

@@ -2,7 +2,7 @@
 by Tomas Svarovsky
 
 ==== Problem
-You would like to export the report from GoodData into one of the typical formats for further processing or presentation
+You would like to export the report from GoodData into one of the typical formats for further processing or presentation.
 
 ==== Solution
 
