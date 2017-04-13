@@ -125,7 +125,7 @@ blueprint.valid? # => false
 blueprint.validate # => [{:type=>:more_than_on_anchor, :dataset=>"dataset.users"}]
 ----
 
-An anchor allows you to reference from other datasets. To do this you must first define a label. Anchor can have multiple labels same as attribute. We strongly recommend not to define an anchor with labels on fact tables (they are usually not referenced). The only exception to this rule is if you need to upsert data.
+An anchor allows you to reference from other datasets. To do this you must first define a label. Anchors can have multiple labels the same as an attribute. We strongly recommend not to define an anchor with labels on fact tables (they are usually not referenced). The only exception to this rule is if you need to upsert data.
 
 [source,ruby]
 ----
